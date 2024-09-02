@@ -8,4 +8,5 @@ int main() {
     } else {
         printf("n/a\n");
     }
+    return 0;
 }
