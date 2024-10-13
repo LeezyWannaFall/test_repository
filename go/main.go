@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	
 )
 
 func main() {
-	fmt.Println("My favorite number is", rand.Intn(10))
+	var x, z float64
+	fmt.Scan(&x, &z)	
+	z -= (z*z - x) / (2*z)
+	fmt.Println(x, z)
 }
