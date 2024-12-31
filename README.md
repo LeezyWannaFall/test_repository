@@ -19,15 +19,15 @@
 
 ![hostname edit](https://i.imgur.com/w5uhZpN.png)
 
- с помощью `vim` изменил `/etc/hostname` на user-1
+ с помощью `vim` изменил `/etc/hostname` на `user-1`
 
 ![edit time zone](https://i.imgur.com/Xo4kWHU.png)
 
- с помощью команды `timedatectl list-timezones` нашел свою таймзону и с помощью команды sudo timedatectl set-timezone Europe/Moscow установил таймзону в которой я нахожусь, потом для проверки таймзоны прописал timedatectl
+ с помощью команды `timedatectl list-timezones` нашел свою таймзону и с помощью команды `sudo timedatectl set-timezone Europe/Moscow` установил таймзону в которой я нахожусь, потом для проверки таймзоны прописал timedatectl
 
 ![net interface](https://i.imgur.com/50sK6fj.png)
 
- с помощью команды `ls /sys/class/net` вывел список сетевых интерфейсов. Интерфейс io показывает что я работаю с виртуальной машины
+ с помощью команды `ls /sys/class/net` вывел список сетевых интерфейсов. Интерфейс `io` показывает что я работаю с виртуальной машины
 
 ![ip adress](https://i.imgur.com/RGm6mhO.jpeg)
 
