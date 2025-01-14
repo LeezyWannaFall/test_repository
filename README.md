@@ -11,23 +11,23 @@
 ![new member group](https://i.imgur.com/KlYDjwK.png)
 
  `sudo useradd -m -G adm new_leezy` добавили нового юзера в групу `adm`
-- `-m` - создаёт домашнюю директорию для нового пользователя.
-- `-G adm` - добавляет пользователя в группу adm.
+ `-m` - создаёт домашнюю директорию для нового пользователя.
+ `-G adm` - добавляет пользователя в группу adm.
 
 
 ## Part 3
 
 ![hostname edit](https://i.imgur.com/w5uhZpN.png)
 
- с помощью `vim` изменил `/etc/hostname` на `user-1`
+ с помощью `vim` изменил `/etc/hostname` на user-1
 
 ![edit time zone](https://i.imgur.com/Xo4kWHU.png)
 
- с помощью команды `timedatectl list-timezones` нашел свою таймзону и с помощью команды `sudo timedatectl set-timezone Europe/Moscow` установил таймзону в которой я нахожусь, потом для проверки таймзоны прописал timedatectl
+ с помощью команды `timedatectl list-timezones` нашел свою таймзону и с помощью команды sudo timedatectl set-timezone Europe/Moscow установил таймзону в которой я нахожусь, потом для проверки таймзоны прописал timedatectl
 
 ![net interface](https://i.imgur.com/50sK6fj.png)
 
- с помощью команды `ls /sys/class/net` вывел список сетевых интерфейсов. Интерфейс `io` показывает что я работаю с виртуальной машины
+ с помощью команды `ls /sys/class/net` вывел список сетевых интерфейсов. Интерфейс io показывает что я работаю с виртуальной машины
 
 ![ip adress](https://i.imgur.com/RGm6mhO.jpeg)
 
@@ -159,4 +159,161 @@
 - `0.0.0.0:2022` - адрес и порт, на котором служба слушает
 - `0.0.0.0:` - означает, что служба доступна для всех IP-адресов
 - `LISTEN` - статус сокета
+
+## Part 9
+
+ top
+ 
+ ![top](https://i.imgur.com/XYUXBxY.png)
+ 
+- `uptime` 22
+- `user` 1
+- `load overage` 0.14 0.04 0.01
+- `tasks` 100
+- `cpu` 0.0
+- `MiB Mem` 1971.6 total, 1219.7 free, 180.2 used, 571.7 buff/cache
+- `Biggest memory PID` PID: 891, COMMAND: dockerd, memusage: 3.7%
+
+ ![big pid](https://i.imgur.com/0l0NXEg.png)
+
+- `Biggest cpytime PID` PID: 1393, COMMAND: kworker/0:0-events, memusage: 0.0%
+
+ htop
+
+ pid
+
+ ![pid](https://i.imgur.com/wjxTeU1.png)
+ 
+ cpu
+
+ ![cpu](https://i.imgur.com/tR8KkfP.png)
+
+ mem
+
+ ![mem](https://i.imgur.com/Jlb8xrM.png)
+
+ time
+
+ ![time](https://i.imgur.com/ghoI8qp.png)
+
+ sshd
+
+ ![sshd](https://i.imgur.com/uB9Qv5H.png)
+
+ syslog
+
+ ![syslog](https://i.imgur.com/ExiNwuv.png)
+
+ Setup
+
+ ![setup](https://i.imgur.com/C7eT9kf.png)
+
+## Part 10
+
+ ![fdisk](https://i.imgur.com/Y6nSgPk.png)
+
+- `/dev/sda` - название жесткого диска
+- `25 GB` - размер жесткого диска
+- `52428800` - количество секторов
+- `Swap отсутствует` - размер swap
+
+## Part 11
+ df
+
+ ![df](https://i.imgur.com/uNa1BaU.png)
+
+ `/dev/mapper/ubuntu--vg-ubuntu--lv` - корневой раздел
+- `11758760` - весь размер (1 КБ блоков)
+- `5723368` - занятый размер (1 КБ блоков)
+- `5416284` - свободный размер (1 КБ блоков)
+- `52%` - процент использования
+- `1 КБ` - единица измерения
+
+
+ df -Th
+
+ ![dfth](https://i.imgur.com/5YvlJp0.png)
+
+ `/dev/mapper/ubuntu--vg-ubuntu--lv` - корневой раздел
+- `11G` - весь размер (гигабайт)
+- `5.5G` - занятый размер (гигабайт)
+- `5.2G` - свободный размер (гигабайт)
+- `52%` - процент использования
+- `ext4` - тип файловой системой
+
+
+## Part 12
+
+ ![home](https://i.imgur.com/qfyplSc.png)
+
+ /home
+
+ ![var](https://i.imgur.com/GwSU5Cw.png)
+
+ /var
+
+ ![varlog](https://i.imgur.com/oTjT2aS.png)
+
+ /var/log
+
+ ![varlog*](https://i.imgur.com/WIPdMAn.png)
+
+ ![varlog*](https://i.imgur.com/DEZqOva.png)
+
+ ![varlog*](https://i.imgur.com/J4SBqhm.png)
+
+ /var/log/*
+
+## Part 13
+
+ ![home](https://i.imgur.com/TX1XwLC.png)
+
+ /home
+
+ ![var](https://i.imgur.com/Qvy9v5m.png)
+
+ /var
+
+ ![varlog](https://i.imgur.com/EU7i4dv.png)
+
+ /var/log
+
+## Part 14
+ 
+ ![dmesg](https://i.imgur.com/jr06KJT.png)
+
+ dmesg
+
+ ![syslog](https://i.imgur.com/tyJ6D6a.png)
+
+ syslog
+
+ ![auth](https://i.imgur.com/1fNo4C8.png)
+
+ last accepted auth:
+- `Jan 14 20:38:05` - время
+- `leezy` - user
+- `sudo` - метод входа
+
+ ![restarsshd](https://i.imgur.com/y0wp8bL.png)
+
+ restart sshd and show logs
+
+## Part 15 
+ 
+ ![crontab](https://i.imgur.com/Nikh7qc.png)
+
+ edit crontab
+
+ ![log](https://i.imgur.com/ZqnB8xw.png)
+
+ logs
+
+ ![crontab](https://i.imgur.com/sC70fx9.png)
+
+ crontab -l
+
+ ![crontab](https://i.imgur.com/IyN9mKe.png)
+
+ удалил задание из планировщика заданий
 
