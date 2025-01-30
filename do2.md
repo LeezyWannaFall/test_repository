@@ -94,7 +94,22 @@
 
 ## Part 2
 
- ![1](https://i.imgur.com/AyZBWGI.png)
+ ![1](https://i.imgur.com/RxjY03g.png)
+
+ ip a
+
+ ![2](https://i.imgur.com/Gu6UAT2.png)
+
+ настройка `etc/netplan/00-installer-config.yaml` для каждой машины
+
+ ![3](https://i.imgur.com/j8Y7Rsr.png)
+
+ netplan apply
+
+ ![4](https://i.imgur.com/kBp9J9v.png)
+
+ Добавление статического маршрута вручную
+ 
 
  
  
