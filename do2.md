@@ -109,6 +109,14 @@
  ![4](https://i.imgur.com/kBp9J9v.png)
 
  Добавление статического маршрута вручную
+
+ ![5](https://i.imgur.com/Djrjy5g.png)
+
+ прописал маршрут в `etc/netplan/00-installer-config.yaml`
+
+ ![6](https://i.imgur.com/JjAhgVG.png)
+
+ `netplan apply + ip r + ping`
  
 
  
