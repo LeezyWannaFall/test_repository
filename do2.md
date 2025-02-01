@@ -118,6 +118,19 @@
 
  `netplan apply + ip r + ping`
  
+## Part 3
+
+ ### 3.1. Скорость соединения
+
+ `8 Mbps = 1 MB/s`
+
+ `100 MB/s = 800 000 Kbps`
+
+ `1 Gbps = 1 000 Mbps`
+
+ ![1](https://i.imgur.com/Y8WHnPV.png)
+
+ скорость соединения между ws1 и ws2.
 
  
  
