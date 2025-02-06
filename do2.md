@@ -132,6 +132,26 @@
 
  скорость соединения между ws1 и ws2.
 
+## Part 4
+### Part 4.1
+ ![1](https://i.imgur.com/YinRmY7.png)
+
+ ws1 strategy
+
+ ![2](https://i.imgur.com/VjPjVJm.png)
+
+ ws2 strategy
+
+ Если сначала стоит запрещающее правило, то оно имеет приоритет перед последующим разрешающим.
+
+### Part 4.2 Утилита nmap
+ 
+ ping + nmap
+
+ ![1](https://i.imgur.com/L2fw3Ap.png)
+
+
+
  
  
 
