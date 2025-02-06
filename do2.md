@@ -132,7 +132,7 @@
  скорость соединения между ws1 и ws2.
 
 ## Part 4
-### Part 4.1
+### Part 4.1 Утилита iptables
  ![1](https://i.imgur.com/YinRmY7.png)
 
  ws1 strategy
