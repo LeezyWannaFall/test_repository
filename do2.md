@@ -149,6 +149,52 @@
 
  ping + nmap
 
+## Part 5
+
+### Part 5.1 Настройка адресов машин
+
+![1](https://i.imgur.com/4CUsA5y.png)
+
+настройка ws
+
+![2](https://i.imgur.com/sPtIHmM.png)
+
+настройка r
+
+`sudo netplan apply` для сохранения настроек
+
+![3](https://i.imgur.com/oFHAKZE.png)
+
+`ip -4 a` для ws
+
+![4](https://i.imgur.com/NNkmIGt.png)
+
+`ip -4 a` для r
+
+![5](https://i.imgur.com/7aZTite.png)
+
+ping ws22 c ws21
+
+![6](https://i.imgur.com/8ZibVZD.png)
+
+ping r1 c ws11
+
+### 5.2. Включение переадресации IP-адресов
+
+![6](https://i.imgur.com/9nnUKot.png)
+
+`sysctl -w net.ipv4.ip_forward=1` на роутерах
+
+![7](https://i.imgur.com/Zj8mPvj.png)
+
+`net.ipv4.ip_forward = 1` в `/etc/sysctl.conf`
+
+### 5.3. Установка маршрута по умолчанию
+
+![1](https://i.imgur.com/vUjRbLL.png)
+
+netplan configs for ws
+
 
  
  
