@@ -273,6 +273,29 @@ ws11 ip address
 
 ## Part 7
 
+![1](https://i.imgur.com/GERAhLl.png)
+
+`/etc/apache2/ports.conf` ws22, r1
+
+![2](https://i.imgur.com/rYag7Gm.png)
+
+`system apache2 start`
+
+![3](https://i.imgur.com/9fcwSHn.png)
+
+add firewall on r2
+
+![4](https://i.imgur.com/06kRXlA.png)
+
+update firewall
+
+![5](https://i.imgur.com/iupXFWq.png)
+
+проверка SNAT
+
+![6](https://i.imgur.com/unTJXut.png)
+
+проверка DNAT
 
 
 
