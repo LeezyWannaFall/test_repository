@@ -239,6 +239,40 @@ netplan + `ip r`:
 
 ## Part 6
 
+![1](https://i.imgur.com/qE4jzlO.png)
 
- 
+`/etc/dhcp/dhcpd.conf`
+
+![2](https://i.imgur.com/vQxhXRJ.png)
+
+`resolv.conf`
+
+![3](https://i.imgur.com/nJDFvU2.png)
+
+`reboot + ip a` на ws21
+
+![4](https://i.imgur.com/RaWXoNl.png)
+
+ping ws22 с ws21 и наоборот
+
+![5](https://i.imgur.com/IRaSUTp.png)
+
+ws11 mac address
+
+![6](https://i.imgur.com/MJAE5Pn.png)
+
+r1 dhcp settings
+
+![7](https://i.imgur.com/p2r80kd.png)
+
+ws11 ip address
+
+![8](https://i.imgur.com/NC2Nbzn.png)
+
+Команда sudo dhclient -r enp0s3 освобождает текущий адрес интерфейса enp0s3. Команда sudo dhclient enp0s3 задает новый адрес указанному интерфейсу.
+
+## Part 7
+
+
+
 
