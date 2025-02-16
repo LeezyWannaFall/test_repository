@@ -297,5 +297,18 @@ update firewall
 
 проверка DNAT
 
+## Part 8
+
+![1](https://i.imgur.com/DupFTqc.png)
+
+apache2 ports ws22
+
+![2](https://i.imgur.com/5bRh1gO.png)
+
+`ssh -L 8080:localhost:80 leezy@10.20.0.20 -N`
+
+![3](https://i.imgur.com/5bRh1gO.png)
+
+`ssh -L 9090:localhost:80 leezy@10.20.0.20 -N`
 
 
