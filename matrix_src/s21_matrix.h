@@ -9,7 +9,6 @@
 #define OK 0
 #define INCORRECT_MATRIX 1
 #define CALCULATION_ERROR 2
-#define ALLOC_FAIL 3
 
 
 typedef struct matrix_struct {
