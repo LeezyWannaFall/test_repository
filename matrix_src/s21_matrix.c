@@ -27,6 +27,19 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
       return INCORRECT_MATRIX;
     }
   }
-  
+
   return OK;
+}
+
+void s21_remove_matrix(matrix_t *A) {
+    //  проверка на корректность входных данных
+    if (!A || !A->matrix) return INCORRECT_MATRIX;
+
+    // очищение памяти
+    for (int i = 0; i < A->rows; i++) free(A->matrix[i]);
+    free(A->matrix);
+
+    A->matrix = NULL;
+    A->columns = 0;
+    A->rows = 0;
 }
