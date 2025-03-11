@@ -46,10 +46,13 @@ void s21_remove_matrix(matrix_t *A) {
 }
 
 int s21_eq_matrix(matrix_t *A, matrix_t *B) {
+  //  проверка на корректность входных данных
   if (!A || !A->matrix || !B || !B->matrix) return FAILURE;
 
+  // Проверка на совпадение размеров
   if (A->rows != B->rows || A->columns != B->columns) return FAILURE;
-
+  
+  // сравниваем матрицы
   for (int i = 0; i < A->rows; i++) {
     for (int j = 0; j < A->columns; j++) {
       if (fabs(A->matrix[i][j] - B->matrix[i][j]) > EPS) return FAILURE;
@@ -77,4 +80,24 @@ int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     }
 
     return OK;
+}
+
+int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || !B || !B->matrix || !result) return INCORRECT_MATRIX;
+
+  // Проверка на совпадение размеров
+  if (A->rows != B->rows || A->columns != B->columns) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX;
+
+  // Складываем элементы матрицы
+  for (int i = 0; i < A->rows; i++) {
+      for (int j = 0; j < A->columns; j++) {
+          result->matrix[i][j] = A->matrix[i][j] - B->matrix[i][j];
+      }
+  }
+
+  return OK;
 }
