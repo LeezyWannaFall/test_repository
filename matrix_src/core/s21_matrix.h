@@ -3,13 +3,14 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define SUCCESS 1
 #define FAILURE 0
 #define OK 0
 #define INCORRECT_MATRIX 1
 #define CALCULATION_ERROR 2
-
+#define EPS 1e-7
 
 typedef struct matrix_struct {
     double** matrix;
