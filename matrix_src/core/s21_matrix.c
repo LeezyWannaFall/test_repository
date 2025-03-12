@@ -121,3 +121,53 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
 
   return OK;
 }
+
+//TO DO: s21_mult_matrix
+int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || !B || !B->matrix || !result) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX;
+
+
+}
+
+//TO DO: s21_transpose
+int s21_transpose(matrix_t *A, matrix_t *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || !result) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX; 
+
+
+}
+
+// TO DO: s21_calc_complements
+int s21_calc_complements(matrix_t *A, matrix_t *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || !result) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX; 
+}
+
+//TO DO: s21_determinant
+int s21_determinant(matrix_t *A, double *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || isnan(*result)) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX; 
+}
+
+//TO DO: s21_inverse_matrix
+int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+  // Проверка на NULL
+  if (!A || !A->matrix || !result) return INCORRECT_MATRIX;
+
+  // Создаём матрицу `result`
+  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX;  
+}
+
