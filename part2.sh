@@ -4,7 +4,7 @@ hostname=$(cat /etc/hostname)
 timezone=$(cat /etc/timezone)
 os=$(cat /etc/issue)
 uptime=$(uptime -s)
-uptime_sec=$()
+uptime_sec=$(( $(date +%s) - $(date -d "$(uptime -s)" +%s) ))
 
 echo "HOSTNAME: $hostname"
 echo "TIMEZONE: $timezone"
