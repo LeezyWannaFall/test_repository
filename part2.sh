@@ -5,7 +5,7 @@ timezone=$(cat /etc/timezone)
 os=$(cat /etc/issue)
 uptime=$(uptime -p)
 uptime_sec=$(( $(date +%s) - $(date -d "$(uptime -s)" +%s) ))
-ip=$(ip -4 addr show enp3s0 | awk -F: '{print $5}') # to do
+ip=$(ip -4 a | awk ' /192/{print $2}')
 
 echo "HOSTNAME: $hostname"
 echo "TIMEZONE: $timezone"
