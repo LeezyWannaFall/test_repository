@@ -1,4 +1,4 @@
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
   if (rows <= 0 || columns <= 0 || result == NULL) return INCORRECT_MATRIX;
@@ -100,14 +100,35 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   if (!A || !A->matrix || !B || !B->matrix || !result) return INCORRECT_MATRIX;
 
-  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX;
+  if (A->columns != B->rows) return CALCULATION_ERROR;
+
+  if (s21_create_matrix(A->rows, B->columns, result) != OK) return INCORRECT_MATRIX;
+
+  for (int i = 0; i < A->rows; i++) {
+    for (int j = 0; j < B->columns; j++) {
+      result->matrix[i][j] = 0;
+      for (int k = 0; k < A->columns; k++) {
+        result->matrix[i][j] += A->matrix[i][k] * B->matrix[k][j];
+      }
+    }
+  }
+
+  return OK;
 }
 
 // TO DO: s21_transpose
 int s21_transpose(matrix_t *A, matrix_t *result) {
   if (!A || !A->matrix || !result) return INCORRECT_MATRIX;
 
-  if (s21_create_matrix(A->rows, A->columns, result) != OK) return INCORRECT_MATRIX; 
+  if (s21_create_matrix(A->columns, A->rows, result) != OK) return INCORRECT_MATRIX;
+
+  for (int i = 0; i < A->rows; i++) {
+    for (int j = 0; j < A->columns; j++) {
+      result->matrix[j][i] = A->matrix[i][j];
+    }
+  }
+  
+  return OK;
 }
 
 // TO DO: s21_calc_complements
