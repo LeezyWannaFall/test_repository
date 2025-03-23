@@ -96,7 +96,6 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   return OK;
 }
 
-// TO DO: s21_mult_matrix
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   if (!A || !A->matrix || !B || !B->matrix || !result) return INCORRECT_MATRIX;
 
@@ -116,7 +115,6 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   return OK;
 }
 
-// TO DO: s21_transpose
 int s21_transpose(matrix_t *A, matrix_t *result) {
   if (!A || !A->matrix || !result) return INCORRECT_MATRIX;
 
@@ -127,7 +125,7 @@ int s21_transpose(matrix_t *A, matrix_t *result) {
       result->matrix[j][i] = A->matrix[i][j];
     }
   }
-  
+
   return OK;
 }
 
