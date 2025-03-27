@@ -1,24 +1,46 @@
 #!/bin/bash
 
-hostname=$(hostname)
-timezone=$(cat /etc/timezone)
-os=$(cat /etc/issue | cut -d'\' -f1)
-date=$(date +"%d %b %Y %H:%M:%S")
-uptime=$(uptime -p)
-uptime_sec=$(( $(date +%s) - $(date -d "$(uptime -s)" +%s) ))
-ip=$(ip -o -4 a | awk ' {print $4; exit}')
-mask=$(ipcalc $ip | grep -e "Netmask:" | cut -d'=' -f1 | cut -d':' -f2)
-gateway=$(ip r | grep -e "default" | awk -Fvia ' {print $2}' | cut -d'd' -f1)
+HOSTNAME=$(hostname)
+TIMEZONE=$(cat /etc/timezone)
+OS=$(cat /etc/issue | cut -d'\' -f1)
+DATE=$(date +"%d %b %Y %H:%M:%S")
+UPTIME=$(uptime -p)
+UPTIME_SEC=$(( $(date +%s) - $(date -d "$(uptime -s)" +%s) ))
+IP=$(ip -o -4 a | awk ' {print $4; exit}')
+MASK=$(ipcalc $ip | grep -e "Netmask:" | awk ' {print $2}')
+GATEWAY=$(ip r | awk '/default/ {print $3}')
+RAM_TOTAL=$(free -b | awk '/Mem:/ {printf "%.3f", $2/1024/1024/1024}')
+RAM_USED=$(free -b | awk '/Mem:/ {printf "%.3f", $3/1024/1024/1024}')
+RAM_FREE=$(free -b | awk '/Mem:/ {printf "%.3f", $7/1024/1024/1024}')
+SPACE_ROOT=$(df / | awk '/\// {printf "%.2f", $2/1024}')
+SPACE_ROOT_USED=$(df / | awk '/\// {printf "%.2f", $3/1024}')
+SPACE_ROOT_FREE=$(df / | awk '/\// {printf "%.2f", $4/1024}')
 
+OUTPUT="HOSTNAME: $HOSTNAME
+TIMEZONE: $TIMEZONE
+USER: $USER
+OS: $OS
+DATE: $DATE
+UPTIME: $UPTIME
+UPTIME_SEC: $UPTIME_SEC
+IP: $IP
+MASK: $MASK
+GATEWAY: $GATEWAY
+RAM_TOTAL = ${RAM_TOTAL} GB
+RAM_USED = ${RAM_USED} GB
+RAM_FREE = ${RAM_FREE} GB
+SPACE_ROOT = ${SPACE_ROOT} MB
+SPACE_ROOT_USED = ${SPACE_ROOT_USED} MB
+SPACE_ROOT_FREE = ${SPACE_ROOT_FREE} MB"
 
-echo -e "\e[32mHOSTNAME\e[0m: $hostname"
-echo -e "\e[32mTIMEZONE\e[0m: $timezone"
-echo -e "\e[32mUSER\e[0m: $USER"
-echo -e "\e[32mOS\e[0m: $os"
-echo -e "\e[32mDATE\e[0m: $date"
-echo -e "\e[32mUPTIME\e[0m: $uptime"
-echo -e "\e[32mUPTIME_SEC\e[0m: $uptime_sec"
-echo -e "\e[32mIP\e[0m: $ip"
-echo -e "\e[32mMASK\e[0m: $mask"
-echo -e "\e[32mGATEWAY\e[0m: $gateway"
-echo -e "\e[32mGATEWAY\e[0m: $
+echo "$OUTPUT"
+
+read -p "Сохранить информацию в файл? (Y/y - да, остальное нет) " ANSWER
+
+if [[ $ANSWER == 'Y' || $ANSWER == 'y' ]]; then
+    FILENAME=$(date +"%d_%m_%y_%H_%M_%S").status
+    echo "$OUTPUT" > "$FILENAME"
+else
+    echo "Информация не была сохранена"
+fi
+    
