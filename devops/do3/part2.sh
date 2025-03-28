@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Параметры
 HOSTNAME=$(hostname)
 TIMEZONE=$(cat /etc/timezone)
 OS=$(cat /etc/issue | cut -d'\' -f1)
@@ -16,6 +17,7 @@ SPACE_ROOT=$(df / | awk '/\// {printf "%.2f", $2/1024}')
 SPACE_ROOT_USED=$(df / | awk '/\// {printf "%.2f", $3/1024}')
 SPACE_ROOT_FREE=$(df / | awk '/\// {printf "%.2f", $4/1024}')
 
+# Основная инфа
 OUTPUT="HOSTNAME: $HOSTNAME
 TIMEZONE: $TIMEZONE
 USER: $USER
@@ -35,6 +37,7 @@ SPACE_ROOT_FREE = ${SPACE_ROOT_FREE} MB"
 
 echo "$OUTPUT"
 
+# Спрашиваем запись инфы в файл
 read -p "Сохранить информацию в файл? (Y/y - да, остальное нет) " ANSWER
 
 if [[ $ANSWER == 'Y' || $ANSWER == 'y' ]]; then
