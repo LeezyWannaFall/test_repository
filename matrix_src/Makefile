@@ -1,7 +1,7 @@
 GCC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Wuninitialized -Wmaybe-uninitialized -pedantic -std=c11
-CFLAGS_T = -Wall -Wextra -Werror -Wuninitialized -Wmaybe-uninitialized -pedantic -std=c11 -fprofile-arcs -ftest-coverage
+CFLAGS = -Wall -Wextra -Werror -Wuninitialized -pedantic -std=c11
+CFLAGS_T = -Wall -Wextra -Werror -Wuninitialized -pedantic -std=c11 -fprofile-arcs -ftest-coverage
 
 ifeq ($(shell uname), Darwin)
     GCOVFLAGS = -lcheck -fprofile-arcs -ftest-coverage
