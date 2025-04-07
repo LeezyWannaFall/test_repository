@@ -3,8 +3,15 @@
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
   if (rows <= 0 || columns <= 0 || result == NULL) return INCORRECT_MATRIX;
 
-  result->rows = rows;
-  result->columns = columns;
+  if (rows > MAX_MATRIX_SIZE || columns > MAX_MATRIX_SIZE) {
+    s21_init_matrix(result);
+    return INCORRECT_MATRIX;
+  }
+
+  if ((size_t)rows * (size_t)columns > SIZE_MAX / sizeof(double)) {
+    s21_init_matrix(result);
+    return INCORRECT_MATRIX;
+  }
 
   s21_init_matrix(result);
   
@@ -21,6 +28,9 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
       return INCORRECT_MATRIX;
     }
   }
+  
+  result->rows = rows;
+  result->columns = columns;
 
   return OK;
 }
