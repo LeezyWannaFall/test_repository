@@ -102,6 +102,7 @@ print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT" "$BG_VALUE" "$FG_VALUE" "${SP
 print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT_USED" "$BG_VALUE" "$FG_VALUE" "${SPACE_ROOT_USED} MB"
 print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT_FREE" "$BG_VALUE" "$FG_VALUE" "${SPACE_ROOT_FREE} MB"
 
+# Вывод инфы цветов
 echo ""
 if [ $column1_background -eq "1" ] && [ $column1_font_color -eq "6" ] && [ $column2_background -eq "3" ] && [ $column2_font_color -eq "6" ]; then 
     echo "Column 1 background = default ($BG_TITLE_COLORNAME)"
