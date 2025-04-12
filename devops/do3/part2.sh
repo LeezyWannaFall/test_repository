@@ -35,7 +35,7 @@ SPACE_ROOT = ${SPACE_ROOT} MB
 SPACE_ROOT_USED = ${SPACE_ROOT_USED} MB
 SPACE_ROOT_FREE = ${SPACE_ROOT_FREE} MB"
 
-# Вывод информации
+# Вывод инфы
 echo "$OUTPUT"
 
 # Спрашиваем запись инфы в файл

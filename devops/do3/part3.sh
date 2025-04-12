@@ -59,7 +59,7 @@ print_colored() {
     echo -e "\e[$1m\e[$2m $3 \e[0m = \e[$4m\e[$5m $6 \e[0m"
 }
 
-# Вывод информации
+# Вывод инфы
 print_colored "$BG_TITLE" "$FG_TITLE" "HOSTNAME" "$BG_VALUE" "$FG_VALUE" "$HOSTNAME"
 print_colored "$BG_TITLE" "$FG_TITLE" "TIMEZONE" "$BG_VALUE" "$FG_VALUE" "$TIMEZONE"
 print_colored "$BG_TITLE" "$FG_TITLE" "USER" "$BG_VALUE" "$FG_VALUE" "$USER"

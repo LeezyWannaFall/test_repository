@@ -5,17 +5,27 @@ CONFIG_FILE="config.conf"
 
 # Проверяем наличе конфига
 if [ ! -f "$CONFIG_FILE" ]; then
-    echo "Ошибка: конфигурационный файл '$CONFIG_FILE' не найден."
+    echo "Ошибка: конфиг '$CONFIG_FILE' не найден."
     exit 1
 fi
 
 source "$CONFIG_FILE"
 
-# Проверяем, что все параметры заданы
-if [ -z "$column1_background" ] || [ -z "$column1_font_color" ] || \
-   [ -z "$column2_background" ] || [ -z "$column2_font_color" ]; then
-    echo "Ошибка: в конфиге должны быть заданы все 4 параметра."
-    exit 1
+# Заменяем пустые параметры дефолтными
+if [ -z "$column1_background" ]; then
+    column1_background="1"
+fi
+
+if [ -z "$column2_background" ]; then
+    column2_background="3"
+fi
+
+if [ -z "$column1_font_color" ]; then
+    column1_font_color="6"
+fi
+
+if [ -z "$column2_font_color" ]; then
+    column2_font_color="6"
 fi
 
 # Определяем цвета
@@ -28,6 +38,10 @@ BG_TITLE=${BG_COLORS[$column1_background]}
 FG_TITLE=${FG_COLORS[$column1_font_color]}
 BG_VALUE=${BG_COLORS[$column2_background]}
 FG_VALUE=${FG_COLORS[$column2_font_color]}
+BG_TITLE_COLORNAME=${COLORS[$column1_background]}
+FG_TITLE_COLORNAME=${COLORS[$column1_font_color]}
+BG_VALUE_COLORNAME=${COLORS[$column2_background]}
+FG_VALUE_COLORNAME=${COLORS[$column2_font_color]}
 
 # Проверка диапазона
 for param in $column1_background $column1_font_color $column2_background $column2_font_color; do
@@ -70,7 +84,7 @@ print_colored() {
     echo -e "\e[$1m\e[$2m $3 \e[0m = \e[$4m\e[$5m $6 \e[0m"
 }
 
-# Вывод информации
+# Вывод инфы
 print_colored "$BG_TITLE" "$FG_TITLE" "HOSTNAME" "$BG_VALUE" "$FG_VALUE" "$HOSTNAME"
 print_colored "$BG_TITLE" "$FG_TITLE" "TIMEZONE" "$BG_VALUE" "$FG_VALUE" "$TIMEZONE"
 print_colored "$BG_TITLE" "$FG_TITLE" "USER" "$BG_VALUE" "$FG_VALUE" "$USER"
@@ -87,3 +101,16 @@ print_colored "$BG_TITLE" "$FG_TITLE" "RAM_FREE" "$BG_VALUE" "$FG_VALUE" "${RAM_
 print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT" "$BG_VALUE" "$FG_VALUE" "${SPACE_ROOT} MB"
 print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT_USED" "$BG_VALUE" "$FG_VALUE" "${SPACE_ROOT_USED} MB"
 print_colored "$BG_TITLE" "$FG_TITLE" "SPACE_ROOT_FREE" "$BG_VALUE" "$FG_VALUE" "${SPACE_ROOT_FREE} MB"
+
+echo ""
+if [ $column1_background -eq "1" ] && [ $column1_font_color -eq "6" ] && [ $column2_background -eq "3" ] && [ $column2_font_color -eq "6" ]; then 
+    echo "Column 1 background = default ($BG_TITLE_COLORNAME)"
+    echo "Column 1 font color = default ($FG_TITLE_COLORNAME)"
+    echo "Column 2 background = default ($BG_VALUE_COLORNAME)"
+    echo "Column 2 font color = default ($FG_VALUE_COLORNAME)"
+else
+    echo "Column 1 background = $column1_background ($BG_TITLE_COLORNAME)"
+    echo "Column 1 font color = $column1_font_color ($FG_TITLE_COLORNAME)"
+    echo "Column 2 background = $column2_background ($BG_VALUE_COLORNAME)"
+    echo "Column 2 font color = $column2_font_color ($FG_VALUE_COLORNAME)"
+fi
