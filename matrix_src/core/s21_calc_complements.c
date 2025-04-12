@@ -14,19 +14,21 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
 
   // Создаём временную матрицу для миноров 
   matrix_t minor;
-  if (s21_create_matrix(A->rows - 1, A->columns - 1, &minor) != OK) {
+  int temp_status = s21_create_matrix(A->rows - 1, A->columns - 1, &minor);
+  if (temp_status != OK) {
     s21_remove_matrix(result);
-    return INCORRECT_MATRIX;
+    return temp_status;
   }
 
   for (int i = 0; i < A->rows; i++) {
     for (int j = 0; j < A->columns; j++) {
       s21_get_minor_matrix(A, i, j, &minor);
       double minor_det;
-      if (s21_determinant(&minor, &minor_det) != OK) {
+      int temp_status = s21_determinant(&minor, &minor_det);
+      if (temp_status != OK) {
         s21_remove_matrix(&minor);
         s21_remove_matrix(result);
-        return s21_determinant(&minor, &minor_det);
+        return temp_status;
       }
       // minor * (-1)^(i+j) 
       result->matrix[i][j] = minor_det * ((i + j) % 2 == 0 ? 1 : -1);
