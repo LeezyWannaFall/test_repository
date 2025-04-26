@@ -22,7 +22,7 @@ LIBRARY = s21_matrix.a
 # __MAIN_FOLDERS__
 CORE_DIR = core
 # __TESTS_FOLDERS__
-TEST_DIR = __TESTS__
+TEST_DIR = tests
 # __HELPERS_FOLDERS__
 HELPERS_DIR = helpers
 # __HEADERS_FOLDERS__
@@ -35,16 +35,16 @@ ALL_SRC = $(wildcard *.c */*.c */*/*.c *.h */*.h */*/*.h)
 HEADERS = s21_matrix.h $(wildcard ./headers*.h)
 
 # __TESTS__
-SOURCES_TESTS = $(wildcard ./__TESTS__/*.c)         \
-				$(wildcard ./__TESTS__/core/*.c) 	\
-				$(wildcard ./__TESTS__/helpers/*.c) \
+SOURCES_TESTS = $(wildcard ./tests/*.c)         \
+				$(wildcard ./tests/core/*.c) 	\
+				$(wildcard ./tests/helpers/*.c) \
 
 # __CORE__
 SOURCES_ALL = $(wildcard ./core/*.c)    \
 			  $(wildcard ./helpers/*.c) \
 
 OBJ_LIBRARY := $(patsubst %.c, %.o, $(SOURCES_ALL))
-TEST_SOURCES = $(wildcard ./__TESTS__/*.c)
+TEST_SOURCES = $(wildcard ./tests/*.c)
 TEST_OBJECTS = $(TEST_SOURCES:.c=.o)
 TEST_EXECUTABLES = $(TEST_SOURCES:.c=)
 

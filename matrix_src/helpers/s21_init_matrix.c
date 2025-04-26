@@ -7,5 +7,4 @@ void s21_init_matrix(matrix_t *result) {
     result->columns = 0;
     result->matrix = NULL;
   }
-  
 }
