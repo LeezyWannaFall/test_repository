@@ -56,10 +56,10 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
 void print_field(matrix_t *Tetris_field) {
   for (int y = 0; y < Tetris_field->rows; y++) {
     for (int x = 0; x < Tetris_field->columns; x++) {
-      if ((y == 0 || y == 9) || (x == 0 || x == 19))
-        printf("%c", Tetris_field->matrix[y][x] ? ' ' : 'X');
+      if ((y == 9) || (x == 0 || x == 19))
+        printf("%s", Tetris_field->matrix[y][x] ? " " : "\u2588");
       else
-        printf("%c", Tetris_field->matrix[y][x] ? 'X' : ' ');
+        printf("%s", Tetris_field->matrix[y][x] ? "\u2588" : " ");
     } 
     printf("\n");
   }
