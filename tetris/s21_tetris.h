@@ -20,35 +20,35 @@
 #define HEIGHT 20
 
 typedef struct matrix_struct {
-  double** matrix;
+  int** matrix;
   int rows;
   int columns;
 } matrix_t;
 
-typedef enum UserAction_t {
-  Start,
-  Pause,
-  Terminate,
-  Left,
-  Right,
-  Up,
-  Down,
-  Action
-};
+// typedef enum UserAction_t {
+//   Start,
+//   Pause,
+//   Terminate,
+//   Left,
+//   Right,
+//   Up,
+//   Down,
+//   Action
+// };
   
-typedef struct GameInfo_t {
-  int **field;
-  int **next;
-  int score;
-  int high_score;
-  int level;
-  int speed;
-  int pause;
-};
+// typedef struct GameInfo_t {
+//   int **field;
+//   int **next;
+//   int score;
+//   int high_score;
+//   int level;
+//   int speed;
+//   int pause;
+// };
   
-  void userInput(UserAction_t action, bool hold);
+//   void userInput(UserAction_t action, bool hold);
   
-  GameInfo_t updateCurrentState();
+//   GameInfo_t updateCurrentState();
   
 
 #endif // S21_TETRIS_H_

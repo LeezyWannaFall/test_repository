@@ -5,9 +5,11 @@ TETRIS = s21_tetris
 
 RM = rm -rf
 
-SRC = $(wildcard core/*.c)
+SRC = $(wildcard brickgame/tetris/*.c)
 
 OBJ = $(patsubst %.c, %.o, $(SRC))
+
+all: clean $(TETRIS)
 
 $(TETRIS): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(TETRIS)
@@ -16,4 +18,4 @@ $(TETRIS): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) s21_tetris core/*.o	
+	$(RM) s21_tetris brickgame/tetris/*.o	
