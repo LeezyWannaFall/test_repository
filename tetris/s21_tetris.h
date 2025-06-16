@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <ncurses.h>
 
 // DEFINES
 #define WIDTH 10

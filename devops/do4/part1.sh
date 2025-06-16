@@ -48,13 +48,50 @@ check_alpha "$SymbolsDirectory" "directory alphabet" 7
 check_alpha "$NameOfFile" "file-name alphabet" 7
 check_alpha "$ExtOfFile" "file-ext alphabet" 3
 
-if [[ $SizeOfFiles =~ ^([0-9]{1,3})([kK][bB])$ ]]; then
-    numberOfSize=${$BASH_REMATCH[1]}
-    if [[ $numberOfSize -gt 100 ]] then
-        echo "Error: file size must be <= 100KB"
-        exit 1
-else
-    echo "Error: file size must be number+kb (like 12kb or 12Kb)"
+# check if SizeOfFiles is a valid format
+if [[ ! $SizeOfFiles =~ ^[0-9]+[kK][bB]$ ]]; then
+    echo "Error: file size must be a number followed by 'kb' (like 12kb, 12Kb, 12kB, or 12KB)"
     exit 1
+fi
+
+# Extract the numeric part from SizeOfFiles
+numberOfSize=${SizeOfFiles%[kK][bB]}
+
+# Check if the numeric part is a valid integer
+if ! [[ $numberOfSize =~ ^[0-9]+$ ]]; then
+    echo "Error: file size must be a number followed by 'kb' (like 12kb, 12Kb, 12kB, or 12KB)"
+    exit 1
+fi
+
+# Check if the numeric part is less than or equal to 100
+if (( numberOfSize > 100 )); then
+    echo "Error: file size must be <= 100KB"
+    exit 1
+fi
+
+# Create directory
+for ((i=1; i<=$CntDirectories; i++)); do
+    dirName="${directory}/${SymbolsDirectory}${i}"
+    mkdir -p "$dirName"
+
+    # Create files in directories
+    for ((j=1; j<=$FilesInDirectories; j++)); do
+        fileName="${dirName}/${NameOfFile}${j}.${ExtOfFile}"
+        dd if=/dev/urandom of="$fileName" bs=1 count=$((numberOfSize * 1024)) status=none
+    done
+done
+
+# CREATE SYMBOLIC LINKS
+for ((i=1; i<=$CntDirectories; i++)); do
+    dirName="${directory}/${SymbolsDirectory}${i}"
+    for ((j=1; j<=$FilesInDirectories; j++)); do
+        fileName="${dirName}/${NameOfFile}${j}.${ExtOfFile}"
+        linkName="${dirName}/${SymbolsFiles}${j}"
+        ln -s "$fileName" "$linkName"
+    done
+done
+
+echo "Directories and files created successfully."
+exit 0
 fi
 

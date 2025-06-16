@@ -1,24 +1,63 @@
 #include "../../s21_tetris.h"
 
-void zero_matrix(matrix_t *A) {
-  for (int i = 0; i < A->rows; i++) {
-    for (int j = 0; j = A->columns; j++) {
-      A->matrix[i][j] = 0;
+void createfield(int ***field) {
+    *field = malloc(HEIGHT * sizeof(int *));
+    for (int i = 0; i < HEIGHT; i++) {
+        (*field)[i] = malloc(WIDTH * sizeof(int));
+        for (int j = 0; j < WIDTH; j++) {
+            (*field)[i][j] = 0;
+        }
     }
-  }
 }
 
-void copy_matrix(matrix_t *A, matrix_t *result) {
-  for (int i = 0; i < A->rows; i++) {
-    for (int j = 0; j = A->columns; j++) {
-      A->matrix[i][j] = result->matrix[i][j];
+void freefield(int ***field) {
+    for (int i = 0; i < HEIGHT; i++) {
+        free((*field)[i]);
     }
-  }
+    free(*field);
 }
 
-void create_matrix_field(int rows, int columns, matrix_t *Tetris_field) {
-  s21_create_matrix(10, 20, &Tetris_field);
+void userInput(UserAction_t action, bool hold) {
+    // Handle user input based on the action and hold state
+    switch (action) {
+        case Start:
+            // Start the game
+            break;
+        case Pause:
+            // Pause the game
+            break;
+        case Terminate:
+            // Terminate the game
+            break;
+        case Left:
+            // Move left
+            break;
+        case Right:
+            // Move right
+            break;
+        case Up:
+            // Rotate piece
+            break;
+        case Down:
+            // Move down
+            break;
+        case Action:
+            // Perform an action
+            break;
+    }
+}
 
+GameInfo_t updateCurrentState() {
+    GameInfo_t gameInfo;
+    // Update the game state and return it
+    gameInfo.field = NULL; // Placeholder, should be set to the current field
+    gameInfo.next = NULL; // Placeholder, should be set to the next piece
+    gameInfo.score = 0; // Placeholder, should be set to the current score
+    gameInfo.high_score = 0; // Placeholder, should be set to the high score
+    gameInfo.level = 1; // Placeholder, should be set to the current level
+    gameInfo.speed = 1; // Placeholder, should be set to the current speed
+    gameInfo.pause = 0; // Placeholder, should be set to the pause state
+    return gameInfo;
 }
 
 int main() {
