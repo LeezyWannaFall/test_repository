@@ -60,6 +60,69 @@ GameInfo_t updateCurrentState() {
     return gameInfo;
 }
 
+void drawField(int **field) {
+    // Draw the game field
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (field[i][j] == 0) {
+                printf("."); // Empty space
+            } else {
+                printf("#"); // Filled space
+            }
+        }
+        printf("\n");
+    }
+}
+
+void drawNextPiece(int **next) {
+    // Draw the next piece
+    for (int i = 0; i < 4; i++) { // Assuming next piece is a 4x4 grid
+        for (int j = 0; j < 4; j++) {
+            if (next[i][j] == 0) {
+                printf("."); // Empty space
+            } else {
+                printf("#"); // Filled space
+            }
+        }
+        printf("\n");
+    }
+}
+
+void drawScore(int score, int high_score) {
+    // Draw the current score and high score
+    printf("Score: %d\n", score);
+    printf("High Score: %d\n", high_score);
+}
+
+void drawLevel(int level) {
+    // Draw the current level
+    printf("Level: %d\n", level);
+}
+
+void drawSpeed(int speed) {
+    // Draw the current speed
+    printf("Speed: %d\n", speed);
+}
+
+void drawPause(int pause) {
+    // Draw the pause state
+    if (pause) {
+        printf("Game is paused.\n");
+    } else {
+        printf("Game is running.\n");
+    }
+}
+
+void drawGameInfo(GameInfo_t gameInfo) {
+    // Draw all game information
+    drawField(gameInfo.field);
+    drawNextPiece(gameInfo.next);
+    drawScore(gameInfo.score, gameInfo.high_score);
+    drawLevel(gameInfo.level);
+    drawSpeed(gameInfo.speed);
+    drawPause(gameInfo.pause);
+}
+
 int main() {
   
 }
