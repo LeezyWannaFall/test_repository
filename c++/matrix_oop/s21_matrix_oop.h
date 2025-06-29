@@ -23,6 +23,7 @@ class S21Matrix {
   S21Matrix();
   S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix& other);
+  S21Matrix(S21Matrix&& other);
   
   // Destructor
   ~S21Matrix();
@@ -39,9 +40,12 @@ class S21Matrix {
   S21Matrix operator+(const S21Matrix& other) const;
   S21Matrix operator-(const S21Matrix& other) const;
   S21Matrix operator*(const S21Matrix& other) const;
-  
-  // Additional methods
-  bool EqMatrix(const S21Matrix& other) const;
+  S21Matrix operator==(const S21Matrix& other) const;
+  S21Matrix operator+=(const S21Matrix& other) const;
+  S21Matrix operator-=(const S21Matrix& other) const;
+  S21Matrix operator*=(const S21Matrix& other) const;
+
+    
 };
 
 #endif // S21_MATRIX_OOP_H
