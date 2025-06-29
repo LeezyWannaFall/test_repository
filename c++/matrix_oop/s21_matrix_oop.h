@@ -1,0 +1,47 @@
+#ifndef S21_MATRIX_OOP_H
+#define S21_MATRIX_OOP_H
+
+// Includes
+#include <iostream>
+#include <stdexcept>
+#include <cmath>
+#include <iomanip>
+#include <vector>
+
+// Constants
+#define EPS 1e-7
+
+// Class Declaration
+class S21Matrix {
+ private:
+  int rows_;
+  int cols_;
+  double** matrix_;
+
+ public:
+  // Constructors
+  S21Matrix();
+  S21Matrix(int rows, int cols);
+  S21Matrix(const S21Matrix& other);
+  
+  // Destructor
+  ~S21Matrix();
+
+  // Methods
+  bool EqMatrix(const S21Matrix& other) const;
+  void SumMatrix(const S21Matrix& other);
+  void SubMatrix(const S21Matrix& other);
+  void MulMatrix(const S21Matrix& other);
+  void MulNumber(double number);
+  
+  // Overloaded operators
+  S21Matrix& operator=(const S21Matrix& other);
+  S21Matrix operator+(const S21Matrix& other) const;
+  S21Matrix operator-(const S21Matrix& other) const;
+  S21Matrix operator*(const S21Matrix& other) const;
+  
+  // Additional methods
+  bool EqMatrix(const S21Matrix& other) const;
+};
+
+#endif // S21_MATRIX_OOP_H
