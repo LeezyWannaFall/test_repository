@@ -40,3 +40,68 @@ S21Matrix::~S21Matrix() {
     delete[] matrix_;
 }
 
+bool S21Matrix::EqMatrix(const S21Matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        return false;
+    }
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            if (fabs(matrix_[i][j] - other.matrix_[i][j]) > EPS) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void S21Matrix::SumMatrix(const S21Matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        throw std::out_of_range("Matrices must have the same dimensions for addition.");
+    }
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            matrix_[i][j] += other.matrix_[i][j];
+        }
+    }
+}
+
+void S21Matrix::SubMatrix(const S21Matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        throw std::out_of_range("Matrices must have the same dimensions for subtraction.");
+    }
+
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            matrix_[i][j] -= other.matrix_[i][j];
+        }
+    }
+}
+
+void S21Matrix::MulMatrix(const S21Matrix& other) const {
+    if (cols_ != other.rows_) {
+        throw std::out_of_range("Matrices cannot be multiplied due to incompatible dimensions.");
+    }
+
+    S21Matrix result(rows_, other.cols_);
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < other.cols_; ++j) {
+            result.matrix_[i][j] = 0;
+            for (int k = 0; k < cols_; ++k) {
+                result.matrix_[i][j] += matrix_[i][k] * other.matrix_[k][j];
+            }
+        }
+    }
+
+    *this = std::move(result);
+}
+
+void S21Matrix::MulNumber(double number) const {
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            matrix_[i][j] *= number;
+        }
+    }
+}

@@ -2,10 +2,10 @@
 #define S21_MATRIX_OOP_H
 
 // Includes
-#include <iostream>
-#include <stdexcept>
 #include <cmath>
 #include <iomanip>
+#include <iostream>
+#include <stdexcept>
 #include <vector>
 
 // Constants
@@ -24,17 +24,21 @@ class S21Matrix {
   S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix& other);
   S21Matrix(S21Matrix&& other);
-  
+
   // Destructor
   ~S21Matrix();
 
   // Methods
   bool EqMatrix(const S21Matrix& other) const;
-  void SumMatrix(const S21Matrix& other);
-  void SubMatrix(const S21Matrix& other);
-  void MulMatrix(const S21Matrix& other);
-  void MulNumber(double number);
-  
+  void SumMatrix(const S21Matrix& other) const;
+  void SubMatrix(const S21Matrix& other) const;
+  void MulMatrix(const S21Matrix& other) const;
+  void MulNumber(double number) const;
+  S21Matrix Transpose() const;
+  double Determinant() const;
+  S21Matrix CalcComplements() const;
+  S21Matrix InverseMatrix() const;
+
   // Overloaded operators
   S21Matrix& operator=(const S21Matrix& other);
   S21Matrix operator+(const S21Matrix& other) const;
@@ -44,8 +48,7 @@ class S21Matrix {
   S21Matrix operator+=(const S21Matrix& other) const;
   S21Matrix operator-=(const S21Matrix& other) const;
   S21Matrix operator*=(const S21Matrix& other) const;
-
-    
+  
 };
 
-#endif // S21_MATRIX_OOP_H
+#endif  // S21_MATRIX_OOP_H
