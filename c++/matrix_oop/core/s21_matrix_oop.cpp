@@ -1,9 +1,5 @@
 #include "s21_matrix_oop.h"
 
-/* S21Matrix class implementation BY COPILOT I KNOW HOW THIS WORK BUT DK WHY HE
-WRITE LIKE THIS, I WILL REWRITE IT BY MYSELF ADD TO UNDERSTAND C++ SYNTAX AND
-ITS FUNNY TO PRESS TAB AND CODE APPEAR ON UR SCREEN LIKE DARK MF MAGIC */
-
 S21Matrix::S21Matrix() : rows_(0), cols_(0), matrix_(nullptr) {}
 
 S21Matrix::S21Matrix(int rows, int cols) : rows_(rows), cols_(cols) {
@@ -57,7 +53,7 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
   return true;
 }
 
-void S21Matrix::SumMatrix(const S21Matrix& other) const {
+void S21Matrix::SumMatrix(const S21Matrix& other) {
   if (rows_ != other.rows_ || cols_ != other.cols_) {
     throw std::out_of_range(
         "Matrices must have the same dimensions for addition.");
@@ -70,7 +66,7 @@ void S21Matrix::SumMatrix(const S21Matrix& other) const {
   }
 }
 
-void S21Matrix::SubMatrix(const S21Matrix& other) const {
+void S21Matrix::SubMatrix(const S21Matrix& other) {
   if (rows_ != other.rows_ || cols_ != other.cols_) {
     throw std::out_of_range(
         "Matrices must have the same dimensions for subtraction.");
@@ -83,7 +79,7 @@ void S21Matrix::SubMatrix(const S21Matrix& other) const {
   }
 }
 
-void S21Matrix::MulNumber(double number) const {
+void S21Matrix::MulNumber(double number) {
   for (int i = 0; i < rows_; ++i) {
     for (int j = 0; j < cols_; ++j) {
       matrix_[i][j] *= number;
@@ -102,42 +98,99 @@ S21Matrix S21Matrix::Transpose() const {
 }
 
 double S21Matrix::Determinant() const {
-  S21Matrix temp(rows_, cols_);
   if (rows_ != cols_) {
     throw std::out_of_range("Determinant is only defined for square matrices.");
   }
+  return DeterminantGauss(*this);
+}
 
-  int n = rows_;
+double S21Matrix::DeterminantGauss(S21Matrix copy) const {
+  int n = copy.rows_;
   double det = 1.0;
-  S21Matrix temp = (*this);
+  S21Matrix copy = (*this);
 
   for (int i = 0; i < n; i++) {
     int max_row = i;
 
     for (int j = i + 1; j < n; j++) {
-      if (fabs(temp.matrix_[j][i]) > fabs(temp.matrix_[max_row][i]))
+      if (fabs(copy.matrix_[j][i]) > fabs(copy.matrix_[max_row][i]))
         max_row = j;
     }
 
     if (max_row != i) {
       for (int k = 0; k < n; k++) {
-        double tmp = temp.matrix_[i][k];
-        temp.matrix_[i][k] = temp.matrix_[max_row][k];
-        temp.matrix_[max_row][k] = tmp;
+        double tmp = copy.matrix_[i][k];
+        copy.matrix_[i][k] = copy.matrix_[max_row][k];
+        copy.matrix_[max_row][k] = tmp;
       }
       det *= -1.0;
     }
 
-    if (fabs(temp.matrix_[i][i]) < EPS) {
+    if (fabs(copy.matrix_[i][i]) < EPS) {
       return 0;
     }
 
     for (int j = i + 1; j < n; j++) {
-      double factor = temp.matrix_[j][i] / temp.matrix_[i][i];
+      double factor = copy.matrix_[j][i] / copy.matrix_[i][i];
       for (int k = i; k < n; k++)
-        temp.matrix_[j][k] -= factor * temp.matrix_[i][k];
+        copy.matrix_[j][k] -= factor * copy.matrix_[i][k];
     }
-    det *= temp.matrix_[i][i];
+    det *= copy.matrix_[i][i];
   }
   return det;
+}
+
+S21Matrix S21Matrix::CalcComplements() const {
+  S21Matrix result(*this);
+
+  if (rows_ == 1 || cols_ == 1) {
+    result.matrix_[0][0] = 1;
+    return result;
+  }
+
+  S21Matrix CopyMinor (rows_ - 1, cols_ - 1);
+  for (int i = 0; i < rows_; i++) {
+    for (int j = 0; j < cols_; j++) {
+      GetMinorMatrix(i, j, CopyMinor);
+      double DetMinor = CopyMinor.Determinant();
+      result.matrix_[i][j] = DetMinor * ((i + j) % 2 == 0 ? 1 : -1);
+    }
+  }
+}
+
+void S21Matrix::GetMinorMatrix(int row, int col, S21Matrix& minor) const {
+  int minor_row = 0, minor_col = 0;
+
+  for (int i = 0; i < rows_; i++) {
+    if (i != row) {
+      for (int j = 0; j < cols_; j++) {
+        if (j != col) {
+          minor.matrix_[minor_row][minor_col++] = matrix_[i][j];
+        }
+      }
+      minor_row++;
+      minor_col = 0;
+    }
+  }
+}
+
+S21Matrix S21Matrix::InverseMatrix() const {
+  if (rows_ != cols_) {
+    throw std::out_of_range("Inverse is only defined for square matrices.");
+  }
+
+  double det = Determinant();
+  if (fabs(det) < EPS) {
+    throw std::runtime_error("Matrix is singular and cannot be inverted.");
+  }
+
+  S21Matrix complements = CalcComplements();
+  S21Matrix inverse(rows_, cols_);
+
+  for (int i = 0; i < rows_; i++) {
+    for (int j = 0; j < cols_; j++) {
+      inverse.matrix_[i][j] = complements.matrix_[i][j] / det;
+    }
+  }
+  return inverse;
 }

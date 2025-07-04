@@ -18,6 +18,10 @@ class S21Matrix {
   int cols_;
   double** matrix_;
 
+  // Private methods
+  double DeterminantGauss(S21Matrix temp) const;
+  void GetMinorMatrix(int row, int col, S21Matrix& minor) const;
+
  public:
   // Constructors
   S21Matrix();
@@ -30,10 +34,10 @@ class S21Matrix {
 
   // Methods
   bool EqMatrix(const S21Matrix& other) const;
-  void SumMatrix(const S21Matrix& other) const;
-  void SubMatrix(const S21Matrix& other) const;
-  void MulMatrix(const S21Matrix& other) const;
-  void MulNumber(double number) const;
+  void SumMatrix(const S21Matrix& other);
+  void SubMatrix(const S21Matrix& other);
+  void MulMatrix(const S21Matrix& other);
+  void MulNumber(double number);
   S21Matrix Transpose() const;
   double Determinant() const;
   S21Matrix CalcComplements() const;
