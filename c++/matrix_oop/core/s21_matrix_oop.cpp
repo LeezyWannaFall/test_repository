@@ -101,14 +101,14 @@ double S21Matrix::Determinant() const {
   if (rows_ != cols_) {
     throw std::out_of_range("Determinant is only defined for square matrices.");
   }
-  return DeterminantGauss(*this);
+  return DeterminantGauss();
 }
 
-double S21Matrix::DeterminantGauss(S21Matrix copy) const {
+double S21Matrix::DeterminantGauss() const {
+  S21Matrix copy(*this);
   int n = copy.rows_;
   double det = 1.0;
-  S21Matrix copy = (*this);
-
+  
   for (int i = 0; i < n; i++) {
     int max_row = i;
 
@@ -193,4 +193,26 @@ S21Matrix S21Matrix::InverseMatrix() const {
     }
   }
   return inverse;
+}
+
+S21Matrix S21Matrix::operator=(const S21Matrix& other) {
+  if (this != &other) {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+      for (int i = 0; i < rows_; ++i) {
+        delete[] matrix_[i];
+      }
+      delete[] matrix_;
+
+      rows_ = other.rows_;
+      cols_ = other.cols_;
+      matrix_ = new double*[rows_];
+      for (int i = 0; i < rows_; ++i) {
+        matrix_[i] = new double[cols_];
+        for (int j = 0; j < cols_; ++j) {
+          matrix_[i][j] = other.matrix_[i][j];
+        }
+      }
+    }
+  }
+  return *this;
 }

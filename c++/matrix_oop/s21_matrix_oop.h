@@ -19,7 +19,7 @@ class S21Matrix {
   double** matrix_;
 
   // Private methods
-  double DeterminantGauss(S21Matrix temp) const;
+  double DeterminantGauss() const;
   void GetMinorMatrix(int row, int col, S21Matrix& minor) const;
 
  public:
@@ -44,7 +44,7 @@ class S21Matrix {
   S21Matrix InverseMatrix() const;
 
   // Overloaded operators
-  S21Matrix& operator=(const S21Matrix& other);
+  S21Matrix operator=(const S21Matrix& other);
   S21Matrix operator+(const S21Matrix& other) const;
   S21Matrix operator-(const S21Matrix& other) const;
   S21Matrix operator*(const S21Matrix& other) const;
@@ -52,7 +52,6 @@ class S21Matrix {
   S21Matrix operator+=(const S21Matrix& other) const;
   S21Matrix operator-=(const S21Matrix& other) const;
   S21Matrix operator*=(const S21Matrix& other) const;
-  
 };
 
 #endif  // S21_MATRIX_OOP_H
