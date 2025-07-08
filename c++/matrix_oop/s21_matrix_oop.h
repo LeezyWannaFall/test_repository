@@ -44,6 +44,13 @@ class S21Matrix {
   S21Matrix CalcComplements() const;
   S21Matrix InverseMatrix() const;
 
+  // Accessor
+  int getCols() const;
+  int getRows() const;
+
+  // Mutator
+  S21Matrix& setSize(int newCols, int newRows);
+
   // Overloaded operators
   S21Matrix& operator=(const S21Matrix& other);
   S21Matrix operator+(const S21Matrix& other) const;

@@ -293,3 +293,28 @@ double& S21Matrix::operator()(int row, int col) {
   }
   return matrix_[row][col];
 }
+
+// Accessor
+int S21Matrix::getCols() const {
+  return cols_;
+}
+
+int S21Matrix::getRows() const {
+  return rows_;
+}
+
+// Mutator
+S21Matrix& S21Matrix::setSize(int newCols, int newRows) {
+  S21Matrix temp(newCols, newRows);
+  int minRows = std::min(rows_, newRows);
+  int minCols = std::min(cols_, newCols);
+
+  for (int i = 0; i < minRows; ++i) {
+    for (int j = 0; j < minCols; ++j) {
+      temp.matrix_[i][j] = matrix_[i][j];
+    }
+  }
+
+  *this = temp;
+  return *this;
+}
