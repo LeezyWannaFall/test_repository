@@ -1,13 +1,12 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++20 -O2
-AR = ar
-ARFLAGS = rcs
+
 
 SRC_DIR = src
 OBJ_DIR = obj
 INCLUDE_DIR = include
 
-LIB_NAME = libs21matrix.a
+LIB_NAME = s21_matrix_oop.a
 
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))

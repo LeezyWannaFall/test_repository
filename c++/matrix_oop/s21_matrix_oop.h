@@ -3,10 +3,8 @@
 
 // Includes
 #include <cmath>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
-#include <vector>
 
 // Constants
 #define EPS 1e-7
