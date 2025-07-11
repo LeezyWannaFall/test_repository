@@ -1,27 +1,24 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++20 -O2
 
+AR = ar
+ARFLAGS = rcs
 
-SRC_DIR = src
+SRC = core/s21_matrix_oop.cpp
 OBJ_DIR = obj
-INCLUDE_DIR = include
-
 LIB_NAME = s21_matrix_oop.a
 
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
+OBJ = $(patsubst %.c, %.o, $(SRC))
 
 all: $(LIB_NAME)
 
-$(LIB_NAME): $(OBJS)
+$(LIB_NAME): $(OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
-
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
+$(OBJ): $(SRC)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+test: 
+	g++ -std=c++20 -Wall -Wextra -O2 tests/main.cpp core/s21_matrix_oop.cpp -lgtest -lpthread -o test_matrix
 clean:
 	rm -rf $(OBJ_DIR) $(LIB_NAME)
 

@@ -1,4 +1,4 @@
-#include "s21_matrix_oop.h"
+#include "../s21_matrix_oop.h"
 
 S21Matrix::S21Matrix() : rows_(0), cols_(0), matrix_(nullptr) {}
 
@@ -171,6 +171,7 @@ S21Matrix S21Matrix::CalcComplements() const {
       result.matrix_[i][j] = DetMinor * ((i + j) % 2 == 0 ? 1 : -1);
     }
   }
+  return result;
 }
 
 void S21Matrix::GetMinorMatrix(int row, int col, S21Matrix& minor) const {

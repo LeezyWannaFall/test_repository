@@ -26,7 +26,7 @@ class S21Matrix {
   S21Matrix();
   S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix& other);
-  S21Matrix(S21Matrix&& other);
+  S21Matrix(S21Matrix&& other) noexcept;
 
   // Destructor
   ~S21Matrix();
