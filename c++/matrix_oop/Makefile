@@ -19,7 +19,8 @@ $(OBJ): $(SRC)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 test: 
 	g++ -std=c++20 -Wall -Wextra -O2 tests/main.cpp core/s21_matrix_oop.cpp -lgtest -lpthread -o test_matrix
+	./test_matrix
 clean:
-	rm -rf $(OBJ_DIR) $(LIB_NAME)
+	rm -rf $(OBJ_DIR) $(LIB_NAME) test_matrix
 
 .PHONY: all clean
