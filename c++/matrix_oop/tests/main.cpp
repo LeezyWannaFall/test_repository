@@ -518,6 +518,27 @@ TEST(S21MatrixTest, Mulmatrix) {
     EXPECT_DOUBLE_EQ(first(1, 0), 139);
     EXPECT_DOUBLE_EQ(first(1, 1), 154);
 }
+
+TEST(S21MatrixTest, MulMatrixWithZero) {
+    S21Matrix first(2, 2);
+    first(0, 0) = 1.0;
+    first(0, 1) = 2.0;
+    first(1, 0) = 3.0;
+    first(1, 1) = 4.0;
+
+    S21Matrix second(2, 2);
+    second(0, 0) = 0.0;
+    second(0, 1) = 0.0;
+    second(1, 0) = 0.0;
+    second(1, 1) = 0.0;
+
+    first.MulMatrix(second);
+    
+    EXPECT_DOUBLE_EQ(first(0, 0), 0);
+    EXPECT_DOUBLE_EQ(first(0, 1), 0);
+    EXPECT_DOUBLE_EQ(first(1, 0), 0);
+    EXPECT_DOUBLE_EQ(first(1, 1), 0);
+}
 /*--------------------------------------------------------------------------------
                                 TESTS FOR MULNUMBER
 ----------------------------------------------------------------------------------*/

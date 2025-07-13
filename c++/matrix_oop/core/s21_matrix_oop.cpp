@@ -83,6 +83,9 @@ void S21Matrix::MulNumber(double number) {
 }
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
+  if (cols_ != other.rows_) {
+    throw std::out_of_range("Number of columns of the first matrix must equal number of rows of the second matrix.");
+  }
   S21Matrix temp_result(rows_, other.cols_);
 
   for (int i = 0; i < rows_; i++) {
@@ -218,15 +221,18 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
         delete[] matrix_[i];
       }
       delete[] matrix_;
-
+      
       rows_ = other.rows_;
       cols_ = other.cols_;
       matrix_ = new double*[rows_];
       for (int i = 0; i < rows_; ++i) {
         matrix_[i] = new double[cols_];
-        for (int j = 0; j < cols_; ++j) {
-          matrix_[i][j] = other.matrix_[i][j];
-        }
+      }
+    }
+
+    for (int i = 0; i < rows_; ++i) {
+      for (int j = 0; j < cols_; ++j) {
+        matrix_[i][j] = other.matrix_[i][j];
       }
     }
   }
@@ -248,7 +254,6 @@ S21Matrix S21Matrix::operator-(const S21Matrix& other) const {
 }
 
 S21Matrix S21Matrix::operator*(const S21Matrix& other) const {
-  CheckSquareMatrix(other);
   S21Matrix result(*this);
   result.MulMatrix(other);
   return result;
@@ -278,7 +283,6 @@ S21Matrix S21Matrix::operator-=(const S21Matrix& other) {
 }
 
 S21Matrix S21Matrix::operator*=(const S21Matrix& other) {
-  CheckSquareMatrix(other);
   MulMatrix(other);
   return *this;
 }
