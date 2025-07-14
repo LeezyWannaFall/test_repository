@@ -84,7 +84,9 @@ void S21Matrix::MulNumber(double number) {
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
   if (cols_ != other.rows_) {
-    throw std::out_of_range("Number of columns of the first matrix must equal number of rows of the second matrix.");
+    throw std::out_of_range(
+        "Number of columns of the first matrix must equal number of rows of "
+        "the second matrix.");
   }
   S21Matrix temp_result(rows_, other.cols_);
 
@@ -120,7 +122,7 @@ double S21Matrix::DeterminantGauss() const {
   S21Matrix copy(*this);
   int n = copy.rows_;
   double det = 1.0;
-  
+
   for (int i = 0; i < n; i++) {
     int max_row = i;
 
@@ -221,7 +223,7 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
         delete[] matrix_[i];
       }
       delete[] matrix_;
-      
+
       rows_ = other.rows_;
       cols_ = other.cols_;
       matrix_ = new double*[rows_];
@@ -300,13 +302,9 @@ double& S21Matrix::operator()(int row, int col) {
 }
 
 // Accessor
-int S21Matrix::getCols() const {
-  return cols_;
-}
+int S21Matrix::getCols() const { return cols_; }
 
-int S21Matrix::getRows() const {
-  return rows_;
-}
+int S21Matrix::getRows() const { return rows_; }
 
 // Mutator
 S21Matrix& S21Matrix::setSize(int newCols, int newRows) {

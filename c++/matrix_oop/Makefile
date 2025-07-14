@@ -20,6 +20,10 @@ $(OBJ): $(SRC)
 test: 
 	g++ -std=c++20 -Wall -Wextra -O2 tests/main.cpp core/s21_matrix_oop.cpp -lgtest -lpthread -o test_matrix
 	./test_matrix
+check_style:
+	clang-format -n core/* tests/* s21_matrix_oop.h
+fix_style:
+	clang-format -i core/* tests/* s21_matrix_oop.h	
 clean:
 	rm -rf $(OBJ_DIR) $(LIB_NAME) test_matrix
 

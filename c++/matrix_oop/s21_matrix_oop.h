@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 // Constants
-#define EPS 1e-7
+#define EPS 1e-6
 
 // Class Declaration
 class S21Matrix {
