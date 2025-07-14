@@ -108,7 +108,7 @@ TEST(S21MatrixTest, EqMatrixWithZeroMatrix) {
   EXPECT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
-// Test 3: Check if two matrices with negative values are equal
+// Test 4: Check if two matrices with negative values are equal
 TEST(S21MatrixTest, EqMatrixWithNegativeValues) {
   S21Matrix matrix1(2, 2);
   matrix1(0, 0) = -1.0;
@@ -125,7 +125,7 @@ TEST(S21MatrixTest, EqMatrixWithNegativeValues) {
   EXPECT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
-// Test 4: Check if Matrix with itself is equal
+// Test 5: Check if Matrix with itself is equal
 TEST(S21MatrixTest, EqMatrixWithSelf) {
   S21Matrix matrix(2, 2);
   matrix(0, 0) = 1.0;
@@ -136,7 +136,7 @@ TEST(S21MatrixTest, EqMatrixWithSelf) {
   EXPECT_TRUE(matrix.EqMatrix(matrix));
 }
 
-// Test 5: Check if two matrices with different values are not equal
+// Test 6: Check if two matrices with different values are not equal
 TEST(S21MatrixTest, EqMatrixWithDifferentValues) {
   S21Matrix matrix1(2, 2);
   matrix1(0, 0) = 1.0;
@@ -153,7 +153,7 @@ TEST(S21MatrixTest, EqMatrixWithDifferentValues) {
   EXPECT_FALSE(matrix1.EqMatrix(matrix2));
 }
 
-// Test 6: Check if two matrices with floating point precision are equal
+// Test 7: Check if two matrices with floating point precision are equal
 TEST(S21MatrixTest, EqMatrixWithEPSILON) {
   S21Matrix matrix1(2, 2);
   matrix1(0, 0) = 1.0;
@@ -815,6 +815,713 @@ TEST(S21MatrixTest, MulMatrixWithFloatingPoint) {
                                 TESTS FOR MULNUMBER
 ----------------------------------------------------------------------------------*/
 
+// Test 1: Multiply matrix by a number
+TEST(S21MatrixTest, MulNumber) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 2.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 2.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 4.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 6.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 8.0);
+}
+
+// Test 2: Multiply matrix with zero
+TEST(S21MatrixTest, MulNumberWithZero) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 0.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 0.0);
+}
+
+// Test 3: Multiply matrix with negative number
+TEST(S21MatrixTest, MulNumberWithNegative) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = -2.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), -2.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), -4.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), -6.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), -8.0);
+}
+
+// Test 4: Multiply matrix with 1
+TEST(S21MatrixTest, MulNumberWithOne) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 1.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 2.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 3.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 4.0);
+}
+
+// Test 5: Multiply matrix with a large number
+TEST(S21MatrixTest, MulNumberWithLargeValue) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 1000000.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 1000000.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 2000000.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 3000000.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 4000000.0);
+}
+
+// Test 6: Multiply matrix 1x1 by a number
+TEST(S21MatrixTest, MulNumberWith1x1Size) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  double number = 3.0; 
+  matrix.MulNumber(number);
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 15.0);
+}
+
+// Test 7: Multiply matrix with floating point number
+TEST(S21MatrixTest, MulNumberWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  double number = 2.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 3.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 5.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 7.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 9.0);
+}
+
+//Test 8: Multiply matrix with negative values
+TEST(S21MatrixTest, MulNumberWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.5;
+  matrix(0, 1) = -2.5;
+  matrix(1, 0) = -3.5;
+  matrix(1, 1) = -4.5;
+
+  double number = 2.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), -3.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), -5.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), -7.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), -9.0);
+}
+
+// Test 9: Multiply matrix with zero values
+TEST(S21MatrixTest, MulNumberWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  double number = 5.0;
+  
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), 0.0);
+}
+
+// Test 10: Multiply matrix 3x3
+TEST(S21MatrixTest, MulNumberWith3x3Size) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+  matrix(2, 0) = 7.0;
+  matrix(2, 1) = 8.0;
+  matrix(2, 2) = 9.0;
+
+  double number = -1.0; 
+  matrix.MulNumber(number);
+  
+  EXPECT_DOUBLE_EQ(matrix(0, 0), -1.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 1), -2.0);
+  EXPECT_DOUBLE_EQ(matrix(0, 2), -3.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 0), -4.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 1), -5.0);
+  EXPECT_DOUBLE_EQ(matrix(1, 2), -6.0);
+  EXPECT_DOUBLE_EQ(matrix(2, 0), -7.0);
+  EXPECT_DOUBLE_EQ(matrix(2, 1), -8.0);
+  EXPECT_DOUBLE_EQ(matrix(2, 2), -9.0);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR TRANSPOSE
+----------------------------------------------------------------------------------*/
+
+// Test 1: Transpose a 2x3 matrix
+TEST(S21MatrixTest, Transpose) {
+  S21Matrix matrix(2, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 3);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 2);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), 4.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), 2.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), 5.0);
+  EXPECT_DOUBLE_EQ(transposed(2, 0), 3.0);
+  EXPECT_DOUBLE_EQ(transposed(2, 1), 6.0);
+}
+
+// Test 2: Transpose a square matrix
+TEST(S21MatrixTest, TransposeSquareMatrix) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 2);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 2);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), 3.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), 2.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), 4.0);
+}
+
+// Test 3: Transpose a 1x1 matrix
+TEST(S21MatrixTest, Transpose1x1Matrix) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 1);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 1);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 5.0);
+}
+
+// Test 4: Transpose a matrix with zero values
+TEST(S21MatrixTest, TransposeWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 2);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 2);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), 0.0);
+}
+
+// Test 5: Transpose a matrix with negative values
+TEST(S21MatrixTest, TransposeWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.0;
+  matrix(0, 1) = -2.0;
+  matrix(1, 0) = -3.0;
+  matrix(1, 1) = -4.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 2);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 2);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), -1.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), -3.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), -2.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), -4.0);
+}
+
+// Test 6: Transpose a matrix with floating point values
+TEST(S21MatrixTest, TransposeWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 2);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 2);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 1.5);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), 3.5);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), 2.5);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), 4.5);
+}
+
+// Test 7: Transpose a matrix with 3x3 size
+TEST(S21MatrixTest, TransposeWith3x3Size) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+  matrix(2, 0) = 7.0;
+  matrix(2, 1) = 8.0;
+  matrix(2, 2) = 9.0;
+
+  S21Matrix transposed = matrix.Transpose();
+
+  EXPECT_DOUBLE_EQ(transposed.getRows(), 3);
+  EXPECT_DOUBLE_EQ(transposed.getCols(), 3);
+  EXPECT_DOUBLE_EQ(transposed(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 1), 4.0);
+  EXPECT_DOUBLE_EQ(transposed(0, 2), 7.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 0), 2.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 1), 5.0);
+  EXPECT_DOUBLE_EQ(transposed(1, 2), 8.0);
+  EXPECT_DOUBLE_EQ(transposed(2, 0), 3.0);
+  EXPECT_DOUBLE_EQ(transposed(2, 1), 6.0);
+  EXPECT_DOUBLE_EQ(transposed(2, 2), 9.0);
+}
+
+// Test 8: Transpose a matrix with self
+TEST(S21MatrixTest, TransposeWithSelf) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  S21Matrix transposed = matrix.Transpose();
+  
+  EXPECT_DOUBLE_EQ(transposed(0, 0), matrix(0, 0));
+  EXPECT_DOUBLE_EQ(transposed(0, 1), matrix(1, 0));
+  EXPECT_DOUBLE_EQ(transposed(1, 0), matrix(0, 1));
+  EXPECT_DOUBLE_EQ(transposed(1, 1), matrix(1, 1));
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR DETERMINANT
+----------------------------------------------------------------------------------*/
+// Test 1: Calculate determinant of a 2x2 matrix
+TEST(S21MatrixTest, Determinant2x2) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, -2.0);
+}
+
+// Test 2: Calculate determinant of a 3x3 matrix
+TEST(S21MatrixTest, Determinant3x3) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+  matrix(2, 0) = 7.0;
+  matrix(2, 1) = 8.0;
+  matrix(2, 2) = 9.0;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, 0.0); // Determinant of this matrix is zero
+}
+
+// Test 3: Calculate determinant of a 1x1 matrix
+TEST(S21MatrixTest, Determinant1x1) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, 5.0); // Determinant of a 1x1 matrix is the value itself
+}
+
+// Test 4: Calculate determinant of a matrix with zero values
+TEST(S21MatrixTest, DeterminantWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, 0.0); // Determinant of a zero matrix is zero
+}
+
+// Test 5: Calculate determinant of a matrix with negative values
+TEST(S21MatrixTest, DeterminantWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.0;
+  matrix(0, 1) = -2.0;
+  matrix(1, 0) = -3.0;
+  matrix(1, 1) = -4.0;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, -2.0); 
+}
+
+// Test 6: Calculate determinant of a matrix with floating point values
+TEST(S21MatrixTest, DeterminantWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  double det = matrix.Determinant();
+  
+  EXPECT_DOUBLE_EQ(det, -2.0); // Determinant of this matrix should be -1.0
+}
+
+// Test 7: Calculate determinant of a matrix with size 2x3
+TEST(S21MatrixTest, Determinant2x3) {
+  S21Matrix matrix(2, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+
+  EXPECT_THROW(matrix.Determinant(), std::out_of_range); // Determinant is not defined for non-square matrices
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR CALCCOMPLEMENTS
+----------------------------------------------------------------------------------*/
+
+// Test 1: Calculate complements of a 2x2 matrix
+TEST(S21MatrixTest, CalculateComplements2x2) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 2);
+  EXPECT_EQ(complements.getCols(), 2);
+  EXPECT_DOUBLE_EQ(complements(0, 0), 4.0);
+  EXPECT_DOUBLE_EQ(complements(0, 1), -3.0);
+  EXPECT_DOUBLE_EQ(complements(1, 0), -2.0);
+  EXPECT_DOUBLE_EQ(complements(1, 1), 1.0);
+}
+
+// Test 2: Calculate complements of a 3x3 matrix
+TEST(S21MatrixTest, CalculateComplements3x3) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+  matrix(2, 0) = 7.0;
+  matrix(2, 1) = 8.0;
+  matrix(2, 2) = 9.0;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 3);
+  EXPECT_EQ(complements.getCols(), 3);
+  EXPECT_DOUBLE_EQ(complements(0, 0), -3.0);
+  EXPECT_DOUBLE_EQ(complements(0, 1), 6.0);
+  EXPECT_DOUBLE_EQ(complements(0, 2), -3.0);
+  EXPECT_DOUBLE_EQ(complements(1, 0), 6.0);
+  EXPECT_DOUBLE_EQ(complements(1, 1), -12.0);
+  EXPECT_DOUBLE_EQ(complements(1, 2), 6.0);
+  EXPECT_DOUBLE_EQ(complements(2, 0), -3.0);
+  EXPECT_DOUBLE_EQ(complements(2, 1), 6.0);
+  EXPECT_DOUBLE_EQ(complements(2, 2), -3.0);
+}
+
+// Test 3: Calculate complements of a 1x1 matrix
+TEST(S21MatrixTest, CalculateComplements1x1) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 1);
+  EXPECT_EQ(complements.getCols(), 1);
+  EXPECT_DOUBLE_EQ(complements(0, 0), 1.0); // Complements of a 1x1 matrix is always 1
+}
+
+// Test 4: Calculate complements of a matrix with zero values
+TEST(S21MatrixTest, CalculateComplementsWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 2);
+  EXPECT_EQ(complements.getCols(), 2);
+  EXPECT_DOUBLE_EQ(complements(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(complements(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(complements(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(complements(1, 1), 0.0);
+}
+
+// Test 5: Calculate complements of a matrix with negative values
+TEST(S21MatrixTest, CalculateComplementsWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.0;
+  matrix(0, 1) = -2.0;
+  matrix(1, 0) = -3.0;
+  matrix(1, 1) = -4.0;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 2);
+  EXPECT_EQ(complements.getCols(), 2);
+  EXPECT_DOUBLE_EQ(complements(0, 0), -4.0);
+  EXPECT_DOUBLE_EQ(complements(0, 1), 3.0);
+  EXPECT_DOUBLE_EQ(complements(1, 0), 2.0);
+  EXPECT_DOUBLE_EQ(complements(1, 1), -1.0);
+}
+
+// Test 6: Calculate complements of a matrix with floating point values
+TEST(S21MatrixTest, CalculateComplementsWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  S21Matrix complements = matrix.CalcComplements();
+
+  EXPECT_EQ(complements.getRows(), 2);
+  EXPECT_EQ(complements.getCols(), 2);
+  EXPECT_DOUBLE_EQ(complements(0, 0), 4.5);
+  EXPECT_DOUBLE_EQ(complements(0, 1), -3.5);
+  EXPECT_DOUBLE_EQ(complements(1, 0), -2.5);
+  EXPECT_DOUBLE_EQ(complements(1, 1), 1.5);
+}
+
+// Test 7: Calculate complements of a matrix with size 2x3
+TEST(S21MatrixTest, CalculateComplements2x3) {
+  S21Matrix matrix(2, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+
+  EXPECT_THROW(matrix.CalcComplements(), std::out_of_range); // Complements is not defined for non-square matrices
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR INVERSEMATRIX
+----------------------------------------------------------------------------------*/
+
+// Test 1: Inverse of a 2x2 matrix
+TEST(S21MatrixTest, Inverse2x2) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  S21Matrix inverse = matrix.InverseMatrix();
+
+  EXPECT_EQ(inverse.getRows(), 2);
+  EXPECT_EQ(inverse.getCols(), 2);
+  EXPECT_DOUBLE_EQ(inverse(0, 0), -2.0);
+  EXPECT_DOUBLE_EQ(inverse(0, 1), 1.0);
+  EXPECT_DOUBLE_EQ(inverse(1, 0), 1.5);
+  EXPECT_DOUBLE_EQ(inverse(1, 1), -0.5);
+}
+
+// Test 2: Inverse of a 3x3 matrix
+TEST(S21MatrixTest, Inverse3x3) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 1.0;
+  matrix(1, 2) = 4.0;
+  matrix(2, 0) = 5.0;
+  matrix(2, 1) = 6.0;
+  matrix(2, 2) = 0.0; 
+
+  S21Matrix inverse = matrix.InverseMatrix();
+  EXPECT_EQ(inverse.getRows(), 3);
+  EXPECT_EQ(inverse.getCols(), 3);
+  EXPECT_NEAR(inverse(0, 0), -24.0, EPS);
+  EXPECT_NEAR(inverse(0, 1), 18.0, EPS);
+  EXPECT_NEAR(inverse(0, 2), 5.0, EPS);
+  EXPECT_NEAR(inverse(1, 0), 20.0, EPS);
+  EXPECT_NEAR(inverse(1, 1), -15.0, EPS);
+  EXPECT_NEAR(inverse(1, 2), -4.0, EPS);
+  EXPECT_NEAR(inverse(2, 0), -5.0, EPS);
+  EXPECT_NEAR(inverse(2, 1), 4.0, EPS);
+  EXPECT_NEAR(inverse(2, 2), 1.0, EPS);
+}
+
+// Test 3: Inverse of a 1x1 matrix
+TEST(S21MatrixTest, Inverse1x1) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  S21Matrix inverse = matrix.InverseMatrix();
+
+  EXPECT_EQ(inverse.getRows(), 1);
+  EXPECT_EQ(inverse.getCols(), 1);
+  EXPECT_DOUBLE_EQ(inverse(0, 0), 0.2); // Inverse of a 1x1 matrix is the reciprocal
+}
+
+// Test 4: Inverse of a matrix with zero values
+TEST(S21MatrixTest, InverseWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  EXPECT_THROW(matrix.InverseMatrix(), std::runtime_error); // Inverse is not defined for zero matrix
+}
+
+// Test 5: Inverse of a matrix with negative values
+TEST(S21MatrixTest, InverseWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.0;
+  matrix(0, 1) = -2.0;
+  matrix(1, 0) = -3.0;
+  matrix(1, 1) = -4.0;
+
+  S21Matrix inverse = matrix.InverseMatrix();
+  EXPECT_EQ(inverse.getRows(), 2);
+  EXPECT_EQ(inverse.getCols(), 2);
+  EXPECT_DOUBLE_EQ(inverse(0, 0), 2.0);
+  EXPECT_DOUBLE_EQ(inverse(0, 1), -1.0);
+  EXPECT_DOUBLE_EQ(inverse(1, 0), -1.5);
+  EXPECT_DOUBLE_EQ(inverse(1, 1), 0.5);
+}
+
+// Test 6: Inverse of a matrix with floating point values
+TEST(S21MatrixTest, InverseWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  S21Matrix inverse = matrix.InverseMatrix();
+  
+  EXPECT_EQ(inverse.getRows(), 2);
+  EXPECT_EQ(inverse.getCols(), 2);
+  EXPECT_DOUBLE_EQ(inverse(0, 0), -2.25);
+  EXPECT_DOUBLE_EQ(inverse(0, 1), 1.25);
+  EXPECT_DOUBLE_EQ(inverse(1, 0), 1.75);
+  EXPECT_DOUBLE_EQ(inverse(1, 1), -0.75);
+}
+
+// Test 7: Inverse of a matrix with size 2x3
+TEST(S21MatrixTest, Inverse2x3) {
+  S21Matrix matrix(2, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+
+  EXPECT_THROW(matrix.InverseMatrix(), std::out_of_range); // Inverse is not defined for non-square matrices
+}
+
+// Test 8: Inverse Matrix with zero determinant
+TEST(S21MatrixTest, InverseWithZeroDeterminant) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 2.0;
+  matrix(1, 1) = 4.0;
+  
+  EXPECT_THROW(matrix.InverseMatrix(), std::runtime_error); // Inverse is not defined for matrices with zero determinant
+}
+
+//Test 9: Iverse matrox with some zero values
+TEST(S21MatrixTest, InverseWithSomeZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 1.0;
+  matrix(1, 0) = 1.0;
+  matrix(1, 1) = 0.0;
+
+  S21Matrix inverse = matrix.InverseMatrix();
+  EXPECT_EQ(inverse.getRows(), 2);
+  EXPECT_EQ(inverse.getCols(), 2);
+  EXPECT_DOUBLE_EQ(inverse(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(inverse(0, 1), 1.0);
+  EXPECT_DOUBLE_EQ(inverse(1, 0), 1.0);
+  EXPECT_DOUBLE_EQ(inverse(1, 1), 0.0);
+}
 
 // Main function to run all tests
 int main(int argc, char** argv) {

@@ -160,8 +160,15 @@ void S21Matrix::CheckSquareMatrix(const S21Matrix& other) const {
   }
 }
 
+void S21Matrix::CheckSquareMatrixWithSelf() const {
+  if (rows_ != cols_) {
+    throw std::out_of_range("Matrix must be square for this operation.");
+  }
+}
+
 S21Matrix S21Matrix::CalcComplements() const {
-  S21Matrix result(*this);
+  CheckSquareMatrixWithSelf();
+  S21Matrix result(rows_, cols_);
 
   if (rows_ == 1 || cols_ == 1) {
     result.matrix_[0][0] = 1;
@@ -196,21 +203,19 @@ void S21Matrix::GetMinorMatrix(int row, int col, S21Matrix& minor) const {
 }
 
 S21Matrix S21Matrix::InverseMatrix() const {
-  if (rows_ != cols_) {
-    throw std::out_of_range("Inverse is only defined for square matrices.");
-  }
-
+  CheckSquareMatrixWithSelf();
   double det = Determinant();
   if (fabs(det) < EPS) {
     throw std::runtime_error("Matrix is singular and cannot be inverted.");
   }
 
   S21Matrix complements = CalcComplements();
+  S21Matrix transposed = complements.Transpose();
   S21Matrix inverse(rows_, cols_);
 
   for (int i = 0; i < rows_; i++) {
     for (int j = 0; j < cols_; j++) {
-      inverse.matrix_[i][j] = complements.matrix_[i][j] / det;
+      inverse.matrix_[i][j] = transposed.matrix_[i][j] / det;
     }
   }
   return inverse;

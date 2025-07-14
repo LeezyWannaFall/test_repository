@@ -20,6 +20,7 @@ class S21Matrix {
   double DeterminantGauss() const;
   void GetMinorMatrix(int row, int col, S21Matrix& minor) const;
   void CheckSquareMatrix(const S21Matrix& other) const;
+  void CheckSquareMatrixWithSelf() const;
 
  public:
   // Constructors
