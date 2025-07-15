@@ -222,6 +222,10 @@ S21Matrix S21Matrix::InverseMatrix() const {
 }
 
 S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
+  if (other.rows_ <= 0 || other.cols_ <= 0 || rows_ <= 0 || cols_ <= 0) {
+    throw std::out_of_range("Rows and columns must be positive integers and matrix must not be empty.");
+  }
+
   if (this != &other) {
     if (rows_ != other.rows_ || cols_ != other.cols_) {
       for (int i = 0; i < rows_; ++i) {

@@ -1523,6 +1523,1025 @@ TEST(S21MatrixTest, InverseWithSomeZeroValues) {
   EXPECT_DOUBLE_EQ(inverse(1, 1), 0.0);
 }
 
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR+
+----------------------------------------------------------------------------------*/
+
+// Test 1: Sum two matrices of the same size
+TEST(S21MatrixTest, OperatorPlusSameSize) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = 4.0;
+  second(0, 1) = 3.0;
+  second(1, 0) = 2.0;
+  second(1, 1) = 1.0;
+
+  S21Matrix result = first + second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 5);
+  EXPECT_DOUBLE_EQ(result(0, 1), 5);
+  EXPECT_DOUBLE_EQ(result(1, 0), 5);
+  EXPECT_DOUBLE_EQ(result(1, 1), 5);
+}
+
+// Test 2: Sum matrices of different sizes (should throw an exception)
+TEST(S21MatrixTest, OperPlusDifferentSizes) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(3, 3);
+  second(0, 0) = 4.0;
+  second(0, 1) = 3.0;
+  second(1, 0) = 2.0;
+  second(1, 1) = 1.0;
+
+  EXPECT_THROW(S21Matrix result = first + second, std::out_of_range);
+}
+
+// Test 3: Sum a matrix with a zero matrix
+TEST(S21MatrixTest, OperPlusWithZero) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first + second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 1);
+  EXPECT_DOUBLE_EQ(result(0, 1), 2);
+  EXPECT_DOUBLE_EQ(result(1, 0), 3);
+  EXPECT_DOUBLE_EQ(result(1, 1), 4);
+}
+
+// Test 4: Sum negative values
+TEST(S21MatrixTest, OperPlusWithNegativeValues) {
+  S21Matrix first(2, 2);
+  first(0, 0) = -1.0;
+  first(0, 1) = -2.0;
+  first(1, 0) = -3.0;
+  first(1, 1) = -4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = -4.0;
+  second(0, 1) = -3.0;
+  second(1, 0) = -2.0;
+  second(1, 1) = -1.0;
+
+  S21Matrix result = first + second;
+  EXPECT_DOUBLE_EQ(result(0, 0), -5);
+  EXPECT_DOUBLE_EQ(result(0, 1), -5);
+  EXPECT_DOUBLE_EQ(result(1, 0), -5);
+  EXPECT_DOUBLE_EQ(result(1, 1), -5);
+}
+
+// Test 5: Sum a positive matrix with a negative matrix
+TEST(S21MatrixTest, OperPlusPositiveWithNegativeValues) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = -4.0;
+  second(0, 1) = -3.0;
+  second(1, 0) = -2.0;
+  second(1, 1) = -1.0;
+
+  S21Matrix result = first + second;
+  EXPECT_DOUBLE_EQ(result(0, 0), -3);
+  EXPECT_DOUBLE_EQ(result(0, 1), -1);
+  EXPECT_DOUBLE_EQ(result(1, 0), 1);
+  EXPECT_DOUBLE_EQ(result(1, 1), 3);
+}
+
+// Test 6: Sum with an empty matrix (should throw an exception)
+TEST(S21MatrixTest, OperPlusithEmptyMatrix) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second;  // Empty matrix
+  EXPECT_THROW(S21Matrix result = first + second, std::out_of_range);
+}
+
+// Test 7: Sum with self
+TEST(S21MatrixTest, OperPlusWithSelf) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  S21Matrix result = matrix + matrix;
+  EXPECT_DOUBLE_EQ(result(0, 0), 2);
+  EXPECT_DOUBLE_EQ(result(0, 1), 4);
+  EXPECT_DOUBLE_EQ(result(1, 0), 6);
+  EXPECT_DOUBLE_EQ(result(1, 1), 8);
+}
+
+// Test 8: Sum with identity matrix
+TEST(S21MatrixTest, OperPlusWithIdentityMatrix) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix identity(2, 2);
+  identity(0, 0) = 1.0;
+  identity(0, 1) = 0.0;
+  identity(1, 0) = 0.0;
+  identity(1, 1) = 1.0;
+
+  S21Matrix result = first + identity;
+  EXPECT_DOUBLE_EQ(result(0, 0), 2);
+  EXPECT_DOUBLE_EQ(result(0, 1), 2);
+  EXPECT_DOUBLE_EQ(result(1, 0), 3);
+  EXPECT_DOUBLE_EQ(result(1, 1), 5);
+}
+
+// Test 9: Sum Matrices with 1x1 size
+TEST(S21MatrixTest, OperPlus1x1) {
+  S21Matrix first(1, 1);
+  S21Matrix second(1, 1);
+
+  first(0, 0) = 1.0;
+  second(0, 0) = 2.0;
+
+  S21Matrix result = first + second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 3.0);
+}
+
+// Test 10: Sum matrices with 3x3 size
+TEST(S21MatrixTest, OperPlus3x3) {
+  S21Matrix first(3, 3);
+  S21Matrix second(3, 3);
+
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(0, 2) = 3.0;
+  first(1, 0) = 4.0;
+  first(1, 1) = 5.0;
+  first(1, 2) = 6.0;
+  first(2, 0) = 7.0;
+  first(2, 1) = 8.0;
+  first(2, 2) = 9.0;
+
+  second(0, 0) = 1.0;
+  second(0, 1) = 1.0;
+  second(0, 2) = 1.0;
+  second(1, 0) = 1.0;
+  second(1, 1) = 1.0;
+  second(1, 2) = 1.0;
+  second(2, 0) = 1.0;
+  second(2, 1) = 1.0;
+  second(2, 2) = 1.0;
+
+  S21Matrix result = first + second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 2.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 3.0);
+  EXPECT_DOUBLE_EQ(result(0, 2), 4.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 5.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 6.0);
+  EXPECT_DOUBLE_EQ(result(1, 2), 7.0);
+  EXPECT_DOUBLE_EQ(result(2, 0), 8.0);
+  EXPECT_DOUBLE_EQ(result(2, 1), 9.0);
+  EXPECT_DOUBLE_EQ(result(2, 2), 10.0);
+}
+
+// Test 11: Sum matrices with zero values
+TEST(S21MatrixTest, OperPlusWithZeroValues) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 0.0;
+  first(0, 1) = 0.0;
+  first(1, 0) = 0.0;
+  first(1, 1) = 0.0;
+
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first + second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0.0);
+}
+
+// Test 12: Sum matrices with floating point 
+TEST(S21MatrixTest, OperPlusWithFloatingPoint) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 1.5;
+  first(0, 1) = 2.2;
+  first(1, 0) = 3.3;
+  first(1, 1) = 4.7;
+
+  second(0, 0) = 0.5;
+  second(0, 1) = 1.2;
+  second(1, 0) = 2.8;
+  second(1, 1) = 3.9;
+
+  S21Matrix result = first + second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 2.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 3.4);
+  EXPECT_DOUBLE_EQ(result(1, 0), 6.1);
+  EXPECT_DOUBLE_EQ(result(1, 1), 8.6);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR-
+----------------------------------------------------------------------------------*/
+
+// Test 1: Subtract two matrices of the same size
+TEST(S21MatrixTest, OperSub) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 5.0;
+  first(0, 1) = 6.0;
+  first(1, 0) = 7.0;
+  first(1, 1) = 8.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = 4.0;
+  second(0, 1) = 3.0;
+  second(1, 0) = 2.0;
+  second(1, 1) = 1.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 1);
+  EXPECT_DOUBLE_EQ(result(0, 1), 3);
+  EXPECT_DOUBLE_EQ(result(1, 0), 5);
+  EXPECT_DOUBLE_EQ(result(1, 1), 7);
+}
+
+// Test 2: Subtract matrices of different sizes (should throw an exception)
+TEST(S21MatrixTest, OperSubDifferentSizes) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 5.0;
+  first(0, 1) = 6.0;
+  first(1, 0) = 7.0;
+  first(1, 1) = 8.0;
+
+  S21Matrix second(3, 3);
+  second(0, 0) = 4.0;
+  second(0, 1) = 3.0;
+  second(1, 0) = 2.0;
+  second(1, 1) = 1.0;
+
+  EXPECT_THROW(S21Matrix result = first - second, std::out_of_range);
+}
+
+// Test 3: Subtract a matrix with a zero matrix
+TEST(S21MatrixTest, OperSubWithZero) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 5.0;
+  first(0, 1) = 6.0;
+  first(1, 0) = 7.0;
+  first(1, 1) = 8.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 5);
+  EXPECT_DOUBLE_EQ(result(0, 1), 6);
+  EXPECT_DOUBLE_EQ(result(1, 0), 7);
+  EXPECT_DOUBLE_EQ(result(1, 1), 8);
+}
+
+// Test 4: Subtract negative values
+TEST(S21MatrixTest, OperSubWithNegativeValues) {
+  S21Matrix first(2, 2);
+  first(0, 0) = -1.0;
+  first(0, 1) = -2.0;
+  first(1, 0) = -3.0;
+  first(1, 1) = -4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = -4.0;
+  second(0, 1) = -3.0;
+  second(1, 0) = -2.0;
+  second(1, 1) = -1.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 3);
+  EXPECT_DOUBLE_EQ(result(0, 1), 1);
+  EXPECT_DOUBLE_EQ(result(1, 0), -1);
+  EXPECT_DOUBLE_EQ(result(1, 1), -3);
+}
+
+// Test 5: Subtract a positive matrix with a negative matrix
+TEST(S21MatrixTest, OperSubPositiveWithNegativeValues) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = -4.0;
+  second(0, 1) = -3.0;
+  second(1, 0) = -2.0;
+  second(1, 1) = -1.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 5);
+  EXPECT_DOUBLE_EQ(result(0, 1), 5);
+  EXPECT_DOUBLE_EQ(result(1, 0), 5);
+  EXPECT_DOUBLE_EQ(result(1, 1), 5);
+}
+
+// Test 6: Subtract with an empty matrix (should throw an exception)
+TEST(S21MatrixTest, OperSubWithEmptyMatrix) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 5.0;
+  first(0, 1) = 6.0;
+  first(1, 0) = 7.0;
+  first(1, 1) = 8.0;
+
+  S21Matrix second;  // Empty matrix
+
+  EXPECT_THROW(S21Matrix result = first - second, std::out_of_range);
+}
+
+// Test 7: Subtract with self
+TEST(S21MatrixTest, OperSubWithSelf) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 5.0;
+  matrix(0, 1) = 6.0;
+  matrix(1, 0) = 7.0;
+  matrix(1, 1) = 8.0;
+
+  S21Matrix result = matrix - matrix;
+  EXPECT_DOUBLE_EQ(result(0, 0), 0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0);
+}
+
+// Test 8: Sub matrices with 1x1 size
+TEST(S21MatrixTest, OperSubWith1x1Size) {
+  S21Matrix first(1, 1);
+  S21Matrix second(1, 1);
+
+  first(0, 0) = 5.0;
+  second(0, 0) = 2.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 3.0);
+}
+
+// Test 9: Subtract matrices with 3x3 size
+TEST(S21MatrixTest, OperSubWith3x3Size) {
+  S21Matrix first(3, 3);
+  S21Matrix second(3, 3);
+
+  first(0, 0) = 5.0;
+  first(0, 1) = 6.0;
+  first(0, 2) = 7.0;
+  first(1, 0) = 8.0;
+  first(1, 1) = 9.0;
+  first(1, 2) = 10.0;
+  first(2, 0) = 11.0;
+  first(2, 1) = 12.0;
+  first(2, 2) = 13.0;
+
+  second(0, 0) = 1.0;
+  second(0, 1) = 2.0;
+  second(0, 2) = 3.0;
+  second(1, 0) = 4.0;
+  second(1, 1) = 5.0;
+  second(1, 2) = 6.0;
+  second(2, 0) = -1.0;
+  second(2, 1) = -2.0;
+  second(2, 2) = -3.0;
+
+  S21Matrix result = first - second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 4.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 4.0);
+  EXPECT_DOUBLE_EQ(result(0, 2), 4.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 4.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 4.0);
+  EXPECT_DOUBLE_EQ(result(1, 2), 4.0);
+  EXPECT_DOUBLE_EQ(result(2, 0), 12.0);
+  EXPECT_DOUBLE_EQ(result(2, 1), 14.0);
+  EXPECT_DOUBLE_EQ(result(2, 2), 16.0);
+}
+
+// Test 10: Subtract matrices with zero values
+TEST(S21MatrixTest, OperSubWithZeroValues) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 0.0;
+  first(0, 1) = 0.0;
+  first(1, 0) = 0.0;
+  first(1, 1) = 0.0;
+
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first - second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0.0);
+}
+
+// Test 11: Subtract matrices with floating point values
+TEST(S21MatrixTest, OperSubWithFloatingPoint) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 5.5;
+  first(0, 1) = 6.6;
+  first(1, 0) = 7.7;
+  first(1, 1) = 8.8;
+
+  second(0, 0) = 1.1;
+  second(0, 1) = 2.2;
+  second(1, 0) = 3.3;
+  second(1, 1) = 4.4;
+
+  S21Matrix result = first - second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 4.4);
+  EXPECT_DOUBLE_EQ(result(0, 1), 4.4);
+  EXPECT_DOUBLE_EQ(result(1, 0), 4.4);
+  EXPECT_DOUBLE_EQ(result(1, 1), 4.4);
+}
+
+// Test 12: Subtract matrices with negative floating point values
+TEST(S21MatrixTest, OperSubWithNegativeFloatingValues) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = -1.5;
+  first(0, 1) = -2.5;
+  first(1, 0) = -3.5;
+  first(1, 1) = -4.5;
+
+  second(0, 0) = -0.5;
+  second(0, 1) = -1.5;
+  second(1, 0) = -2.5;
+  second(1, 1) = -3.5;
+
+  S21Matrix result = first - second;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), -1.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), -1.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), -1.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), -1.0);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR=
+----------------------------------------------------------------------------------*/
+
+// Test 1: operator= for a matrix
+TEST(S21MatrixTest, EqualOperator) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = 1.0;
+  matrix1(0, 1) = 2.0;
+  matrix1(1, 0) = 3.0;
+  matrix1(1, 1) = 4.0;
+
+  S21Matrix matrix2 = matrix1; // Using operator=
+  EXPECT_EQ(matrix2.getRows(), 2);
+  EXPECT_EQ(matrix2.getCols(), 2);
+  EXPECT_DOUBLE_EQ(matrix2(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(matrix2(0, 1), 2.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 0), 3.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 1), 4.0);
+}
+
+// Test 2: operator= for a matrix with different sizes
+TEST(S21MatrixTest, EqualOperatorDifferentSizes) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = 1.0;
+  matrix1(0, 1) = 2.0;
+  matrix1(1, 0) = 3.0;
+  matrix1(1, 1) = 4.0;
+
+  S21Matrix matrix2(3, 3);
+  matrix2(0, 0) = 5.0;
+  matrix2(0, 1) = 6.0;
+  matrix2(0, 2) = 7.0;
+  matrix2(1, 0) = 8.0;
+  matrix2(1, 1) = 9.0;
+  matrix2(1, 2) = 10.0;
+  matrix2(2, 0) = 11.0;
+  matrix2(2, 1) = 12.0;
+  matrix2(2, 2) = 13.0;
+  matrix1 = matrix2; // Using operator=
+  EXPECT_EQ(matrix1.getRows(), 3);
+  EXPECT_EQ(matrix1.getCols(), 3);
+  EXPECT_DOUBLE_EQ(matrix1(0, 0), 5.0);
+  EXPECT_DOUBLE_EQ(matrix1(0, 1), 6.0);
+  EXPECT_DOUBLE_EQ(matrix1(0, 2), 7.0);
+  EXPECT_DOUBLE_EQ(matrix1(1, 0), 8.0);
+  EXPECT_DOUBLE_EQ(matrix1(1, 1), 9.0);
+  EXPECT_DOUBLE_EQ(matrix1(1, 2), 10.0);
+  EXPECT_DOUBLE_EQ(matrix1(2, 0), 11.0);
+  EXPECT_DOUBLE_EQ(matrix1(2, 1), 12.0);
+  EXPECT_DOUBLE_EQ(matrix1(2, 2), 13.0);
+}
+
+// Test 3: operator= for an empty matrix
+TEST(S21MatrixTest, EqualOperatorEmptyMatrix) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = 1.0;
+  matrix1(0, 1) = 2.0;
+  matrix1(1, 0) = 3.0;
+  matrix1(1, 1) = 4.0;
+
+  S21Matrix matrix2; // Empty matrix
+  EXPECT_THROW(matrix2 = matrix1, std::out_of_range); // Should throw an exception for empty matrix
+}
+
+// Test 4: operator= for a matrix with negative values
+TEST(S21MatrixTest, EqualOperatorNegativeValues) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = -1.0;
+  matrix1(0, 1) = -2.0;
+  matrix1(1, 0) = -3.0;
+  matrix1(1, 1) = -4.0;
+
+  S21Matrix matrix2 = matrix1; // Using operator=
+  EXPECT_EQ(matrix2.getRows(), 2);
+  EXPECT_EQ(matrix2.getCols(), 2);
+  EXPECT_DOUBLE_EQ(matrix2(0, 0), -1.0);
+  EXPECT_DOUBLE_EQ(matrix2(0, 1), -2.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 0), -3.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 1), -4.0);
+}
+
+// Test 5: operator= for a matrix with floating point values
+TEST(S21MatrixTest, EqualOperatorFloatingPoint) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = 1.5;
+  matrix1(0, 1) = 2.5;
+  matrix1(1, 0) = 3.5;
+  matrix1(1, 1) = 4.5;
+
+  S21Matrix matrix2 = matrix1; // Using operator=
+  EXPECT_EQ(matrix2.getRows(), 2);
+  EXPECT_EQ(matrix2.getCols(), 2);
+  EXPECT_DOUBLE_EQ(matrix2(0, 0), 1.5);
+  EXPECT_DOUBLE_EQ(matrix2(0, 1), 2.5);
+  EXPECT_DOUBLE_EQ(matrix2(1, 0), 3.5);
+  EXPECT_DOUBLE_EQ(matrix2(1, 1), 4.5);
+}
+
+// Test 6: operator= for a matrix with zero values
+TEST(S21MatrixTest, EqualOperatorZeroValues) {
+  S21Matrix matrix1(2, 2);
+  matrix1(0, 0) = 0.0;
+  matrix1(0, 1) = 0.0;
+  matrix1(1, 0) = 0.0;
+  matrix1(1, 1) = 0.0;
+
+  S21Matrix matrix2 = matrix1; // Using operator=
+  EXPECT_EQ(matrix2.getRows(), 2);
+  EXPECT_EQ(matrix2.getCols(), 2);
+  EXPECT_DOUBLE_EQ(matrix2(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix2(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(matrix2(1, 1), 0.0);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR*
+----------------------------------------------------------------------------------*/
+
+// Test 1: Multiply two matrices 2x3 and 3x2
+TEST(S21MatrixTest, opermulmatrix) {
+  S21Matrix first(2, 3);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(0, 2) = 3.0;
+  first(1, 0) = 4.0;
+  first(1, 1) = 5.0;
+  first(1, 2) = 6.0;
+
+  S21Matrix second(3, 2);
+  second(0, 0) = 7.0;
+  second(0, 1) = 8.0;
+  second(1, 0) = 9.0;
+  second(1, 1) = 10.0;
+  second(2, 0) = 11.0;
+  second(2, 1) = 12.0;
+
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result.getRows(), 2);
+  EXPECT_DOUBLE_EQ(result.getCols(), 2);
+  EXPECT_DOUBLE_EQ(result(0, 0), 58);
+  EXPECT_DOUBLE_EQ(result(0, 1), 64);
+  EXPECT_DOUBLE_EQ(result(1, 0), 139);
+  EXPECT_DOUBLE_EQ(result(1, 1), 154);
+}
+
+// Test 2: Mult matrices with zero matrix
+TEST(S21MatrixTest, OperMulMatrixWithZero) {
+  S21Matrix first(2, 2);
+  first(0, 0) = 1.0;
+  first(0, 1) = 2.0;
+  first(1, 0) = 3.0;
+  first(1, 1) = 4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0);
+}
+
+// Test 3: Multiply matrices of incompatible sizes (should throw an exception)
+TEST(S21MatrixTest, OperMulMatrixIncompatibleSizes) {
+  S21Matrix first(2, 3);
+  S21Matrix second(2, 2);
+
+  EXPECT_THROW(first * second, std::out_of_range);
+}
+
+// Test 4: Multiply matrices with negative values
+TEST(S21MatrixTest, OperMulMatrixWithNegativeValues) {
+  S21Matrix first(2, 2);
+  first(0, 0) = -1.0;
+  first(0, 1) = -2.0;
+  first(1, 0) = -3.0;
+  first(1, 1) = -4.0;
+
+  S21Matrix second(2, 2);
+  second(0, 0) = -5.0;
+  second(0, 1) = -6.0;
+  second(1, 0) = -7.0;
+  second(1, 1) = -8.0;
+
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 19);
+  EXPECT_DOUBLE_EQ(result(0, 1), 22);
+  EXPECT_DOUBLE_EQ(result(1, 0), 43);
+  EXPECT_DOUBLE_EQ(result(1, 1), 50);
+}
+
+//Test 5: Multiply matrices with 1x1 size
+TEST(S21MatrixTest, OperMulMatrixWith1x1Size) {
+  S21Matrix first(1, 1);
+  S21Matrix second(1, 1);
+
+  first(0, 0) = 2.0;
+  second(0, 0) = 3.0;
+
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 6.0);
+}
+
+// Test 7: Multiply matrices with zero values
+TEST(S21MatrixTest, OperMulMatrixWithZeroValues) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 0.0;
+  first(0, 1) = 0.0;
+  first(1, 0) = 0.0;
+  first(1, 1) = 0.0;
+
+  second(0, 0) = 0.0;
+  second(0, 1) = 0.0;
+  second(1, 0) = 0.0;
+  second(1, 1) = 0.0;
+
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0.0);
+}
+
+// Test 8: Multiply matrices with floating point values
+TEST(S21MatrixTest, OperMulMatrixWithFloatingPoint) {
+  S21Matrix first(2, 2);
+  S21Matrix second(2, 2);
+
+  first(0, 0) = 1.5;
+  first(0, 1) = 2.5;
+  first(1, 0) = 3.5;
+  first(1, 1) = 4.5;
+
+  second(0, 0) = 0.5;
+  second(0, 1) = 1.5;
+  second(1, 0) = 2.5;
+  second(1, 1) = 3.5;
+  
+  S21Matrix result = first * second;
+  EXPECT_DOUBLE_EQ(result(0, 0), 7.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 11.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 13.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 21.0);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR*(NUMBER)
+----------------------------------------------------------------------------------*/
+
+// Test 1: Multiply matrix by a number
+TEST(S21MatrixTest, OperMulNumber) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 2.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 2.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 4.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 6.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 8.0);
+}
+
+// Test 2: Multiply matrix with zero
+TEST(S21MatrixTest, OperMulNumberWithZero) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 0.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0.0);
+}
+
+// Test 3: Multiply matrix with negative number
+TEST(S21MatrixTest, OperMulNumberWithNegative) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = -2.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), -2.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), -4.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), -6.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), -8.0);
+}
+
+// Test 4: Multiply matrix with 1
+TEST(S21MatrixTest, OperMulNumberWithOne) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 1.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 1.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 2.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 3.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 4.0);
+}
+
+// Test 5: Multiply matrix with a large number
+TEST(S21MatrixTest, OperMulNumberWithLargeValue) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  double number = 1000000.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 1000000.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 2000000.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 3000000.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 4000000.0);
+}
+
+// Test 6: Multiply matrix 1x1 by a number
+TEST(S21MatrixTest, OperMulNumberWith1x1Size) {
+  S21Matrix matrix(1, 1);
+  matrix(0, 0) = 5.0;
+
+  double number = 3.0; 
+  S21Matrix result = matrix * number;
+  EXPECT_DOUBLE_EQ(result(0, 0), 15.0);
+}
+
+// Test 7: Multiply matrix with floating point number
+TEST(S21MatrixTest, OperMulNumberWithFloatingPoint) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.5;
+  matrix(0, 1) = 2.5;
+  matrix(1, 0) = 3.5;
+  matrix(1, 1) = 4.5;
+
+  double number = 2.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 3.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 5.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 7.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 9.0);
+}
+
+//Test 8: Multiply matrix with negative values
+TEST(S21MatrixTest, OperMulNumberWithNegativeValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = -1.5;
+  matrix(0, 1) = -2.5;
+  matrix(1, 0) = -3.5;
+  matrix(1, 1) = -4.5;
+
+  double number = 2.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), -3.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), -5.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), -7.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), -9.0);
+}
+
+// Test 9: Multiply matrix with zero values
+TEST(S21MatrixTest, OperMulNumberWithZeroValues) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 0.0;
+  matrix(0, 1) = 0.0;
+  matrix(1, 0) = 0.0;
+  matrix(1, 1) = 0.0;
+
+  double number = 5.0;
+  
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), 0.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), 0.0);
+}
+
+// Test 10: Multiply matrix 3x3
+TEST(S21MatrixTest, OperMulNumberWith3x3Size) {
+  S21Matrix matrix(3, 3);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(0, 2) = 3.0;
+  matrix(1, 0) = 4.0;
+  matrix(1, 1) = 5.0;
+  matrix(1, 2) = 6.0;
+  matrix(2, 0) = 7.0;
+  matrix(2, 1) = 8.0;
+  matrix(2, 2) = 9.0;
+
+  double number = -1.0; 
+  S21Matrix result = matrix * number;
+  
+  EXPECT_DOUBLE_EQ(result(0, 0), -1.0);
+  EXPECT_DOUBLE_EQ(result(0, 1), -2.0);
+  EXPECT_DOUBLE_EQ(result(0, 2), -3.0);
+  EXPECT_DOUBLE_EQ(result(1, 0), -4.0);
+  EXPECT_DOUBLE_EQ(result(1, 1), -5.0);
+  EXPECT_DOUBLE_EQ(result(1, 2), -6.0);
+  EXPECT_DOUBLE_EQ(result(2, 0), -7.0);
+  EXPECT_DOUBLE_EQ(result(2, 1), -8.0);
+  EXPECT_DOUBLE_EQ(result(2, 2), -9.0);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR OPERATOR()
+----------------------------------------------------------------------------------*/
+
+TEST(S21MatrixTest, IndexOperator) {
+  S21Matrix matrix(2, 2);
+  matrix(0, 0) = 1.0;
+  matrix(0, 1) = 2.0;
+  matrix(1, 0) = 3.0;
+  matrix(1, 1) = 4.0;
+
+  ASSERT_NEAR(matrix(0, 0), 1.0, 1e-7);
+  ASSERT_NEAR(matrix(0, 1), 2.0, 1e-7);
+  ASSERT_NEAR(matrix(1, 0), 3.0, 1e-7);
+  ASSERT_NEAR(matrix(1, 1), 4.0, 1e-7);
+
+  matrix(0, 0) = 5.0;
+  ASSERT_NEAR(matrix(0, 0), 5.0, 1e-7);
+}
+
+/*--------------------------------------------------------------------------------
+                                TESTS FOR EXCEPTIONS
+----------------------------------------------------------------------------------*/
+
+// Test for invalid set rows
+TEST(S21MatrixExceptionTest, InvalidSetRows) {
+  S21Matrix matrix(2, 2);
+  ASSERT_THROW(matrix.setSize(0, 0), std::invalid_argument);
+  ASSERT_THROW(matrix.setSize(-1, -1), std::invalid_argument);
+}
+
+TEST(S21MatrixExceptionTest, IndexOutOfRange) {
+  S21Matrix matrix(2, 2);
+  ASSERT_THROW(matrix(2, 0), std::out_of_range);
+  ASSERT_THROW(matrix(0, 2), std::out_of_range);
+  ASSERT_THROW(matrix(-1, 0), std::out_of_range);
+  ASSERT_THROW(matrix(0, -1), std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, PlusOperatorDifferentDimensions) {
+  S21Matrix matrix1(2, 2);
+  S21Matrix matrix2(3, 2);
+  ASSERT_THROW(matrix1 + matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, MinusOperatorDifferentDimensions) {
+  S21Matrix matrix1(2, 2);
+  S21Matrix matrix2(3, 2);
+  ASSERT_THROW(matrix1 - matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, MulMatrixOperatorIncompatibleDimensions) {
+  S21Matrix matrix1(2, 3);
+  S21Matrix matrix2(4, 2);
+  ASSERT_THROW(matrix1 * matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, PlusEqualOperatorDifferentDimensions) {
+  S21Matrix matrix1(2, 2);
+  S21Matrix matrix2(3, 2);
+  ASSERT_THROW(matrix1 += matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, MinusEqualOperatorDifferentDimensions) {
+  S21Matrix matrix1(2, 2);
+  S21Matrix matrix2(3, 2);
+  ASSERT_THROW(matrix1 -= matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixExceptionTest, MulEqualMatrixOperatorIncompatibleDimensions) {
+  S21Matrix matrix1(2, 3);
+  S21Matrix matrix2(4, 2);
+  ASSERT_THROW(matrix1 *= matrix2, std::out_of_range);
+}
+
+TEST(S21MatrixTest, IndexOutOfRange) {
+  S21Matrix matrix(3, 3);
+  ASSERT_THROW(matrix(3, 0), std::out_of_range);
+  ASSERT_THROW(matrix(0, 3), std::out_of_range);
+}
+
 // Main function to run all tests
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
