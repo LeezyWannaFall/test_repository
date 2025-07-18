@@ -22,8 +22,8 @@ class list {
   // Class types
   using value_type = T;
   using reference = T &;
-  using iterator = T *;
-  using const_iterator = const T *;
+  using iterator = ListIterator<T>;
+  using const_iterator = ListConstIterator<T>;
   using const_reference = const T &;
   using size_type = std::size_t;
 
