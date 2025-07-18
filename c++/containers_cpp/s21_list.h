@@ -16,7 +16,11 @@ class list {
 
   Item *head_;
   Item *tail_;
+ public:
+  using size_type = std::size_t;
+ private:
   size_type size_;
+
 
  public:
   // Class types
@@ -25,7 +29,6 @@ class list {
   using iterator = ListIterator<T>;
   using const_iterator = ListConstIterator<T>;
   using const_reference = const T &;
-  using size_type = std::size_t;
 
   // Constructors
   list();
@@ -65,6 +68,20 @@ class list {
   void reverse();
   void unique();
   void sort();
+
+  class ListIterator {
+    private:
+    // ...code...
+    public:
+    // ...code...
+  }
+
+  class ListConstIterator {
+    private:
+    // ...code...
+    public:
+    // ...code...
+  }
 };
 
 } // namespace s21
