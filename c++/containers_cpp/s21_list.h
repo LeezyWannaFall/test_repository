@@ -16,11 +16,12 @@ class list {
 
   Item *head_;
   Item *tail_;
+
  public:
   using size_type = std::size_t;
+
  private:
   size_type size_;
-
 
  public:
   // Class types
@@ -36,7 +37,7 @@ class list {
   list(std::initializer_list<value_type> const &items);
   list(const list &l);
   list(list &&l);
-  operator=(list &&l);
+  operator=(list && l);
 
   // Destructor
   ~list();
@@ -62,27 +63,28 @@ class list {
   void pop_back();
   void push_front(const_reference value);
   void pop_front();
-  void swap(list& other);
-  void merge(list& other);
-  void splice(const_iterator pos, list& other);
+  void swap(list &other);
+  void merge(list &other);
+  void splice(const_iterator pos, list &other);
   void reverse();
   void unique();
   void sort();
 
   class ListIterator {
-    private:
+   private:
     // ...code...
-    public:
+   public:
     // ...code...
   }
 
   class ListConstIterator {
-    private:
+   private:
     // ...code...
-    public:
+
+   public:
     // ...code...
   }
 };
 
-} // namespace s21
+}  // namespace s21
 #endif  // S21_LIST_H_
