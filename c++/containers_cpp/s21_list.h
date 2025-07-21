@@ -1,7 +1,8 @@
 #ifndef S21_LIST_H_
 #define S21_LIST_H_
 
-#include <iostream>
+#include <cstddef>         // для std::size_t
+#include <initializer_list>
 
 namespace s21 {
 
