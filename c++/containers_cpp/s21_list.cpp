@@ -12,12 +12,41 @@ list<T>::list(size_type n) : head_(nullptr), tail_(nullptr), size_(0) {
 
 template <typename T>
 list<T>::list(std::initializer_list<value_type> const &items)
-    : head_(nullptr), tail_(nullptr), size_(0) {
-  for (const auto &item : items) push_back(item);
+ : head_(nullptr), tail_(nullptr), size_(0) {
+  for (const auto &x : items) {
+    push_back(x);
+  }
 }
 
 template <typename T>
-void list::T>::push_back(const_reference value) {
+list<T>::list(const list &l) : head_(nullptr), tail_(nullptr), size_(0) {
+  for (const auto &value : l) {
+    push_back(value);
+  }
+}
+
+template <typename T>
+list<T>::list(list &&l) : head_(l.head_), tail_(l.tail_), size_(l.size_) {
+  l.tail_ = nullptr;
+  l.head_ = nullptr;
+  size_ = 0;
+}
+
+template <typename T>
+list<T>::~list() {
+  Item *current = head_;
+  while (current) {
+    Item *next = current->next;
+    delete current;
+    current = next;
+  }
+  tail_ = nullptr;
+  head_ = nullptr;
+  size_ = 0;
+}
+
+template <typename T>
+void list<T>::push_back(const_reference value) {
   Item *new_item = new Item{value, tail_, nullptr};
   if (tail_) {
     tail_->next = new_item;
@@ -25,7 +54,19 @@ void list::T>::push_back(const_reference value) {
     head_ = new_item;  // List was empty
   }
   tail_ = new_item;
-  ++size_;
+  size_++;
+}
+
+template <typename T>
+void list<T>::push_front(const_reference value) {
+  Item *new_item = new Item{value, nullptr, head_};
+  if (head_) {
+    head_->prev = new_item;
+  } else {
+    tail_ = new_item; // List was empty
+  }
+  head_ = new_item;
+  size_++;
 }
 
 }  // namespace s21

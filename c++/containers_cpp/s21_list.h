@@ -7,29 +7,18 @@ namespace s21 {
 
 template <typename T>
 class list {
- private:
-  struct Item {
-    T data;
-    Item *prev;
-    Item *next;
-  };
-
-  Item *head_;
-  Item *tail_;
-
  public:
-  using size_type = std::size_t;
+  // Iterator classes
+  class ListIterator;
+  class ListConstIterator;
 
- private:
-  size_type size_;
-
- public:
   // Class types
   using value_type = T;
   using reference = T &;
   using iterator = ListIterator<T>;
   using const_iterator = ListConstIterator<T>;
   using const_reference = const T &;
+  using size_type = std::size_t;
 
   // Constructors
   list();
@@ -70,20 +59,34 @@ class list {
   void unique();
   void sort();
 
-  class ListIterator {
-   private:
-    // ...code...
-   public:
-    // ...code...
-  }
+ private:
+  struct Item {
+    T data;
+    Item *prev;
+    Item *next;
+  };
 
-  class ListConstIterator {
-   private:
-    // ...code...
+  Item *head_;
+  Item *tail_;
+  size_type size_;
 
-   public:
-    // ...code...
-  }
+};
+
+template <typename T>
+class list<T>::ListIterator {
+  private:
+  // ...code...
+  public:
+  // ...code...
+};
+
+template <typename T>
+class list<T>::ListConstIterator {
+  private:
+  // ...code...
+
+  public:
+  // ...code...
 };
 
 }  // namespace s21
