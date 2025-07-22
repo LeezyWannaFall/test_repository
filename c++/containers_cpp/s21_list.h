@@ -27,7 +27,7 @@ class list {
   list(std::initializer_list<value_type> const &items);
   list(const list &l);
   list(list &&l);
-  operator=(list && l);
+  list& operator=(list &&l);
 
   // Destructor
   ~list();

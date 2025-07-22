@@ -34,15 +34,27 @@ list<T>::list(list &&l) : head_(l.head_), tail_(l.tail_), size_(l.size_) {
 
 template <typename T>
 list<T>::~list() {
-  Item *current = head_;
-  while (current) {
-    Item *next = current->next;
-    delete current;
-    current = next;
+  clear();
+}
+
+template <typename T>
+typename list<T>::list& list<T>::operator=(list &&l) {
+  if (this == &l) {
+    return *this;
   }
-  tail_ = nullptr;
-  head_ = nullptr;
+  clear();
+  head_ = l.head_;
+  tail_ = l.tail_;
+  size_ = l.size_;
+
+  for (auto &value : l) {
+    push_back(value);
+  }
+  l.tail_ = nullptr;
+  l.head_ = nullptr;
   size_ = 0;
+
+  return *this;
 }
 
 template <typename T>
@@ -67,6 +79,20 @@ void list<T>::push_front(const_reference value) {
   }
   head_ = new_item;
   size_++;
+}
+
+template <typename T>
+void list<T>::clear() {
+  Item *current = head_;
+  while (current) {
+    Item *next = current->next;
+    delete current;
+    current = next;
+  }
+
+  head_ = nullptr;
+  tail_ = nullptr;
+  size_ = 0;
 }
 
 }  // namespace s21
