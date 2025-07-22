@@ -46,15 +46,16 @@ List (список) - это последовательный контейнер
 
 В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
-| Functions      | Definition                                      |
-|----------------|-------------------------------------------------|
-| `list()`  | default constructor, creates empty list                                  |
-| `list(size_type n)`  | parameterized constructor, creates the list of size n                                 |
-| `list(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates list initizialized using std::initializer_list<T>    |
-| `list(const list &l)`  | copy constructor  |
-| `list(list &&l)`  | move constructor  |
-| `~list()`  | destructor  |
-| `operator=(list &&l)`      | assignment operator overload for moving object                                |
+| Функция                                          | Определение на русском                                                                            |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `list()`                                         | конструктор по‑умолчанию, создаёт пустой список                                                   |
+| `list(size_type n)`                              | параметризованный конструктор, создаёт список из `n` элементов со значениями по‑умолчанию         |
+| `list(std::initializer_list<value_type> const&)` | конструктор из списка инициализации, создаёт список, наполненный элементами из переданного `{…}`  |
+| `list(const list &l)`                            | конструктор копирования, создаёт новый список как «глубокую копию» списка `l`                     |
+| `list(list &&l)`                                 | конструктор перемещения, «перекидывает» внутренности из `l` в новый объект без копирования узлов  |
+| `~list()`                                        | деструктор, освобождает всю память, занятую узлами списка                                         |
+| `operator=(list &&l)`                            | оператор присваивания перемещением, очищает текущий объект и «перекидывает» в него ресурсы из `l` |
+                               |
 
 *List Element access*
 
@@ -88,21 +89,22 @@ List (список) - это последовательный контейнер
 
 В этой таблице перечислены публичные методы для изменения контейнера:
 
-| Modifiers      | Definition                                      |
-|----------------|-------------------------------------------------|
-| `void clear()`          | clears the contents                             |
-| `iterator insert(iterator pos, const_reference value)`         | inserts element into concrete pos and returns the iterator that points to the new element     |
-| `void erase(iterator pos)`          | erases element at pos                                 |
-| `void push_back(const_reference value)`      | adds an element to the end                      |
-| `void pop_back()`   | removes the last element        |
-| `void push_front(const_reference value)`      | adds an element to the head                      |
-| `void pop_front()`   | removes the first element        |
-| `void swap(list& other)`                   | swaps the contents                                                                     |
-| `void merge(list& other)`                   | merges two sorted lists                                                                      |
-| `void splice(const_iterator pos, list& other)`                   | transfers elements from list other starting from pos             |
-| `void reverse()`                   | reverses the order of the elements              |
-| `void unique()`                   | removes consecutive duplicate elements               |
-| `void sort()`                   | sorts the elements                |
+| Метод                                                  | Определение на русском                                                                                   |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `void clear()`                                         | очищает содержимое (удаляет все элементы)                                                                |
+| `iterator insert(iterator pos, const_reference value)` | вставляет элемент со значением `value` перед позицией `pos` и возвращает итератор на вставленный элемент |
+| `void erase(iterator pos)`                             | удаляет элемент на позиции `pos`                                                                         |
+| `void push_back(const_reference value)`                | добавляет элемент со значением `value` в конец списка                                                    |
+| `void pop_back()`                                      | удаляет последний элемент                                                                                |
+| `void push_front(const_reference value)`               | добавляет элемент со значением `value` в начало списка                                                   |
+| `void pop_front()`                                     | удаляет первый элемент                                                                                   |
+| `void swap(list& other)`                               | обменивает содержимое списков `*this` и `other`                                                          |
+| `void merge(list& other)`                              | сливает два **упорядоченных** списка, вставляя элементы из `other` в `*this`, сохраняя порядок           |
+| `void splice(const_iterator pos, list& other)`         | перемещает (без копирования) все элементы из списка `other` в `*this`, начиная с позиции `pos`           |
+| `void reverse()`                                       | меняет порядок элементов на обратный                                                                     |
+| `void unique()`                                        | удаляет **последовательные** повторяющиеся элементы                                                      |
+| `void sort()`                                          | сортирует элементы (в порядке возрастания по `operator<`)                                                |
+
 
 </details>
 

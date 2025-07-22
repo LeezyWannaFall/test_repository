@@ -95,4 +95,11 @@ void list<T>::clear() {
   size_ = 0;
 }
 
+template <typename T>
+void list<T>::swap(list& other) {
+  list<T> copy(*this);
+  *this = other;
+  other = copy;
+}
+
 }  // namespace s21
