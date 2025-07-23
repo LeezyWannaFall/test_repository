@@ -41,7 +41,7 @@ class list {
   iterator end();
 
   // Capacity
-  bool empty();
+  bool empty() const;
   size_type size();
   size_type max_size();
 
