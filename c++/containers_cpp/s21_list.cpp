@@ -102,4 +102,92 @@ void list<T>::swap(list& other) {
   other = copy;
 }
 
+template <typename T>
+typename list<T>::iterator list<T>::insert(iterator pos, const_reference value) {
+    Item *new_item = new Item{value, pos.node_->prev, pos.node_};
+    if (pos.node_->prev) {
+        pos.node_->prev->next = new_item;
+    } else {
+        head_ = new_item;
+    }
+    pos.node_->prev = new_item;
+    size_++;
+    return iterator(new_item);
+}
+ 
+template <typename T>
+void list<T>::erase(iterator pos) {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::const_reference list<T>::front() {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::const_reference list<T>::back() {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::iterator list<T>::begin() {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::iterator list<T>::end() {
+    //..code..
+}
+
+template <typename T>
+bool list<T>::empty() {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::size_type list<T>::size() {
+    //..code..
+}
+
+template <typename T>
+typename list<T>::size_type list<T>::max_size() {
+    //..code..
+}
+
+template <typename T>
+void list<T>::pop_back() {
+    //..code..
+}
+
+template <typename T>
+void list<T>::pop_front() {
+    //..code..
+}
+
+template <typename T>
+void list<T>::merge(list &other) {
+    //..code..
+}
+
+template <typename T>
+void list<T>::splice(const_iterator pos, list &other) {
+    //..code..
+}
+
+template <typename T>
+void list<T>::reverse() {
+    //..code..
+}
+
+template <typename T>
+void list<T>::unique() {
+    //..code..
+}
+
+template <typename T>
+void list<T>::sort() {
+    //..code..
+}
+
 }  // namespace s21
