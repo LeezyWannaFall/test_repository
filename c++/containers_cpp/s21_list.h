@@ -15,10 +15,10 @@ class list {
 
   // Class types
   using value_type = T;
-  using reference = T &;
+  using reference = T&;
   using iterator = ListIterator<T>;
   using const_iterator = ListConstIterator<T>;
-  using const_reference = const T &;
+  using const_reference = const T&;
   using size_type = std::size_t;
 
   // Constructors
@@ -75,19 +75,80 @@ class list {
 
 template <typename T>
 class list<T>::ListIterator {
-  private:
-  // ...code...
-  public:
-  // ...code...
+ private:
+  Item *node_;
+ public:
+  // Constructor
+  explicit ListIterator(Item *value) : node_(value) {}
+
+  // Methods
+  T& operator*() const { 
+    return node_->data;
+  }
+  ListIterator& operator++()   {
+    node_ = node_->next;
+    return *this;
+  }
+  ListIterator operator++(int){
+    auto tmp = *this;
+    ++*this;
+    return tmp;
+  }
+  ListIterator& operator--()   {
+    node_ = node_->prev;
+    return *this;
+  }
+  ListIterator operator--(int) {
+    auto tmp = *this;
+    --*this;
+    return tmp;
+  }
+
+  bool operator==(const ListIterator &other) const {
+    return node_ == other.node_;
+  }
+  bool operator!=(const ListIterator &other) const {
+    return node_ != other.node_;
+  }
 };
 
 template <typename T>
 class list<T>::ListConstIterator {
-  private:
-  // ...code...
+ private:
+  const Item *node_;
+ public:
+  // Constructor
+  explicit ListIterator(const Item *value) : node_(value) {}
 
-  public:
-  // ...code...
+  // Methods
+  const T& operator*() const { 
+    return node_->data;
+  }
+  ListConstIterator& operator++()   {
+    node_ = node_->next;
+    return *this;
+  }
+  ListConstIterator operator++(int){
+    auto tmp = *this;
+    ++*this;
+    return tmp;
+  }
+  ListConstIterator& operator--()   {
+    node_ = node_->prev;
+    return *this;
+  }
+  ListConstIterator operator--(int) {
+    auto tmp = *this;
+    --*this;
+    return tmp;
+  }
+
+  bool operator==(const ListConstIterator &other) const {
+    return node_ == other.node_;
+  }
+  bool operator!=(const ListConstIterator &other) const {
+    return node_ != other.node_;
+  }
 };
 
 }  // namespace s21

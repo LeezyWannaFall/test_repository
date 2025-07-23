@@ -10,11 +10,11 @@ list<T>::list(size_type n) : head_(nullptr), tail_(nullptr), size_(0) {
   for (size_type i = 0; i < n; ++i) push_back(T());
 }
 
-template <typename T>
+template <typename T> 
 list<T>::list(std::initializer_list<value_type> const &items)
  : head_(nullptr), tail_(nullptr), size_(0) {
-  for (const auto &x : items) {
-    push_back(x);
+  for (const auto &value : items) {
+    push_back(value);
   }
 }
 
