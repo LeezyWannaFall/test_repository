@@ -204,49 +204,49 @@ void list<T>::pop_front() {
 
 template <typename T>
 void list<T>::merge(list &other) {
-  // if (this == &other) return; // No need to merge with itself
-  // if (other.empty()) return; // Nothing to merge
-  // if (this->empty()) {
-  //   head_ = other.head_;
-  //   tail_ = other.tail_;
-  //   size_ = other.size_;
-  // } else {
-  //   tail_->next = other.head_;
-  //   other.head_->prev = tail_;
-  //   tail_ = other.tail_;
-  //   size_ += other.size_;
-  // }
+  if (this == &other) return; // No need to merge with itself
+  if (other.empty()) return; // Nothing to merge
+  if (this->empty()) {
+    head_ = other.head_;
+    tail_ = other.tail_;
+    size_ = other.size_;
+  } else {
+    tail_->next = other.head_;
+    other.head_->prev = tail_;
+    tail_ = other.tail_;
+    size_ += other.size_;
+  }
 
-  // other.head_ = nullptr;
-  // other.tail_ = nullptr;
-  // other.size_ = 0;
+  other.head_ = nullptr;
+  other.tail_ = nullptr;
+  other.size_ = 0;
 }
 
 template <typename T>
 void list<T>::splice(const_iterator pos, list &other) {
-  // if (other.empty()) return; // Nothing to splice
-  // if (this == &other) return; // No need to splice with itself
+  if (other.empty()) return; // Nothing to splice
+  if (this == &other) return; // No need to splice with itself
 
-  // Item *pos_node = pos.node_;
-  // if (pos_node) {
-  //   if (pos_node->prev) {
-  //     pos_node->prev->next = other.head_;
-  //   } else {
-  //     head_ = other.head_; 
-  //   }
-  //   other.head_->prev = pos_node->prev;
-  //   pos_node->prev = other.tail_;
-  // } else {
-  //   tail_->next = other.head_;
-  //   other.head_->prev = tail_;
-  // }
+  Item *pos_node = pos.node_;
+  if (pos_node) {
+    if (pos_node->prev) {
+      pos_node->prev->next = other.head_;
+    } else {
+      head_ = other.head_; 
+    }
+    other.head_->prev = pos_node->prev;
+    pos_node->prev = other.tail_;
+  } else {
+    tail_->next = other.head_;
+    other.head_->prev = tail_;
+  }
 
-  // tail_ = other.tail_;
-  // size_ += other.size_;
+  tail_ = other.tail_;
+  size_ += other.size_;
 
-  // other.head_ = nullptr;
-  // other.tail_ = nullptr;
-  // other.size_ = 0;
+  other.head_ = nullptr;
+  other.tail_ = nullptr;
+  other.size_ = 0;
 }
 
 template <typename T>
