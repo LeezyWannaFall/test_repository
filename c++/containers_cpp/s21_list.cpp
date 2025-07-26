@@ -224,8 +224,14 @@ void list<T>::merge(list &other) {
 
 template <typename T>
 void list<T>::splice(const_iterator pos, list &other) {
-  if (other.empty()) return; // Nothing to splice
-  if (this == &other) return; // No need to splice with itself
+  if (other.empty()) {
+    throw std::out_of_range("Other list is empty");
+    return; // Nothing to splice
+  } 
+  if (this == &other) {
+    throw std::out_of_range("Cannot splice with itself");
+    return; // No need to splice with itself
+  }
 
   Item *pos_node = pos.node_;
   if (pos_node) {
@@ -251,60 +257,68 @@ void list<T>::splice(const_iterator pos, list &other) {
 
 template <typename T>
 void list<T>::reverse() {
-  // if (size_ <= 1) return; // No need to reverse
+  if (size_ <= 1) {
+    throw std::out_of_range("List is empty or has only one element");
+    return; // No need to reverse
+  }
+  Item *current = head_;
+  Item *temp = nullptr;
+  tail_ = head_; // New tail will be the old head
 
-  // Item *current = head_;
-  // Item *temp = nullptr;
-  // tail_ = head_; // New tail will be the old head
+  while (current != nullptr) {
+    temp = current->prev;
+    current->prev = current->next;
+    current->next = temp;
+    current = current->prev; // Move to the next item
+  }
 
-  // while (current) {
-  //   temp = current->prev;
-  //   current->prev = current->next;
-  //   current->next = temp;
-  //   current = current->prev; // Move to the next item
-  // }
-
-  // head_ = temp; // New head will be the last processed item
+  head_ = temp; // New head will be the last processed item
 }
 
 template <typename T>
 void list<T>::unique() {
-  // if (size_ <= 1) return; // No need to make unique
-
-  // Item *current = head_;
-  // while (current && current->next) {
-  //   if (current->data == current->next->data) {
-  //     Item *to_delete = current->next;
-  //     current->next = to_delete->next;
-  //     if (to_delete->next) {
-  //       to_delete->next->prev = current;
-  //     } else {
-  //       tail_ = current; // Update tail if we removed the last item
-  //     }
-  //     delete to_delete;
-  //     size_--;
-  //   } else {
-  //     current = current->next;
-  //   }
-  // }
+  if (size_ <= 1) {
+    throw std::out_of_range("List is empty or has only one element");
+    return; // No need to make unique
+  }
+  
+  Item *current = head_;
+  while (current && current->next) {
+    if (current->data == current->next->data) {
+      Item *to_delete = current->next;
+      current->next = to_delete->next;
+      if (to_delete->next) {
+        to_delete->next->prev = current;
+      } else {
+        tail_ = current; // Update tail if we removed the last item
+      }
+      delete to_delete;
+      size_--;
+    } else {
+      current = current->next;
+    }
+  }
 }
 
 template <typename T>
 void list<T>::sort() {
-  // if (size_ <= 1) return; // No need to sort
+  if (size_ <= 1) {
+    throw std::out_of_range("List is empty or has only one element");
+    return; // No need to sort
+  }
 
-  // bool swapped;
-  // do {
-  //   swapped = false;
-  //   Item *current = head_;
-  //   while (current && current->next) {
-  //     if (current->data > current->next->data) {
-  //       std::swap(current->data, current->next->data);
-  //       swapped = true;
-  //     }
-  //     current = current->next;
-  //   }
-  // } while (swapped);
+  bool swapped;
+  do {
+    swapped = false;
+    Item *current = head_;
+    while (current && current->next) {
+      if (current->data > current->next->data) {
+        std::swap(current->data, current->next->data);
+        swapped = true;
+      }
+      current = current->next;
+    }
+  } while (swapped);
 }
 
 }  // namespace s21
