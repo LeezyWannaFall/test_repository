@@ -51,7 +51,7 @@ class array {
 };
 
 template <typename T, std::size_t N>
-array<T, N>::array() : size_(N) {}
+array<T, N>::array() {}
 
 template <typename T, std::size_t N>
 array<T, N>::array(std::initializer_list<value_type> const &items) {
@@ -76,17 +76,79 @@ array<T, N>::array(array &&a) {
   for (size_type i = 0; i < N; i++) {
     data_[i] = std::move(a.data_[i]);
   }
-  delete data_;
 }
 
 template<typename T, std::size_t N>
-array<T, N>& array<T, N>::operator=() { // Fix cap
-  // ...code...
+array<T, N>& array<T, N>::operator=(array &&a) {
+  if (this != &a) {
+    for (size_type i = 0; i < N; ++i) {
+      data_[i] = std::move(a.data_[i]);
+    }
+  }
+  return *this;
 }
 
 template <typename T, std::size_t N>
 array<T, N>::~array() {} 
 
+template<typename T, std::size_t N>
+T& array<T, N>::at(size_type pos) {
+  if (pos >= N) {
+    throw std::out_of_range("Value must be in array size");
+  }
+  return data_[pos];
+} 
 
-} // namesoace s21
+template <typename T, std::size_t N>
+const T& array<T, N>::front() {
+  return data_[0];
+}
+
+template <typename T, std::size_t N>
+const T& array<T, N>::back() {
+  return data_[N - 1];
+}
+
+template <typename T, std::size_t N>
+T& array<T, N>::operator[](size_type pos) {
+  return data_[pos];
+}
+
+template <typename T, std::size_t N>
+T* array<T, N>::data() {
+  return data_;
+}
+
+template <typename T, std::size_t N>
+bool array<T, N>::empty() {
+  return N == 0;
+}
+
+template <typename T, std::size_t N>
+size_t array<T, N>::size() {
+  return N;
+}
+
+template <typename T, std::size_t N>
+size_t array<T, N>::max_size() {
+  return N; // THIS SHIT IS SAME AS SIZE() LMAO
+}
+
+template <typename T, std::size_t N>
+void array<T, N>::swap(array& other) {
+  for (size_type i = 0; i < N; i++) {
+    value_type tmp = data_[i];
+    data_[i] = other.data_[i];
+    other.data_[i] = tmp;
+  }
+}
+
+template <typename T, std::size_t N>
+void array<T, N>::fill(const_reference value) {
+  for (size_type i = 0; i < N; i++) {
+    data_[i] = value;
+  }
+}
+
+} // namespace s21
 #endif // S21_ARRAY_H_
