@@ -51,7 +51,11 @@ class array {
 };
 
 template <typename T, std::size_t N>
-array<T, N>::array() {}
+array<T, N>::array() {
+  for (size_type i = 0; i < N; ++i) {
+    data_[i] = value_type(); 
+  }
+}
 
 template <typename T, std::size_t N>
 array<T, N>::array(std::initializer_list<value_type> const &items) {
