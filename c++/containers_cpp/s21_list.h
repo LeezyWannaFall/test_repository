@@ -42,12 +42,8 @@ class list {
   iterator begin();
   iterator end();
 
-  const_iterator begin() const noexcept {
-    return const_iterator(head_);
-  }  // WTF IS THIS
-  const_iterator end() const noexcept {
-    return const_iterator(nullptr);
-  }  // WTF IS THIS
+  const_iterator begin() const noexcept { return const_iterator(head_); }
+  const_iterator end() const noexcept { return const_iterator(nullptr); }
 
   // Capacity
   bool empty() const;
@@ -108,7 +104,7 @@ template <typename T>
 list<T>::list(list &&l) : head_(l.head_), tail_(l.tail_), size_(l.size_) {
   l.tail_ = nullptr;
   l.head_ = nullptr;
-  size_ = 0;
+  l.size_ = 0;
 }
 
 template <typename T>
@@ -232,16 +228,12 @@ typename list<T>::iterator list<T>::begin() {
 
 template <typename T>
 typename list<T>::iterator list<T>::end() {
-  return iterator(tail_);
+  return iterator(nullptr);
 }
 
 template <typename T>
 bool list<T>::empty() const {
-  if (size_ == 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return size_ == 0;
 }
 
 template <typename T>
@@ -284,8 +276,8 @@ void list<T>::pop_front() {
 
 template <typename T>
 void list<T>::merge(list &other) {
-  if (this == &other) return;  // No need to merge with itself
-  if (other.empty()) return;   // Nothing to merge
+  if (this == &other) throw std::out_of_range("No need to merge with itself");
+  if (other.empty()) throw std::out_of_range("Nothing to merge");
   if (this->empty()) {
     head_ = other.head_;
     tail_ = other.tail_;
@@ -306,14 +298,12 @@ template <typename T>
 void list<T>::splice(const_iterator pos, list &other) {
   if (other.empty()) {
     throw std::out_of_range("Other list is empty");
-    return;  // Nothing to splice
   }
   if (this == &other) {
     throw std::out_of_range("Cannot splice with itself");
-    return;  // No need to splice with itself
   }
 
-  Item *pos_node = const_cast<Item *>(pos.node_);  // WTF IS THIS
+  Item *pos_node = const_cast<Item *>(pos.node_);
   if (pos_node) {
     if (pos_node->prev) {
       pos_node->prev->next = other.head_;
@@ -339,7 +329,6 @@ template <typename T>
 void list<T>::reverse() {
   if (size_ <= 1) {
     throw std::out_of_range("List is empty or has only one element");
-    return;  // No need to reverse
   }
   Item *current = head_;
   Item *temp = nullptr;
@@ -352,14 +341,17 @@ void list<T>::reverse() {
     current = current->prev;  // Move to the next item
   }
 
-  head_ = temp;  // New head will be the last processed item
+  if (temp) {
+    head_ = temp->prev;  // New head will be the last processed item
+  } else {
+    head_ = tail_;  // If temp is null, it means we reached the end
+  }
 }
 
 template <typename T>
 void list<T>::unique() {
   if (size_ <= 1) {
     throw std::out_of_range("List is empty or has only one element");
-    return;  // No need to make unique
   }
 
   Item *current = head_;
@@ -384,7 +376,6 @@ template <typename T>
 void list<T>::sort() {
   if (size_ <= 1) {
     throw std::out_of_range("List is empty or has only one element");
-    return;  // No need to sort
   }
 
   bool swapped;
@@ -403,7 +394,8 @@ void list<T>::sort() {
 
 template <typename T>
 class list<T>::ListIterator {
-  friend class list<T>;  // WTF IS THIS
+  friend class list<T>;
+
  private:
   Item *node_;
 
@@ -442,15 +434,15 @@ class list<T>::ListIterator {
 
 template <typename T>
 class list<T>::ListConstIterator {
-  friend class list<T>;  // WTF IS THIS
+  friend class list<T>;
+
  private:
   const Item *node_;
 
  public:
   // Constructor
   explicit ListConstIterator(const Item *value) : node_(value) {}
-  ListConstIterator(const ListIterator &it) noexcept
-      : node_(it.node_) {}  // WTF IS THIS
+  ListConstIterator(const ListIterator &it) noexcept : node_(it.node_) {}
   // Methods
   const T &operator*() const { return node_->data; }
   ListConstIterator &operator++() {

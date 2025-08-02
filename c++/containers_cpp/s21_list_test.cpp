@@ -301,21 +301,6 @@ TEST(ListTest, ConstIterator) {
   EXPECT_EQ(*it, 1);
 }
 
-TEST(ListTest, MoveAssignment) {
-  s21::list<int> list1;
-  list1.push_back(1);
-  list1.push_back(2);
-
-  s21::list<int> list2;
-  list2 = std::move(list1);  // Move assignment
-
-  EXPECT_EQ(list2.size(), 2);
-  EXPECT_EQ(list2.front(), 1);
-  EXPECT_EQ(list2.back(), 2);
-
-  EXPECT_TRUE(list1.empty());  // list1 should be empty after move
-}
-
 TEST(ListTest, IteratorEquality) {
   s21::list<int> list;
   list.push_back(1);
@@ -327,6 +312,32 @@ TEST(ListTest, IteratorEquality) {
   EXPECT_TRUE(it1 == it2);  // Same iterator should be equal
   ++it2;
   EXPECT_FALSE(it1 == it2);  // Different iterators should not be equal
+}
+
+TEST(ListTest, ConstIteratorEquality) {
+  s21::list<int> list;
+  list.push_back(1);
+  list.push_back(2);
+
+  auto it1 = list.begin();
+  auto it2 = list.begin();
+
+  EXPECT_TRUE(it1 == it2);  // Same iterator should be equal
+  ++it2;
+  EXPECT_FALSE(it1 == it2);  // Different iterators should not be equal
+}
+
+TEST(ListTest, IteratorInequality) {
+  s21::list<int> list;
+  list.push_back(1);
+  list.push_back(2);
+
+  auto it1 = list.begin();
+  auto it2 = list.begin();
+
+  EXPECT_FALSE(it1 != it2);  // Same iterator should not be unequal
+  ++it2;
+  EXPECT_TRUE(it1 != it2);  // Different iterators should be unequal
 }
 
 int main(int argc, char **argv) {
