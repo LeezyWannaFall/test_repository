@@ -5,13 +5,23 @@
 #include <limits.h>
 #include <math.h>
 #include <ncurses.h>
+#include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>  // для rand()
-#include <stdio.h>
-#include <stdbool.h>
+
+// Defines
+#define FIELD_WIDTH 10
+#define FIELD_HEIGHT 20
+#define TETROMINO_SIZE 4
 
 // Structrs
+typedef struct {
+  int shape[TETROMINO_SIZE][TETROMINO_SIZE];
+  int x, y;  // позиция левого верхнего угла на поле
+} Tetromino;
+
 typedef enum UserAction_t {
   Start,
   Pause,
@@ -33,10 +43,9 @@ typedef struct GameInfo_t {
   int pause;
 } GameInfo_t;
 
-
 // Functions
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState(void);
+Tetromino getCurrentTetromino(void);
 
-
-#endif // S21_TETRIS_H
+#endif  // S21_TETRIS_H

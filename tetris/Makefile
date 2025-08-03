@@ -1,21 +1,9 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c11 -pedantic
+all: start_game
 
-TETRIS = s21_tetris
-
-RM = rm -rf
-
-SRC = $(wildcard brickgame/tetris/*.c)
-
-OBJ = $(patsubst %.c, %.o, $(SRC))
-
-all: clean $(TETRIS)
-
-$(TETRIS): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(TETRIS)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
+start_game:
+	gcc -o tetris guii/cli/gui.c brickgame/tetris/s21_tetris.c -lncurses
+	./tetris
 clean:
-	$(RM) s21_tetris brickgame/tetris/*.o	
+	rm -f tetris
+
+.PHONY: all start_game clean
