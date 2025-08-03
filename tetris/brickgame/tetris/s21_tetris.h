@@ -1,20 +1,17 @@
-#ifndef S21_TETRIS_H_
-#define S21_TETRIS_H_
+#ifndef S21_TETRIS_H
+#define S21_TETRIS_H
 
-// INCLUDES
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdint.h>
+// Includes
 #include <limits.h>
-#include <stdbool.h>
+#include <math.h>
 #include <ncurses.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>  // для rand()
+#include <stdio.h>
+#include <stdbool.h>
 
-// DEFINES
-#define WIDTH 10
-#define HEIGHT 20
-
-// TYPES
+// Structrs
 typedef enum UserAction_t {
   Start,
   Pause,
@@ -25,7 +22,7 @@ typedef enum UserAction_t {
   Down,
   Action
 } UserAction_t;
-  
+
 typedef struct GameInfo_t {
   int **field;
   int **next;
@@ -35,10 +32,11 @@ typedef struct GameInfo_t {
   int speed;
   int pause;
 } GameInfo_t;
-  
-void userInput(UserAction_t action, bool hold);
-  
-GameInfo_t updateCurrentState();
-  
 
-#endif // S21_TETRIS_H_
+
+// Functions
+void userInput(UserAction_t action, bool hold);
+GameInfo_t updateCurrentState(void);
+
+
+#endif // S21_TETRIS_H
