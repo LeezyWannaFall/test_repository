@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>  // для rand()
+#include <unistd.h>  // для usleep()
 
 // Defines
 #define FIELD_WIDTH 10
@@ -30,7 +31,8 @@ typedef enum UserAction_t {
   Right,
   Up,
   Down,
-  Action
+  Action,
+  Restart
 } UserAction_t;
 
 typedef struct GameInfo_t {

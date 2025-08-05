@@ -16,36 +16,20 @@ static GameState state = STATE_START;
 static Tetromino current;
 
 Tetromino getCurrentTetromino(void) {
-    return current; // возвращаем копию
+  return current;  // возвращаем копию
 }
 
 static const int O_BLOCK[4][4] = {
-    {0, 0, 0, 0},
-    {0, 1, 1, 0},
-    {0, 1, 1, 0},
-    {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int I_BLOCK[4][4] = {
-    {0, 0, 0, 0},
-    {1, 1, 1, 1},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
 static const int T_BLOCK[4][4] = {
-    {0, 0, 0, 0},
-    {0, 1, 0, 0},
-    {1, 1, 1, 0},
-    {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int L_BLOCK[4][4] = {
-    {0, 0, 0, 0},
-    {1, 1, 1, 0},
-    {1, 0, 0, 0},
-    {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {1, 1, 1, 0}, {1, 0, 0, 0}, {0, 0, 0, 0}};
 
 static void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
@@ -83,32 +67,11 @@ static void initField(void) {
   game.speed = 1;
   game.pause = 0;
 
-  game.next = NULL;  // позже
-}
-
-GameInfo_t updateCurrentState(void) {
-  switch (state) {
-    case STATE_START:
-      initField();
-      state = STATE_SPAWN;
-      break;
-    case STATE_SPAWN:
-      spawnNewTetromino();
-      state = STATE_MOVE;
-      break;
-    case STATE_MOVE:
-      // пока ничего не делаем
-      break;
-    default:
-      break;
-  }
-
-  return game;
+  game.next = NULL;  // later
 }
 
 static void tryMove(int dx) {
   int newX = current.x + dx;
-
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
       if (current.shape[i][j]) {
@@ -132,12 +95,63 @@ static void tryMoveDown(void) {
         int x = current.x + j;
         int y = newY + i;
 
-        if (y >= FIELD_HEIGHT || game.field[y][x]) return;
+        if (y >= FIELD_HEIGHT || game.field[y][x]) {
+          state = STATE_CONNECT;
+          return;
+        }
       }
     }
   }
 
   current.y = newY;
+}
+
+static void placeCurrentToField(void) {
+  for (int i = 0; i < TETROMINO_SIZE; ++i) {
+    for (int j = 0; j < TETROMINO_SIZE; ++j) {
+      if (current.shape[i][j]) {
+        int x = current.x + j;
+        int y = current.y + i;
+
+        if (y >= 0 && y < FIELD_HEIGHT && x >= 0 && x < FIELD_WIDTH)
+          game.field[y][x] = 1;
+      }
+    }
+  }
+}
+
+GameInfo_t updateCurrentState(void) {
+  switch (state) {
+    case STATE_START:
+      initField();
+      state = STATE_SPAWN;
+      break;
+    case STATE_SPAWN:
+      spawnNewTetromino();
+      state = STATE_MOVE;
+      break;
+    case STATE_MOVE:
+      break;
+    case STATE_CONNECT:
+      placeCurrentToField();
+
+      for (int j = 0; j < FIELD_WIDTH; ++j) {
+        if (game.field[1][j]) {
+          state = STATE_GAME_OVER;
+          return game;
+        }
+      }
+
+      state = STATE_SPAWN;
+      break;
+    case STATE_GAME_OVER:
+      game.pause = -1;  // сигнализируем о завершении игры
+      break;
+    default:
+      break;
+  }
+
+  return game;
 }
 
 void userInput(UserAction_t action, bool hold) {
@@ -154,5 +168,8 @@ void userInput(UserAction_t action, bool hold) {
   if (action == Start && state == STATE_START) {
     state = STATE_SPAWN;
   }
-}
 
+  if (action == Restart && state == STATE_GAME_OVER) {
+    state = STATE_START;
+  }
+}

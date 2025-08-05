@@ -36,12 +36,24 @@ int main() {
                 endwin();
                 printf("Exiting...\n");
                 return 0;
+            case 'r':
+                userInput(Restart, false);
+                break;
         }
 
         game = updateCurrentState();
+
+        if (game.pause == -1) {
+            clear();
+            mvprintw(FIELD_HEIGHT / 2, FIELD_WIDTH, "GAME OVER\n      Press 'q' to exit.\n      Press 'r' to restart.");
+            refresh();
+            usleep(500000);  // полсекунды паузы
+            continue;        // не делаем больше ничего
+        }
+
         Tetromino t = getCurrentTetromino();
         clear();
-        drawGame(game, t);  // ← мы напишем её
+        drawGame(game, t);
         refresh();
         usleep(DELAY);
     }
