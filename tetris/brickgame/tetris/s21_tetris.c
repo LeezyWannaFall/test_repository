@@ -20,24 +20,63 @@ Tetromino getCurrentTetromino(void) {
 }
 
 static const int O_BLOCK[4][4] = {
-    {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
+  {0, 0, 0, 0}, 
+  {0, 1, 1, 0}, 
+  {0, 1, 1, 0}, 
+  {0, 0, 0, 0}
+};
 
 static const int I_BLOCK[4][4] = {
-    {0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+  {0, 0, 0, 0}, 
+  {1, 1, 1, 1}, 
+  {0, 0, 0, 0}, 
+  {0, 0, 0, 0}
+};
 
 static const int T_BLOCK[4][4] = {
-    {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
+  {0, 0, 0, 0}, 
+  {0, 1, 0, 0}, 
+  {1, 1, 1, 0}, 
+  {0, 0, 0, 0}
+};
 
 static const int L_BLOCK[4][4] = {
-    {0, 0, 0, 0}, {1, 1, 1, 0}, {1, 0, 0, 0}, {0, 0, 0, 0}};
+  {0, 0, 0, 0}, 
+  {1, 0, 0, 0}, 
+  {1, 1, 1, 0}, 
+  {0, 0, 0, 0}
+};
+
+static const int J_BLOCK[4][4] = {
+  {0, 0, 0, 0},
+  {0, 0, 1, 0}, 
+  {1, 1, 1, 0}, 
+  {0, 0, 0, 0}
+};
+
+static const int S_BLOCK[4][4] = {
+  {0, 0, 0, 0}, 
+  {0, 1, 1, 0}, 
+  {1, 1, 0, 0}, 
+  {0, 0, 0, 0}
+};
+
+static const int Z_BLOCK[4][4] = {
+  {0, 0, 0, 0}, 
+  {1, 1, 0, 0}, 
+  {0, 1, 1, 0}, 
+  {0, 0, 0, 0}
+};
+
 
 static void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
 }
 
+
 static void spawnNewTetromino() {
-  int r = rand() % 4;
+  int r = rand() % 7;
 
   if (r == 0)
     copyBlock(O_BLOCK, current.shape);
@@ -45,8 +84,14 @@ static void spawnNewTetromino() {
     copyBlock(I_BLOCK, current.shape);
   else if (r == 2)
     copyBlock(T_BLOCK, current.shape);
-  else
+  else if (r == 3)
     copyBlock(L_BLOCK, current.shape);
+  else if (r == 4)
+    copyBlock(J_BLOCK, current.shape);
+  else if (r == 5)
+    copyBlock(S_BLOCK, current.shape);
+  else 
+    copyBlock(Z_BLOCK, current.shape);
 
   current.x = 3;  // центр по горизонтали
   current.y = 0;  // верх
@@ -120,6 +165,48 @@ static void placeCurrentToField(void) {
   }
 }
 
+static int clearLine(void) {
+  int clearedLines = 0;
+
+  for (int i = FIELD_HEIGHT - 1; i >= 0; i--) {
+    bool full = true;
+    for (int j = 0; j < FIELD_WIDTH; ++j) {
+      if (game.field[i][j] == 0) {
+        full = false;
+        break;
+      }
+    }
+
+    if (full) {
+      clearedLines++;
+      for (int y = i; y > 0; y--) {
+        for (int x = 0; x < FIELD_WIDTH; x++) {
+          game.field[y][x] = game.field[y - 1][x];
+        }
+      }
+
+      for (int x = 0; x < FIELD_WIDTH; x++) {
+        game.field[0][x] = 0;  // очищаем верхнюю строку
+      }
+      i++;
+    }
+  }
+  return clearedLines;
+}
+
+void updateScore(int clearedLines) {
+  game.score += clearedLines * 100;  // 100 очков за каждую очищенную линию
+  if (game.score > game.high_score) {
+    game.high_score = game.score;  // обновляем рекорд
+  }
+
+  // // Увеличиваем уровень и скорость каждые 500 очков
+  // if (game.score / 500 > game.level - 1) {
+  //   game.level++;
+  //   game.speed = (game.level - 1) * 10 + 1;  // скорость увеличивается с уровнем
+  // }
+}
+
 GameInfo_t updateCurrentState(void) {
   switch (state) {
     case STATE_START:
@@ -134,6 +221,7 @@ GameInfo_t updateCurrentState(void) {
       break;
     case STATE_CONNECT:
       placeCurrentToField();
+      updateScore(clearLine());  // очищаем линии и обновляем счет
 
       for (int j = 0; j < FIELD_WIDTH; ++j) {
         if (game.field[1][j]) {

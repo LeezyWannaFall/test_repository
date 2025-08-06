@@ -4,6 +4,6 @@
 int main() {
     srand(time(NULL));
     GameInfo_t g = updateCurrentState();
-    printf("Score: %d, Level: %d\n", g.score, g.level);
+    // printf("Score: %d, Level: %d\n", g.score, g.level);
     return 0;
 }
