@@ -33,12 +33,18 @@ int main() {
       case KEY_DOWN:
         userInput(Down, false);
         break;
+      case 'Q':  
       case 'q':
         endwin();
         printf("Exiting...\n");
         return 0;
+      case 'R':
       case 'r':
         userInput(Restart, false);
+        break;
+      case 'P':
+      case 'p': 
+        userInput(Pause, false);
         break;
     }
 
@@ -79,17 +85,15 @@ void drawGame(const GameInfo_t game, const Tetromino current) {
   int info_x = FIELD_WIDTH * 2 + 4;  // правее от поля начиная с 22+4 клетки
   int info_y = 2;
 
-//   // Рисуем next фигуру справа
-//   mvprintw(info_y + 7, info_x, "Next:");
-
-
+  // Рисуем next фигуру справа
+  mvprintw(info_y + 7, info_x, "Next:");
   mvprintw(info_y - 1, info_x, "=== TETRIS ===");
   mvprintw(info_y + 0, info_x, "Score:      %d", game.score);
   mvprintw(info_y + 1, info_x, "High Score: %d", game.high_score);
   mvprintw(info_y + 2, info_x, "Level:      %d", game.level);
   mvprintw(info_y + 3, info_x, "Speed:      %d", game.speed);
 
-  if (game.pause) mvprintw(info_y + 5, info_x, "[PAUSED]");
+  if (game.pause) mvprintw(info_y + 5, info_x, "=== PAUSED ===");
 
   // текущая фигура
   for (int i = 0; i < TETROMINO_SIZE; ++i) {

@@ -7,6 +7,7 @@ typedef enum {
   STATE_MOVE,
   STATE_SHIFT,
   STATE_CONNECT,
+  STATE_PAUSE,
   STATE_GAME_OVER
 } GameState;
 
@@ -207,7 +208,22 @@ void updateScore(int clearedLines) {
   // }
 }
 
+static void freeField(void) {
+  if (!game.field) return;
+
+  for (int i = 0; i < FIELD_HEIGHT; ++i) {
+    free(game.field[i]);
+    game.field[i] = NULL;
+  }
+  free(game.field);
+}
+
+
 GameInfo_t updateCurrentState(void) {
+  if (state == STATE_PAUSE) {
+    return game;
+  }
+
   switch (state) {
     case STATE_START:
       initField();
@@ -253,8 +269,14 @@ void userInput(UserAction_t action, bool hold) {
     }
   }
 
-  if (action == Start && state == STATE_START) {
-    state = STATE_SPAWN;
+  game.pause = (state == STATE_PAUSE) ? 1 : 0;
+
+  if (action == Pause) {
+    if (state == STATE_MOVE || state == STATE_SPAWN) {
+      state = STATE_PAUSE;
+    } else if (state == STATE_PAUSE) {
+      state = STATE_MOVE;  // продолжаем игру
+    }
   }
 
   if (action == Restart && state == STATE_GAME_OVER) {
