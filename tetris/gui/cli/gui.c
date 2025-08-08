@@ -4,7 +4,6 @@
 
 #include "../../brickgame/tetris/s21_tetris.h"
 
-#define DELAY 100000  // задержка между кадрами (микросекунды)
 
 void drawGame(const GameInfo_t game, const Tetromino current);
 
@@ -39,6 +38,7 @@ int main() {
         break;
       case 'Q':  
       case 'q':
+        freeField();
         endwin();
         printf("Exiting...\n");
         return 0;

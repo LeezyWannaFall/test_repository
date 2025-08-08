@@ -207,15 +207,18 @@ void updateScore(int clearedLines) {
   // }
 }
 
-// void freeField(void) {
-//   if (!game.field) return;
+void freeField(void) {
+  if (!game.field) return;
 
-//   for (int i = 0; i < FIELD_HEIGHT; ++i) {
-//     free(game.field[i]);
-//     game.field[i] = NULL;
-//   }
-//   free(game.field);
-// }
+  for (int i = 0; i < FIELD_HEIGHT; ++i) {
+    if (game.field[i]) {
+      free(game.field[i]);
+      game.field[i] = NULL;
+    }
+  }
+  free(game.field);
+  game.field = NULL;
+}
 
 void rotateTetromino(Tetromino *src, Tetromino *dest) {
   for (int i = 0; i < TETROMINO_SIZE; i++) {
@@ -284,6 +287,7 @@ GameInfo_t updateCurrentState(void) {
       state = STATE_SPAWN;
       break;
     case STATE_GAME_OVER:
+      freeField();
       game.pause = -1;  // сигнализируем о завершении игры
       break;
     default:
@@ -317,6 +321,7 @@ void userInput(UserAction_t action, bool hold) {
   }
 
   if (action == Restart && state == STATE_GAME_OVER) {
+    freeField();
     state = STATE_START;
   }
 }

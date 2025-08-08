@@ -16,6 +16,7 @@
 #define FIELD_WIDTH 10
 #define FIELD_HEIGHT 20
 #define TETROMINO_SIZE 4
+#define DELAY 100000  // задержка между кадрами (микросекунды)
 
 // Structrs
 typedef struct {
@@ -50,5 +51,6 @@ typedef struct GameInfo_t {
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState(void);
 Tetromino getCurrentTetromino(void);
+void freeField(void);
 
 #endif  // S21_TETRIS_H
