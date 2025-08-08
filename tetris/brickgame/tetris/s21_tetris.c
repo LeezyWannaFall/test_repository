@@ -100,7 +100,6 @@ static void spawnNewTetromino() {
   state = STATE_MOVE;
 }
 
-// Функция для инициализации пустого поля
 static void initField(void) {
   game.field = malloc(FIELD_HEIGHT * sizeof(int *));
   for (int i = 0; i < FIELD_HEIGHT; ++i) {
@@ -208,16 +207,52 @@ void updateScore(int clearedLines) {
   // }
 }
 
-static void freeField(void) {
-  if (!game.field) return;
+// void freeField(void) {
+//   if (!game.field) return;
 
-  for (int i = 0; i < FIELD_HEIGHT; ++i) {
-    free(game.field[i]);
-    game.field[i] = NULL;
+//   for (int i = 0; i < FIELD_HEIGHT; ++i) {
+//     free(game.field[i]);
+//     game.field[i] = NULL;
+//   }
+//   free(game.field);
+// }
+
+void rotateTetromino(Tetromino *src, Tetromino *dest) {
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+    for (int j = 0; j < TETROMINO_SIZE; j++) {
+      dest->shape[i][j] = src->shape[TETROMINO_SIZE - 1 - j][i];
+    }
   }
-  free(game.field);
 }
 
+
+void tryRotate(void) {
+  Tetromino tmp = {0};
+  tmp.x = current.x;
+  tmp.y = current.y;
+  rotateTetromino(&current, &tmp);
+
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+    for (int j = 0; j < TETROMINO_SIZE; j++) {
+      if (tmp.shape[i][j]) {
+        int newX = tmp.x + j;
+        int newY = tmp.y + i;
+
+        if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
+          return;
+
+        if (game.field[newY][newX])
+          return;
+      }
+    }
+  }
+
+  for (int i = 0; i < TETROMINO_SIZE; i++) {
+    for (int j = 0; j < TETROMINO_SIZE; j++) {
+      current.shape[i][j] = tmp.shape[i][j];
+    }
+  }
+}
 
 GameInfo_t updateCurrentState(void) {
   if (state == STATE_PAUSE) {
@@ -266,6 +301,8 @@ void userInput(UserAction_t action, bool hold) {
       tryMove(1);  // направо
     } else if (action == Down) {
       tryMoveDown();  // вниз
+    } else if (action == Rotate) {
+      tryRotate(); // поворот фигуры
     }
   }
 

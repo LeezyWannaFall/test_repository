@@ -29,10 +29,11 @@ typedef enum UserAction_t {
   Terminate,
   Left,
   Right,
+  Restart,
+  Rotate,
   Up,
   Down,
-  Action,
-  Restart
+  Action
 } UserAction_t;
 
 typedef struct GameInfo_t {

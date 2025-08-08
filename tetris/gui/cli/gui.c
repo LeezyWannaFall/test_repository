@@ -33,6 +33,10 @@ int main() {
       case KEY_DOWN:
         userInput(Down, false);
         break;
+      case 'W':
+      case 'w':
+        userInput(Rotate, false);
+        break;
       case 'Q':  
       case 'q':
         endwin();
