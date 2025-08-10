@@ -1,7 +1,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include "../../brickgame/tetris/s21_tetris.h"
 
 
@@ -18,7 +17,6 @@ int main() {
   curs_set(FALSE);        // скрыть курсор
 
   GameInfo_t game = updateCurrentState();  // START → SPAWN
-  game = updateCurrentState();             // SPAWN → MOVE
 
   while (1) {
     int ch = getch();

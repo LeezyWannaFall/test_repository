@@ -11,12 +11,13 @@
 #include <stdlib.h>
 #include <time.h>  // для rand()
 #include <unistd.h>  // для usleep()
+#include <sys/time.h> // для gettimeofday
 
 // Defines
 #define FIELD_WIDTH 10
 #define FIELD_HEIGHT 20
 #define TETROMINO_SIZE 4
-#define DELAY 100000  // задержка между кадрами (микросекунды)
+#define DELAY 50000  // задержка между кадрами (микросекунды)
 
 // Structrs
 typedef struct {

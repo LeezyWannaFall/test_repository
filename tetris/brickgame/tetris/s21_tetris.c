@@ -13,7 +13,6 @@ typedef enum {
 
 static GameInfo_t game;
 static GameState state = STATE_START;
-
 static Tetromino current;
 
 Tetromino getCurrentTetromino(void) {
@@ -199,12 +198,6 @@ void updateScore(int clearedLines) {
   if (game.score > game.high_score) {
     game.high_score = game.score;  // обновляем рекорд
   }
-
-  // // Увеличиваем уровень и скорость каждые 500 очков
-  // if (game.score / 500 > game.level - 1) {
-  //   game.level++;
-  //   game.speed = (game.level - 1) * 10 + 1;  // скорость увеличивается с уровнем
-  // }
 }
 
 void freeField(void) {
@@ -257,6 +250,15 @@ void tryRotate(void) {
   }
 }
 
+static unsigned long lastFallMs = 0;
+static int fallDelay = 1000; // между падениями 1 сек
+
+unsigned long currentTimeMs() {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return (unsigned long)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
 GameInfo_t updateCurrentState(void) {
   if (state == STATE_PAUSE) {
     return game;
@@ -271,8 +273,13 @@ GameInfo_t updateCurrentState(void) {
       spawnNewTetromino();
       state = STATE_MOVE;
       break;
-    case STATE_MOVE:
-      break;
+    case STATE_MOVE: {
+      unsigned long now = currentTimeMs();
+      if (now - lastFallMs >= (unsigned long)fallDelay) {
+        tryMoveDown(); 
+        lastFallMs = now;
+      }
+    } break;
     case STATE_CONNECT:
       placeCurrentToField();
       updateScore(clearLine());  // очищаем линии и обновляем счет
