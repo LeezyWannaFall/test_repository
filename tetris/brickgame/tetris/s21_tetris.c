@@ -15,15 +15,15 @@ typedef enum {
 static GameInfo_t game;
 static GameState state = STATE_START;
 static Tetromino current;
-static Tetromino next;
-static int RandomValue;
+static Tetromino newTetromino = {0};
+static Tetromino queue[QUEUE_SIZE];
 
 Tetromino getCurrentTetromino(void) {
   return current;  // возвращаем копию current
 }
 
-Tetromino getNextTetromino(void) {
-  return next;  // возвращаем копию next
+Tetromino getNewTetromino(void) {
+  return newTetromino;  // возвращаем копию next
 }
 
 static const int O_BLOCK[4][4] = {
@@ -82,36 +82,37 @@ static void copyBlock(const int src[4][4], int dest[4][4]) {
 
 
 static void spawnNextTetromino() {
-  RandomValue = rand() % 7;
-
-  if (RandomValue == 0) {
-    copyBlock(O_BLOCK, next.shape);
-  } else if (RandomValue == 1) {
-    copyBlock(I_BLOCK, next.shape);
-  } else if (RandomValue == 2) {
-    copyBlock(T_BLOCK, next.shape);
-  } else if (RandomValue == 3) {
-    copyBlock(L_BLOCK, next.shape);
-  } else if (RandomValue == 4) {
-    copyBlock(J_BLOCK, next.shape);
-  } else if (RandomValue == 5) {
-    copyBlock(S_BLOCK, next.shape);
-  } else { 
-    copyBlock(Z_BLOCK, next.shape);
+  for (int i = 0; i < QUEUE_SIZE - 1; ++i) {
+    queue[i] = queue[i + 1];
   }
 
-  next.x = 26;
-  next.y = 6;
+  int RandomValue = rand() % 7;
+  if (RandomValue == 0) {
+    copyBlock(O_BLOCK, newTetromino.shape);
+  } else if (RandomValue == 1) {
+    copyBlock(I_BLOCK, newTetromino.shape);
+  } else if (RandomValue == 2) {
+    copyBlock(T_BLOCK, newTetromino.shape);
+  } else if (RandomValue == 3) {
+    copyBlock(L_BLOCK, newTetromino.shape);
+  } else if (RandomValue == 4) {
+    copyBlock(J_BLOCK, newTetromino.shape);
+  } else if (RandomValue == 5) {
+    copyBlock(S_BLOCK, newTetromino.shape);
+  } else { 
+    copyBlock(Z_BLOCK, newTetromino.shape);
+  }
 
+  newTetromino.x = 26;
+  newTetromino.y = 6;
+  queue[QUEUE_SIZE - 1] = newTetromino;
   state = STATE_SPAWN;
 }
 
-
 static void spawnCurrentTetromino() {
-  copyBlock(next.shape, current.shape);
+  current = queue[0];
   current.x = 3;  // центр по горизонтали
   current.y = 0;  // верх
-
   state = STATE_MOVE;
 }
 
@@ -130,6 +131,10 @@ static void initField(void) {
   game.next =  malloc(TETROMINO_SIZE * sizeof(int *));
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     game.next[i] = calloc(TETROMINO_SIZE, sizeof(int));
+  }
+
+  for (int i = 0; i < QUEUE_SIZE; ++i) {
+    spawnNextTetromino();
   }
 }
 

@@ -4,7 +4,7 @@
 #include "../../brickgame/tetris/s21_tetris.h"
 
 
-void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino next);
+void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino newTetromino);
 
 int main() {
   srand(time(NULL));
@@ -62,10 +62,10 @@ int main() {
       continue;        // не делаем больше ничего
     }
 
-    Tetromino next = getNextTetromino();
+    Tetromino newTetromino = getNewTetromino();
     Tetromino current = getCurrentTetromino();
     clear();
-    drawGame(game, current, next);
+    drawGame(game, current, newTetromino);
     refresh();
     usleep(DELAY);
   }
@@ -74,7 +74,7 @@ int main() {
   return 0;
 }
 
-void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino next) {
+void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino newTetromino) {
   for (int y = 0; y < FIELD_HEIGHT; ++y) {
     for (int x = 0; x < FIELD_WIDTH; ++x) {
       if (game.field[y][x])
@@ -113,7 +113,7 @@ void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino ne
   // следуящая фигура
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
-      if (next.shape[i][j]) {
+      if (newTetromino.shape[i][j]) {
         int y = info_y + 9 + i;
         int x = info_x + j;
         mvprintw(y, x * 2, "[]");
