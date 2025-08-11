@@ -52,6 +52,7 @@ typedef struct GameInfo_t {
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState(void);
 Tetromino getCurrentTetromino(void);
+Tetromino getNextTetromino(void);
 void freeField(void);
 
 #endif  // S21_TETRIS_H

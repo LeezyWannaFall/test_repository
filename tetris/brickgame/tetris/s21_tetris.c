@@ -3,6 +3,7 @@
 
 typedef enum {
   STATE_START,
+  STATE_SPAWN_NEXT_FIGURE,
   STATE_SPAWN,
   STATE_MOVE,
   STATE_SHIFT,
@@ -14,9 +15,15 @@ typedef enum {
 static GameInfo_t game;
 static GameState state = STATE_START;
 static Tetromino current;
+static Tetromino next;
+static int RandomValue;
 
 Tetromino getCurrentTetromino(void) {
-  return current;  // возвращаем копию
+  return current;  // возвращаем копию current
+}
+
+Tetromino getNextTetromino(void) {
+  return next;  // возвращаем копию next
 }
 
 static const int O_BLOCK[4][4] = {
@@ -68,31 +75,40 @@ static const int Z_BLOCK[4][4] = {
   {0, 0, 0, 0}
 };
 
-
 static void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
 }
 
 
-static void spawnNewTetromino() {
-  int r = rand() % 7;
+static void spawnNextTetromino() {
+  RandomValue = rand() % 7;
 
-  if (r == 0)
-    copyBlock(O_BLOCK, current.shape);
-  else if (r == 1)
-    copyBlock(I_BLOCK, current.shape);
-  else if (r == 2)
-    copyBlock(T_BLOCK, current.shape);
-  else if (r == 3)
-    copyBlock(L_BLOCK, current.shape);
-  else if (r == 4)
-    copyBlock(J_BLOCK, current.shape);
-  else if (r == 5)
-    copyBlock(S_BLOCK, current.shape);
-  else 
-    copyBlock(Z_BLOCK, current.shape);
+  if (RandomValue == 0) {
+    copyBlock(O_BLOCK, next.shape);
+  } else if (RandomValue == 1) {
+    copyBlock(I_BLOCK, next.shape);
+  } else if (RandomValue == 2) {
+    copyBlock(T_BLOCK, next.shape);
+  } else if (RandomValue == 3) {
+    copyBlock(L_BLOCK, next.shape);
+  } else if (RandomValue == 4) {
+    copyBlock(J_BLOCK, next.shape);
+  } else if (RandomValue == 5) {
+    copyBlock(S_BLOCK, next.shape);
+  } else { 
+    copyBlock(Z_BLOCK, next.shape);
+  }
 
+  next.x = 26;
+  next.y = 6;
+
+  state = STATE_SPAWN;
+}
+
+
+static void spawnCurrentTetromino() {
+  copyBlock(next.shape, current.shape);
   current.x = 3;  // центр по горизонтали
   current.y = 0;  // верх
 
@@ -111,7 +127,10 @@ static void initField(void) {
   game.speed = 1;
   game.pause = 0;
 
-  game.next = NULL;  // later
+  game.next =  malloc(TETROMINO_SIZE * sizeof(int *));
+  for (int i = 0; i < TETROMINO_SIZE; ++i) {
+    game.next[i] = calloc(TETROMINO_SIZE, sizeof(int));
+  }
 }
 
 static void tryMove(int dx) {
@@ -213,6 +232,19 @@ void freeField(void) {
   game.field = NULL;
 }
 
+void freeNext(void) {
+  if (!game.next) return;
+
+  for (int i = 0; i < FIELD_HEIGHT; ++i) {
+    if (game.next[i]) {
+      free(game.next[i]);
+      game.next[i] = NULL;
+    }
+  }
+  free(game.next);
+  game.next = NULL;
+}
+
 void rotateTetromino(Tetromino *src, Tetromino *dest) {
   for (int i = 0; i < TETROMINO_SIZE; i++) {
     for (int j = 0; j < TETROMINO_SIZE; j++) {
@@ -267,10 +299,14 @@ GameInfo_t updateCurrentState(void) {
   switch (state) {
     case STATE_START:
       initField();
+      state = STATE_SPAWN_NEXT_FIGURE;
+      break;
+    case STATE_SPAWN_NEXT_FIGURE:
+      spawnNextTetromino();
       state = STATE_SPAWN;
       break;
     case STATE_SPAWN:
-      spawnNewTetromino();
+      spawnCurrentTetromino();
       state = STATE_MOVE;
       break;
     case STATE_MOVE: {
@@ -291,10 +327,11 @@ GameInfo_t updateCurrentState(void) {
         }
       }
 
-      state = STATE_SPAWN;
+      state = STATE_SPAWN_NEXT_FIGURE;
       break;
     case STATE_GAME_OVER:
       freeField();
+      // freeNext();
       game.pause = -1;  // сигнализируем о завершении игры
       break;
     default:
