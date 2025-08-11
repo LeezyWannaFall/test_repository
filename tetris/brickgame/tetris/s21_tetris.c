@@ -103,8 +103,8 @@ static void spawnNextTetromino() {
     copyBlock(Z_BLOCK, newTetromino.shape);
   }
 
-  newTetromino.x = 26;
-  newTetromino.y = 6;
+  newTetromino.x = 12;
+  newTetromino.y = 10;
   queue[QUEUE_SIZE - 1] = newTetromino;
   state = STATE_SPAWN;
 }

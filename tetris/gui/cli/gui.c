@@ -114,8 +114,8 @@ void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino ne
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
       if (newTetromino.shape[i][j]) {
-        int y = info_y + 9 + i;
-        int x = info_x + j;
+        int y = newTetromino.y + i;
+        int x = newTetromino.x + j;
         mvprintw(y, x * 2, "[]");
       }
     }
