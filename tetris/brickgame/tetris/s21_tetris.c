@@ -240,7 +240,7 @@ void freeField(void) {
 void freeNext(void) {
   if (!game.next) return;
 
-  for (int i = 0; i < FIELD_HEIGHT; ++i) {
+  for (int i = 0; i < TETROMINO_SIZE; ++i) {
     if (game.next[i]) {
       free(game.next[i]);
       game.next[i] = NULL;
@@ -336,7 +336,7 @@ GameInfo_t updateCurrentState(void) {
       break;
     case STATE_GAME_OVER:
       freeField();
-      // freeNext();
+      freeNext();
       game.pause = -1;  // сигнализируем о завершении игры
       break;
     default:
