@@ -3,9 +3,7 @@
 
 // Includes
 #include <limits.h>
-#include <math.h>
 #include <ncurses.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,11 +17,23 @@
 #define TETROMINO_SIZE 4
 #define DELAY 50000  // задержка между кадрами (микросекунды)
 #define QUEUE_SIZE 2
+
 // Structrs
 typedef struct {
   int shape[TETROMINO_SIZE][TETROMINO_SIZE];
   int x, y;  // позиция левого верхнего угла на поле
 } Tetromino;
+
+typedef enum {
+  STATE_START,
+  STATE_SPAWN_NEXT_FIGURE,
+  STATE_SPAWN,
+  STATE_MOVE,
+  STATE_SHIFT,
+  STATE_CONNECT,
+  STATE_PAUSE,
+  STATE_GAME_OVER
+} GameState;
 
 typedef enum UserAction_t {
   Start,
@@ -52,8 +62,8 @@ typedef struct GameInfo_t {
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState(void);
 Tetromino getCurrentTetromino(void);
-// Tetromino getNextTetromino(void);
 Tetromino getNewTetromino(void);
 void freeField(void);
+void freeNext(void);
 
 #endif  // S21_TETRIS_H

@@ -1,17 +1,6 @@
 // Includes
 #include "s21_tetris.h"
 
-typedef enum {
-  STATE_START,
-  STATE_SPAWN_NEXT_FIGURE,
-  STATE_SPAWN,
-  STATE_MOVE,
-  STATE_SHIFT,
-  STATE_CONNECT,
-  STATE_PAUSE,
-  STATE_GAME_OVER
-} GameState;
-
 static GameInfo_t game;
 static GameState state = STATE_START;
 static Tetromino current;
@@ -371,6 +360,7 @@ void userInput(UserAction_t action, bool hold) {
 
   if (action == Restart && state == STATE_GAME_OVER) {
     freeField();
+    freeNext();
     state = STATE_START;
   }
 }

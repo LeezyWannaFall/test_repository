@@ -37,6 +37,7 @@ int main() {
       case 'Q':  
       case 'q':
         freeField();
+        freeNext();
         endwin();
         printf("Exiting...\n");
         return 0;
