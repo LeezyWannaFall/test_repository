@@ -56,7 +56,7 @@ int main() {
       clear();
       mvprintw(
           FIELD_HEIGHT / 2, FIELD_WIDTH,
-          "GAME OVER\n      Press 'q' to exit.\n      Press 'r' to restart.");
+          "GAME OVER\n      Your score: %d\n      Your highscore: %d\n      Press 'q' to exit.\n      Press 'r' to restart.", game.score, game.high_score);
       refresh();
       usleep(500000);  // полсекунды паузы
       continue;        // не делаем больше ничего
