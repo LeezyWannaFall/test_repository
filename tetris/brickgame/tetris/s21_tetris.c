@@ -64,6 +64,24 @@ static const int Z_BLOCK[4][4] = {
   {0, 0, 0, 0}
 };
 
+int loadHighScore() {
+  int highscore = 0;
+  FILE *f = fopen("highscore.txt", "r");
+  if (f) {
+    fscanf(f, "%d", &highscore);
+    fclose(f);
+  }
+  return highscore;
+}
+
+void saveHighScore(int highscore) {
+  FILE *f = fopen("highscore.txt", "w");
+  if (f) {
+    fprintf(f, "%d\n", highscore);
+    fclose(f);
+  }
+}
+
 static void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
@@ -112,10 +130,10 @@ static void initField(void) {
   }
 
   game.score = 0;
-  game.high_score = 0;
   game.level = 1;
   game.speed = 1;
   game.pause = 0;
+  game.high_score = loadHighScore();
 
   game.next =  malloc(TETROMINO_SIZE * sizeof(int *));
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
@@ -216,7 +234,8 @@ void updateScore(int clearedLines) {
   else if (clearedLines == 4)
     game.score += 1500; 
   if (game.score > game.high_score) {
-    game.high_score = game.score;  // обновляем рекорд
+    game.high_score = game.score; 
+    saveHighScore(game.high_score); // обновляем рекорд
   }
 }
 
