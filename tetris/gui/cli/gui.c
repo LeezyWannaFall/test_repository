@@ -1,10 +1,11 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
+
 #include "../../brickgame/tetris/s21_tetris.h"
 
-
-void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino newTetromino);
+void drawGame(const GameInfo_t game, const Tetromino current,
+              const Tetromino newTetromino);
 
 int main() {
   srand(time(NULL));
@@ -34,7 +35,7 @@ int main() {
       case 'w':
         userInput(Rotate, false);
         break;
-      case 'Q':  
+      case 'Q':
       case 'q':
         freeField();
         freeNext();
@@ -46,7 +47,7 @@ int main() {
         userInput(Restart, false);
         break;
       case 'P':
-      case 'p': 
+      case 'p':
         userInput(Pause, false);
         break;
     }
@@ -55,9 +56,10 @@ int main() {
 
     if (game.pause == -1) {
       clear();
-      mvprintw(
-          FIELD_HEIGHT / 2, FIELD_WIDTH,
-          "GAME OVER\n      Your score: %d\n      Your highscore: %d\n      Press 'q' to exit.\n      Press 'r' to restart.", game.score, game.high_score);
+      mvprintw(FIELD_HEIGHT / 2, FIELD_WIDTH,
+               "GAME OVER\n      Your score: %d\n      Your highscore: %d\n    "
+               "  Press 'q' to exit.\n      Press 'r' to restart.",
+               game.score, game.high_score);
       refresh();
       usleep(500000);  // полсекунды паузы
       continue;        // не делаем больше ничего
@@ -75,7 +77,8 @@ int main() {
   return 0;
 }
 
-void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino newTetromino) {
+void drawGame(const GameInfo_t game, const Tetromino current,
+              const Tetromino newTetromino) {
   for (int y = 0; y < FIELD_HEIGHT; ++y) {
     for (int x = 0; x < FIELD_WIDTH; ++x) {
       if (game.field[y][x])
@@ -95,7 +98,6 @@ void drawGame(const GameInfo_t game, const Tetromino current, const Tetromino ne
   mvprintw(info_y + 0, info_x, "Score:      %d", game.score);
   mvprintw(info_y + 1, info_x, "High Score: %d", game.high_score);
   mvprintw(info_y + 2, info_x, "Level:      %d", game.level);
-  mvprintw(info_y + 3, info_x, "Speed:      %d", game.speed);
 
   if (game.pause) mvprintw(info_y + 5, info_x, "=== PAUSED ===");
 

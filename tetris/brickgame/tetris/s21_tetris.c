@@ -6,6 +6,8 @@ static GameState state = STATE_START;
 static Tetromino current;
 static Tetromino newTetromino = {0};
 static Tetromino queue[QUEUE_SIZE];
+static unsigned long lastFallMs = 0;
+static int fallDelay = 1000;  // между падениями 1 сек
 
 Tetromino getCurrentTetromino(void) {
   return current;  // возвращаем копию current
@@ -16,53 +18,25 @@ Tetromino getNewTetromino(void) {
 }
 
 static const int O_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {0, 1, 1, 0}, 
-  {0, 1, 1, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int I_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {1, 1, 1, 1}, 
-  {0, 0, 0, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
 static const int T_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {0, 1, 0, 0}, 
-  {1, 1, 1, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int L_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {1, 0, 0, 0}, 
-  {1, 1, 1, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int J_BLOCK[4][4] = {
-  {0, 0, 0, 0},
-  {0, 0, 1, 0}, 
-  {1, 1, 1, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}};
 
 static const int S_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {0, 1, 1, 0}, 
-  {1, 1, 0, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}};
 
 static const int Z_BLOCK[4][4] = {
-  {0, 0, 0, 0}, 
-  {1, 1, 0, 0}, 
-  {0, 1, 1, 0}, 
-  {0, 0, 0, 0}
-};
+    {0, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
 int loadHighScore() {
   int highscore = 0;
@@ -87,7 +61,6 @@ static void copyBlock(const int src[4][4], int dest[4][4]) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
 }
 
-
 static void spawnNextTetromino() {
   for (int i = 0; i < QUEUE_SIZE - 1; ++i) {
     queue[i] = queue[i + 1];
@@ -106,7 +79,7 @@ static void spawnNextTetromino() {
     copyBlock(J_BLOCK, newTetromino.shape);
   } else if (RandomValue == 5) {
     copyBlock(S_BLOCK, newTetromino.shape);
-  } else { 
+  } else {
     copyBlock(Z_BLOCK, newTetromino.shape);
   }
 
@@ -135,7 +108,7 @@ static void initField(void) {
   game.pause = 0;
   game.high_score = loadHighScore();
 
-  game.next =  malloc(TETROMINO_SIZE * sizeof(int *));
+  game.next = malloc(TETROMINO_SIZE * sizeof(int *));
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     game.next[i] = calloc(TETROMINO_SIZE, sizeof(int));
   }
@@ -225,17 +198,22 @@ static int clearLine(void) {
 }
 
 void updateScore(int clearedLines) {
-  if (clearedLines == 1) 
+  if (clearedLines == 1)
     game.score += 100;
   else if (clearedLines == 2)
     game.score += 300;
   else if (clearedLines == 3)
     game.score += 700;
   else if (clearedLines == 4)
-    game.score += 1500; 
+    game.score += 1500;
   if (game.score > game.high_score) {
-    game.high_score = game.score; 
-    saveHighScore(game.high_score); // обновляем рекорд
+    game.high_score = game.score;
+    saveHighScore(game.high_score);  // обновляем рекорд
+  }
+
+  if (game.score >= game.level * 600 && game.level < 10) {
+    game.level += 1;
+    fallDelay -= 90;
   }
 }
 
@@ -273,7 +251,6 @@ void rotateTetromino(Tetromino *src, Tetromino *dest) {
   }
 }
 
-
 void tryRotate(void) {
   Tetromino tmp = {0};
   tmp.x = current.x;
@@ -289,8 +266,7 @@ void tryRotate(void) {
         if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
           return;
 
-        if (game.field[newY][newX])
-          return;
+        if (game.field[newY][newX]) return;
       }
     }
   }
@@ -301,9 +277,6 @@ void tryRotate(void) {
     }
   }
 }
-
-static unsigned long lastFallMs = 0;
-static int fallDelay = 1000; // между падениями 1 сек
 
 unsigned long currentTimeMs() {
   struct timeval tv;
@@ -332,7 +305,7 @@ GameInfo_t updateCurrentState(void) {
     case STATE_MOVE: {
       unsigned long now = currentTimeMs();
       if (now - lastFallMs >= (unsigned long)fallDelay) {
-        tryMoveDown(); 
+        tryMoveDown();
         lastFallMs = now;
       }
     } break;
@@ -370,7 +343,7 @@ void userInput(UserAction_t action, bool hold) {
     } else if (action == Down) {
       tryMoveDown();  // вниз
     } else if (action == Rotate) {
-      tryRotate(); // поворот фигуры
+      tryRotate();  // поворот фигуры
     }
   }
 

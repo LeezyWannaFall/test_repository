@@ -4,13 +4,13 @@
 // Includes
 #include <limits.h>
 #include <ncurses.h>
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>  // для rand()
-#include <unistd.h>  // для usleep()
-#include <sys/time.h> // для gettimeofday
+#include <sys/time.h>  // для gettimeofday
+#include <time.h>      // для rand()
+#include <unistd.h>    // для usleep()
 
 // Defines
 #define FIELD_WIDTH 10
