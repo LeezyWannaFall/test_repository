@@ -207,7 +207,14 @@ static int clearLine(void) {
 }
 
 void updateScore(int clearedLines) {
-  game.score += clearedLines * 100;  // 100 очков за каждую очищенную линию
+  if (clearedLines == 1) 
+    game.score += 100;
+  else if (clearedLines == 2)
+    game.score += 300;
+  else if (clearedLines == 3)
+    game.score += 700;
+  else if (clearedLines == 4)
+    game.score += 1500; 
   if (game.score > game.high_score) {
     game.high_score = game.score;  // обновляем рекорд
   }
