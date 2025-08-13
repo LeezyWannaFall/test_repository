@@ -62,13 +62,13 @@ void saveHighScore(int highscore) {
 }
 
 // Copy from Figures to Tetromino
-static void copyBlock(const int src[4][4], int dest[4][4]) {
+void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
 }
 
 // Spawn figures and add them to queue
-static void spawnNextTetromino() {
+void spawnNextTetromino() {
   for (int i = 0; i < QUEUE_SIZE - 1; ++i) {
     queue[i] = queue[i + 1];
   }
@@ -97,7 +97,7 @@ static void spawnNextTetromino() {
 }
 
 // Spawn current tetromino from queue
-static void spawnCurrentTetromino() {
+void spawnCurrentTetromino() {
   current = queue[0];
   current.x = 3;  // центр по горизонтали
   current.y = 0;  // верх
@@ -105,7 +105,7 @@ static void spawnCurrentTetromino() {
 }
 
 // Initialize the game field and next tetromino field
-static void initField(void) {
+void initField(void) {
   game.field = malloc(FIELD_HEIGHT * sizeof(int *));
   for (int i = 0; i < FIELD_HEIGHT; ++i) {
     game.field[i] = calloc(FIELD_WIDTH, sizeof(int));
@@ -128,7 +128,7 @@ static void initField(void) {
 }
 
 // Try to move the current tetromino left or right
-static void tryMove(int dx) {
+void tryMove(int dx) {
   int newX = current.x + dx;
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
@@ -146,7 +146,7 @@ static void tryMove(int dx) {
 }
 
 // Try to move the current tetromino down
-static void tryMoveDown(void) {
+void tryMoveDown(void) {
   int newY = current.y + 1;
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
@@ -166,7 +166,7 @@ static void tryMoveDown(void) {
 }
 
 // Place the current tetromino on the field
-static void placeCurrentToField(void) {
+void placeCurrentToField(void) {
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
       if (current.shape[i][j]) {
@@ -182,7 +182,7 @@ static void placeCurrentToField(void) {
 
 
 // Clear filled lines and shift the rest down
-static int clearLine(void) {
+int clearLine(void) {
   int clearedLines = 0;
 
   for (int i = FIELD_HEIGHT - 1; i >= 0; i--) {

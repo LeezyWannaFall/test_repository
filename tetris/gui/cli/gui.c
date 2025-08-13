@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 #include "../../brick_game/tetris/s21_tetris.h"
 
 void drawGame(const GameInfo_t game, const Tetromino current,

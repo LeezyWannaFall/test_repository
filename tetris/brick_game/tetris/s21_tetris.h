@@ -66,6 +66,20 @@ Tetromino getCurrentTetromino(void);
 Tetromino getNewTetromino(void);
 void freeField(void);
 void freeNext(void);
+void initField(void);
+void spawnNextTetromino();
+void spawnCurrentTetromino();
+void tryMove(int dx);
+void tryMoveDown(void);
+void tryRotate(void);
+void placeCurrentToField(void);
+int clearLine(void);
+void updateScore(int clearedlines);
+int loadHighScore();
+void saveHighScore(int highscore);
+void copyBlock(const int src[4][4], int dest[4][4]);
+void rotateTetromino(Tetromino *src, Tetromino *dest);
+unsigned long currentTimeMs();
 
 // Global variables
 extern GameInfo_t game;
