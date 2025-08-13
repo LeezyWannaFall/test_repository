@@ -6,16 +6,16 @@ GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 EXE_NAME = tetris
 LIB_NAME = libtetris.a
 
-BRICK_GAME_DIR = brick_game/tetris
+LIB_DIR = brick_game/tetris
 GUI_DIR = gui/cli
 TEST_DIR = tests
 BUILD_DIR = build
 
 # Файлы
-LIB_SRC = $(BRICK_GAME_DIR)/s21_tetris.c
+LIB_SRC = $(LIB_DIR)/s21_tetris.c
 GUI_SRC = $(GUI_DIR)/gui.c
 TEST_SRC = $(TEST_DIR)/test.c
-HEADERS = $(BRICK_GAME_DIR)/s21_tetris.h
+HEADERS = $(LIB_DIR)/s21_tetris.h
 
 # Объекты
 LIB_OBJ = $(BUILD_DIR)/s21_tetris.o
@@ -26,14 +26,14 @@ TEST_OBJ = $(BUILD_DIR)/test.o
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# Правила компиляции
-$(BUILD_DIR)/s21_tetris.o: $(LIB_SRC) $(HEADERS) | $(BUILD_DIR)
+# Компилируем обьекты
+$(LIB_OBJ): $(LIB_SRC) $(HEADERS) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/gui.o: $(GUI_SRC) $(HEADERS) | $(BUILD_DIR)
+$(GUI_OBJ): $(GUI_SRC) $(HEADERS) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/test.o: $(TEST_SRC) $(HEADERS) | $(BUILD_DIR)
+$(TEST_OBJ): $(TEST_SRC) $(HEADERS) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Сборка библиотеки
@@ -67,7 +67,12 @@ gcov_report: clean
 
 # dvi:
 
-# dist:
+dist:
+	tar -czvf tetris.tar.gz \
+	Makefile \
+	brick_game \
+	gui \
+	tests
 
 clean:
 	rm -rf $(BUILD_DIR) $(LIB_NAME) $(EXE_NAME) test_exe gcov_exe *.gcno *.gcda *.gcov gcov_report.info gcov_report
