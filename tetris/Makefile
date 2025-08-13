@@ -48,8 +48,7 @@ $(EXE_NAME): $(GUI_OBJ) $(LIB_NAME)
 # Основная цель
 all: $(LIB_NAME) $(EXE_NAME)
 
-install: 
-	clean $(EXE_NAME)
+install: clean $(EXE_NAME)
 
 uninstall: clean
 
@@ -65,6 +64,10 @@ gcov_report: clean
 	./gcov_exe
 	lcov -t "gcov_report" -o gcov_report.info -c -d .
 	genhtml -o gcov_report gcov_report.info
+
+# dvi:
+
+# dist:
 
 clean:
 	rm -rf $(BUILD_DIR) $(LIB_NAME) $(EXE_NAME) test_exe gcov_exe *.gcno *.gcda *.gcov gcov_report.info gcov_report
