@@ -1,14 +1,16 @@
 // Includes
 #include "s21_tetris.h"
 
-static GameInfo_t game;
-static GameState state = STATE_START;
-static Tetromino current;
-static Tetromino newTetromino = {0};
-static Tetromino queue[QUEUE_SIZE];
-static unsigned long lastFallMs = 0;
-static int fallDelay = 1000;  // между падениями 1 сек
+GameInfo_t game;
+GameState state = STATE_START;
+Tetromino current;
+Tetromino newTetromino = {0};
+Tetromino queue[QUEUE_SIZE];
+unsigned long lastFallMs = 0;
+int fallDelay = 1000;  // между падениями 1 сек
 
+
+// Accessor functions
 Tetromino getCurrentTetromino(void) {
   return current;  // возвращаем копию current
 }
@@ -17,6 +19,7 @@ Tetromino getNewTetromino(void) {
   return newTetromino;  // возвращаем копию next
 }
 
+// Figures
 static const int O_BLOCK[4][4] = {
     {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
@@ -38,6 +41,8 @@ static const int S_BLOCK[4][4] = {
 static const int Z_BLOCK[4][4] = {
     {0, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
 
+
+// Highscore fumctions
 int loadHighScore() {
   int highscore = 0;
   FILE *f = fopen("highscore.txt", "r");
@@ -56,11 +61,13 @@ void saveHighScore(int highscore) {
   }
 }
 
+// Copy from Figures to Tetromino
 static void copyBlock(const int src[4][4], int dest[4][4]) {
   for (int i = 0; i < TETROMINO_SIZE; ++i)
     for (int j = 0; j < TETROMINO_SIZE; ++j) dest[i][j] = src[i][j];
 }
 
+// Spawn figures and add them to queue
 static void spawnNextTetromino() {
   for (int i = 0; i < QUEUE_SIZE - 1; ++i) {
     queue[i] = queue[i + 1];
@@ -89,6 +96,7 @@ static void spawnNextTetromino() {
   state = STATE_SPAWN;
 }
 
+// Spawn current tetromino from queue
 static void spawnCurrentTetromino() {
   current = queue[0];
   current.x = 3;  // центр по горизонтали
@@ -96,6 +104,7 @@ static void spawnCurrentTetromino() {
   state = STATE_MOVE;
 }
 
+// Initialize the game field and next tetromino field
 static void initField(void) {
   game.field = malloc(FIELD_HEIGHT * sizeof(int *));
   for (int i = 0; i < FIELD_HEIGHT; ++i) {
@@ -104,7 +113,7 @@ static void initField(void) {
 
   game.score = 0;
   game.level = 1;
-  game.speed = 1;
+  game.speed = fallDelay;
   game.pause = 0;
   game.high_score = loadHighScore();
 
@@ -118,6 +127,7 @@ static void initField(void) {
   }
 }
 
+// Try to move the current tetromino left or right
 static void tryMove(int dx) {
   int newX = current.x + dx;
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
@@ -135,6 +145,7 @@ static void tryMove(int dx) {
   current.x = newX;
 }
 
+// Try to move the current tetromino down
 static void tryMoveDown(void) {
   int newY = current.y + 1;
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
@@ -154,6 +165,7 @@ static void tryMoveDown(void) {
   current.y = newY;
 }
 
+// Place the current tetromino on the field
 static void placeCurrentToField(void) {
   for (int i = 0; i < TETROMINO_SIZE; ++i) {
     for (int j = 0; j < TETROMINO_SIZE; ++j) {
@@ -168,6 +180,8 @@ static void placeCurrentToField(void) {
   }
 }
 
+
+// Clear filled lines and shift the rest down
 static int clearLine(void) {
   int clearedLines = 0;
 
@@ -189,7 +203,7 @@ static int clearLine(void) {
       }
 
       for (int x = 0; x < FIELD_WIDTH; x++) {
-        game.field[0][x] = 0;  // очищаем верхнюю строку
+        game.field[0][x] = 0;  // clear the top line
       }
       i++;
     }
@@ -197,6 +211,7 @@ static int clearLine(void) {
   return clearedLines;
 }
 
+// Update the score based on cleared lines
 void updateScore(int clearedLines) {
   if (clearedLines == 1)
     game.score += 100;
@@ -208,15 +223,17 @@ void updateScore(int clearedLines) {
     game.score += 1500;
   if (game.score > game.high_score) {
     game.high_score = game.score;
-    saveHighScore(game.high_score);  // обновляем рекорд
+    saveHighScore(game.high_score);  // update highscore file
   }
 
   if (game.score >= game.level * 600 && game.level < 10) {
     game.level += 1;
     fallDelay -= 90;
+    game.speed -= 90;
   }
 }
 
+// Free allocated memory for the game field 
 void freeField(void) {
   if (!game.field) return;
 
@@ -230,6 +247,7 @@ void freeField(void) {
   game.field = NULL;
 }
 
+// Free allocated memory for next tetromino field
 void freeNext(void) {
   if (!game.next) return;
 
@@ -243,6 +261,7 @@ void freeNext(void) {
   game.next = NULL;
 }
 
+// Rotate the tetromino 90 degrees clockwise
 void rotateTetromino(Tetromino *src, Tetromino *dest) {
   for (int i = 0; i < TETROMINO_SIZE; i++) {
     for (int j = 0; j < TETROMINO_SIZE; j++) {
@@ -251,6 +270,7 @@ void rotateTetromino(Tetromino *src, Tetromino *dest) {
   }
 }
 
+// Try to rotate the current tetromino
 void tryRotate(void) {
   Tetromino tmp = {0};
   tmp.x = current.x;
@@ -278,12 +298,14 @@ void tryRotate(void) {
   }
 }
 
+// Get the current time in milliseconds
 unsigned long currentTimeMs() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return (unsigned long)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
+// Update the game state based on the current state
 GameInfo_t updateCurrentState(void) {
   if (state == STATE_PAUSE) {
     return game;
@@ -311,7 +333,7 @@ GameInfo_t updateCurrentState(void) {
     } break;
     case STATE_CONNECT:
       placeCurrentToField();
-      updateScore(clearLine());  // очищаем линии и обновляем счет
+      updateScore(clearLine());  // clear filled lines and update score
 
       for (int j = 0; j < FIELD_WIDTH; ++j) {
         if (game.field[1][j]) {
@@ -325,7 +347,8 @@ GameInfo_t updateCurrentState(void) {
     case STATE_GAME_OVER:
       freeField();
       freeNext();
-      game.pause = -1;  // сигнализируем о завершении игры
+      fallDelay = 1000;
+      game.pause = -1;  // game over state
       break;
     default:
       break;
@@ -334,16 +357,17 @@ GameInfo_t updateCurrentState(void) {
   return game;
 }
 
+// Handle user input actions
 void userInput(UserAction_t action, bool hold) {
   if (state == STATE_MOVE) {
     if (action == Left) {
-      tryMove(-1);  // налево
+      tryMove(-1);  // left
     } else if (action == Right) {
-      tryMove(1);  // направо
+      tryMove(1);  // right
     } else if (action == Down) {
-      tryMoveDown();  // вниз
+      tryMoveDown();  // down
     } else if (action == Rotate) {
-      tryRotate();  // поворот фигуры
+      tryRotate();  // rotate
     }
   }
 
@@ -353,7 +377,7 @@ void userInput(UserAction_t action, bool hold) {
     if (state == STATE_MOVE || state == STATE_SPAWN) {
       state = STATE_PAUSE;
     } else if (state == STATE_PAUSE) {
-      state = STATE_MOVE;  // продолжаем игру
+      state = STATE_MOVE;  // continue game
     }
   }
 

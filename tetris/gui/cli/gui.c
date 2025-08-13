@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../../brickgame/tetris/s21_tetris.h"
+#include "../../brick_game/tetris/s21_tetris.h"
 
 void drawGame(const GameInfo_t game, const Tetromino current,
               const Tetromino newTetromino);
@@ -89,7 +89,7 @@ void drawGame(const GameInfo_t game, const Tetromino current,
   }
 
   // Информация справа
-  int info_x = FIELD_WIDTH * 2 + 4;  // правее от поля начиная с 22+4 клетки
+  int info_x = FIELD_WIDTH * 2 + 4;  // правее от поля начиная с 20+4 клетки
   int info_y = 2;
 
   // Рисуем next фигуру справа
@@ -98,6 +98,7 @@ void drawGame(const GameInfo_t game, const Tetromino current,
   mvprintw(info_y + 0, info_x, "Score:      %d", game.score);
   mvprintw(info_y + 1, info_x, "High Score: %d", game.high_score);
   mvprintw(info_y + 2, info_x, "Level:      %d", game.level);
+  mvprintw(info_y + 3, info_x, "Speed:      %d", game.speed);
 
   if (game.pause) mvprintw(info_y + 5, info_x, "=== PAUSED ===");
 

@@ -67,4 +67,12 @@ Tetromino getNewTetromino(void);
 void freeField(void);
 void freeNext(void);
 
+// Global variables
+extern GameInfo_t game;
+extern GameState state;
+extern Tetromino queue[QUEUE_SIZE];
+extern Tetromino current;
+extern unsigned long lastFallMs;
+extern int fallDelay;
+
 #endif  // S21_TETRIS_H
