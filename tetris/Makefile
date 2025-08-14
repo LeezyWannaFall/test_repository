@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -g
+CFLAGS = -g
 LDFLAGS = -lncurses -lcheck -lm -lsubunit
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 
@@ -65,8 +65,11 @@ gcov_report: clean
 	lcov -t "gcov_report" -o gcov_report.info -c -d .
 	genhtml -o gcov_report gcov_report.info
 
-# dvi:
+# Документация
+dvi:
+	doxygen Doxyfile
 
+# Арихв
 dist:
 	tar -czvf tetris.tar.gz \
 	Makefile \
@@ -74,8 +77,12 @@ dist:
 	gui \
 	tests
 
+clang_format:
+	clang-format -n $(LIB_SRC) $(HEADERS)
+	clang-format -i $(LIB_SRC) $(HEADERS)
+
 clean:
-	rm -rf $(BUILD_DIR) $(LIB_NAME) $(EXE_NAME) test_exe gcov_exe *.gcno *.gcda *.gcov gcov_report.info gcov_report
+	rm -rf $(BUILD_DIR) $(LIB_NAME) $(EXE_NAME) test_exe gcov_exe *.gcno *.gcda *.gcov gcov_report.info gcov_report docs tetris.tar.gz
 
 .PHONY: all clean test gcov_report
 
