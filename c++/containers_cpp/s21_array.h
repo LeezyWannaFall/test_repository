@@ -135,7 +135,7 @@ size_t array<T, N>::size() {
 
 template <typename T, std::size_t N>
 size_t array<T, N>::max_size() {
-  return N; // THIS SHIT IS SAME AS SIZE() LMAO
+  return N; 
 }
 
 template <typename T, std::size_t N>

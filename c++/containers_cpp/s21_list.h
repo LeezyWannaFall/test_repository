@@ -65,6 +65,15 @@ class list {
   void unique();
   void sort();
 
+  template <typename... Args>
+  void insert_many_front(Args&&... args);
+
+  template <typename... Args>
+  void insert_many_back(Args&&... args);
+
+  template <typename... Args>
+  iterator insert_many(const_iterator pos, Args&&... args)
+
  private:
   struct Item {
     T data;
@@ -390,6 +399,30 @@ void list<T>::sort() {
       current = current->next;
     }
   } while (swapped);
+}
+
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_front(Args&&... args) {
+  (push_front(std::forward<Args>(args)), ...);
+}
+
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_back(Args&&... args) {
+  (push_back(std::forward<Args>(args)), ...);
+}
+
+template <typename T>
+template <typename... Args>
+typename list<T>::iterator list<T>::insert_many(const_iterator pos, Args&&... args) {
+  if (pos.node_ == nullptr) {
+    throw std::out_of_range("Cannot insert at end of list");
+  }
+  
+  iterator it = iterator(pos.node_);
+  (it = insert(it, std::forward<Args>(args)), ...);
+  return it;
 }
 
 template <typename T>
